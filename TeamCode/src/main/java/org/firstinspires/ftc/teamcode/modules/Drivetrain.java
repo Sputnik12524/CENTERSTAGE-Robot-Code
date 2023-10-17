@@ -1,22 +1,39 @@
 package org.firstinspires.ftc.teamcode.modules;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import static java.lang.Math.PI;
+
+import static java.lang.Math.acos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.modules.PID.Parameters;
-import org.firstinspires.ftc.teamcode.modules.PID.Regulator;
 
 @Config
 public class Drivetrain {
+    private final LinearOpMode opMode;
+
+    private final DcMotor leftFrontDrive;
+    private final DcMotor rightFrontDrive;
+    private final DcMotor leftBackDrive;
+    private final DcMotor rightBackDrive;
+
+    private final ImuSensor imu;// Гироскоп
+    private final Telemetry tm;
+
+    public static double kX = 1;// Мощность по оси вперёд-назад
+    public static double kY = 1;// Мощность по оси влево-вправо
+    public static double kR = 1;// Мощность по оси вращения
+    public static double rotatePower = 0.6;// Мощность вращения метода rotate
+
     public static final double GYRO_COURSE_TOLERANCE = 2;
     public static double slow = 0.65; /*отвечает за замедление скорости езды робота. Если хотим ускорить робота, повышаем её.*/
     public static double R_SLOW = 1;
@@ -28,15 +45,6 @@ public class Drivetrain {
     public static double kP = 0.0225;
     public static double kD = 0.012;
     public static double kI = 0.017;
-    private final DcMotor leftFrontDrive;
-    private final DcMotor rightFrontDrive;
-    private final DcMotor leftBackDrive;
-    private final DcMotor rightBackDrive;
-    private final LinearOpMode opMode;
-    private final MetryHandler mh;
-    private final ImuSensor imu;
-    private final Parameters imuPIDparam;
-    private Regulator imuPID;
 
     /**
      * Конструктор: инициализирует моторы робота и OpMode:
@@ -45,72 +53,100 @@ public class Drivetrain {
      * rf - правый передний
      * rb - правый задний
      *
-     * @param _opMode ссылка на opMode, вызвавший конструктор
+     * @param opMode ссылка на opMode, вызвавший конструктор
      */
-    public Drivetrain(LinearOpMode _opMode) {
-        opMode = _opMode;
-
+    public Drivetrain(LinearOpMode opMode) {
+        this.opMode = opMode;
         HardwareMap hm = opMode.hardwareMap;
-
-
         leftFrontDrive = hm.get(DcMotor.class, "lf");
         leftBackDrive = hm.get(DcMotor.class, "lb");
         rightFrontDrive = hm.get(DcMotor.class, "rb");
         rightBackDrive = hm.get(DcMotor.class, "rf");
         imu = new ImuSensor(opMode);
-        imuPIDparam = new Parameters(0.225, 0.012, 0.017,
-                1, 1,
-                5, 8,
-                this::driveR,
-                () -> imu.getAngles(), () -> imu.getAngularVelocity(), true);
-        Regulator imuPID = new Regulator(opMode, imuPIDparam);
-        mh = new MetryHandler(_opMode, "D");
+        //mh = new MetryHandler(opMode);
+        tm = opMode.telemetry;
+
     }
 
     /**
-     * Метод подачи напряжения на моторы
+     * Метод установления режима мотора
      *
-     * @param x перемещение слева-направо
-     * @param y перемещение назад-вперёд
-     * @param r перемещение по часовой стрелки
+     * @param mode - режим мотора
      */
-    public void drive(double x, double y, double r) {
-        leftFrontDrive.setPower((-x + y - r * R_SLOW) * slow);
-        rightFrontDrive.setPower((x - y - r * R_SLOW) * slow);
-        leftBackDrive.setPower((x + y - r * R_SLOW) * slow);
-        rightBackDrive.setPower((-x - y - r * R_SLOW) * slow);
-
-    }
-
-    public void drive(double x, double y, double r, double slow) {
-        leftFrontDrive.setPower((-x + y + r) * slow);
-        rightFrontDrive.setPower((x - y + r) * slow);
-        leftBackDrive.setPower((x + y + r) * slow);
-        rightBackDrive.setPower((-x - y + r) * slow);
-    }
-
-    /**
-     * Метод вращения колёсной базы
-     *
-     * @param r - мощность вращения
-     */
-    public void driveR(double r) {
-        leftFrontDrive.setPower(r);
-        rightFrontDrive.setPower(r);
-        leftBackDrive.setPower(r);
-        rightBackDrive.setPower(r);
-    }
-
-    /**
-     * Устанавливает режим mode на каждый мотор соотвественно
-     *
-     * @param mode Режим для установки
-     */
-    public void setMode(DcMotor.RunMode mode) {
+    public void setMode(RunMode mode) {
         leftFrontDrive.setMode(mode);
         rightFrontDrive.setMode(mode);
         leftBackDrive.setMode(mode);
         rightBackDrive.setMode(mode);
+    }
+
+    /**
+     * Метод установки режима на моторы в отдельности
+     *
+     * @param leftFrontMode  - режим левого переднего мотора
+     * @param rightFrontMode - режим правого переднего мотора
+     * @param leftBackMode   - режим левого заднего мотора
+     * @param rightBackMode  - режим правого заднего мотора
+     */
+    public void setMode(RunMode leftFrontMode, RunMode rightFrontMode,
+                        RunMode leftBackMode, RunMode rightBackMode) {
+        leftFrontDrive.setMode(leftFrontMode);
+        rightFrontDrive.setMode(rightFrontMode);
+        leftBackDrive.setMode(leftBackMode);
+        rightBackDrive.setMode(rightBackMode);
+    }
+
+    /**
+     * Метод установления напряжения на моторы
+     *
+     * @param power - коэффициент мощности мотора [0..1]
+     */
+    private void setPower(double power) {
+        leftFrontDrive.setPower(power);
+        rightFrontDrive.setPower(power);
+        leftBackDrive.setPower(power);
+        leftFrontDrive.setPower(power);
+    }
+
+    /**
+     * Метод установления мощности на все моторы через массив (для выссчитанной мощности)
+     *
+     * @param powers - мощности моторов
+     */
+    private void setPower(double[] powers) {
+        leftFrontDrive.setPower(powers[0]);
+        rightFrontDrive.setPower(powers[1]);
+        leftBackDrive.setPower(powers[2]);
+        leftFrontDrive.setPower(powers[3]);
+    }
+
+    /**
+     * Метод высчитывания мощности моторов на меканум базе
+     *
+     * @param x - перемещение вперёд-назад [0..1]
+     * @param y - перемещение влево-вправо [0..1]
+     * @param r - вращение по часовой-против часовой [0..1]
+     * @return массив мощностей для моторов
+     */
+    private double[] calculatePower(double x, double y, double r) {
+        return new double[]{
+                (x - y + r), (-x + y + r),
+                (x + y + r), (-x - y + r)};
+    }
+
+    /**
+     * Метод управления колёсной базой через мощности без коэффициентов
+     * Метод управления колёсной базой через мощности с коэффициентами
+     *
+     * @param x - перемещение вперёд-назад [0..1]
+     * @param y - перемещение влево-вправо [0..1]
+     * @param r - вращение по часовой-против часовой [0..1]
+     */
+    public void driveRawPower(double x, double y, double r) {
+        setPower(calculatePower(x, y, r));
+    }
+    public void driveCoeffPower(double x, double y, double r) {
+        setPower(calculatePower(x * kX, y * kY, r * kR));
     }
 
     /**
@@ -136,70 +172,58 @@ public class Drivetrain {
      * Устанавливает нулевую силу на моторы, останавливая их
      */
     public void stop() {
-        drive(0, 0, 0);
+        setPower(new double[]{0, 0, 0, 0});
     }
 
     /**
      * Метод движения по времени вперед
-     *
-     * @param ms время движения
-     */
-    public void driveFront(double y, long ms) {
-        drive(0, y, 0);
-        opMode.sleep(ms);
-        stop();
-    }
-
-    /**
      * Метод движения по времени назад
-     *
-     * @param ms время движения
-     */
-    public void driveBack(double y, long ms) {
-        drive(0, -y, 0);
-        opMode.sleep(ms);
-        stop();
-    }
-
-    /**
      * Метод движения по времени вправо
-     *
-     * @param ms время движения
-     */
-    public void driveRight(double x, long ms) {
-        drive(x, 0, 0);
-        opMode.sleep(ms);
-        stop();
-    }
-
-    /**
      * Метод движения по времени налево
      *
      * @param ms время движения
      */
-    public void driveLeft(double x, long ms) {
-        drive(-x, 0, 0);
+    public void driveFront(double y, long ms) {
+        driveCoeffPower(0, y, 0);
         opMode.sleep(ms);
         stop();
     }
 
-    public void addDashAndTelePositions() {
-        mh.addLine("Motors: Port, Position, Powers");
-        mh.addData("LeftFront", leftFrontDrive.getCurrentPosition());
-        mh.addData("LeftFront", rightFrontDrive.getCurrentPosition());
-        mh.addData("LeftFront", leftBackDrive.getCurrentPosition());
-        mh.addData("LeftFront", rightBackDrive.getCurrentPosition());
-        mh.update();
+    public void driveBack(double y, long ms) {
+        driveCoeffPower(0, -y, 0);
+        opMode.sleep(ms);
+        stop();
+    }
+
+    public void driveRight(double x, long ms) {
+        driveCoeffPower(x, 0, 0);
+        opMode.sleep(ms);
+        stop();
+    }
+
+    public void driveLeft(double x, long ms) {
+        driveCoeffPower(-x, 0, 0);
+        opMode.sleep(ms);
+        stop();
+    }
+
+    public void dataTelePositions() {
+        tm.addLine("Motors: Port, Position, Powers");
+        tm.addData("LeftFront", leftFrontDrive.getCurrentPosition());
+        tm.addData("LeftFront", rightFrontDrive.getCurrentPosition());
+        tm.addData("LeftFront", leftBackDrive.getCurrentPosition());
+        tm.addData("LeftFront", rightBackDrive.getCurrentPosition());
+        tm.update();
 
         opMode.telemetry.update();
     }
 
-    public void encoder(double tick1, double power) {
+    public void driveEncoder(double tick1, double power) {
         int position1 = leftFrontDrive.getCurrentPosition();
         int position2 = rightFrontDrive.getCurrentPosition();
         int position3 = leftBackDrive.getCurrentPosition();
         int position4 = rightBackDrive.getCurrentPosition();
-        drive(0, power, 0);
+        driveRawPower(0, power, 0);
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         while (!(leftFrontDrive.getPower() == 0 &&
                 rightFrontDrive.getPower() == 0 &&
@@ -223,11 +247,11 @@ public class Drivetrain {
                 rightBackDrive.setPower(0);
             }
 
-            mh.addData("Правый передний:", leftFrontDifference);
-            mh.addData("Левый передний:", rightFrontDifference);
-            mh.addData("Левый задний:", leftBackDifference);
-            mh.addData("Правый задний:", rightBackDifference);
-            mh.update();
+            tm.addData("Правый передний:", leftFrontDifference);
+            tm.addData("Левый передний:", rightFrontDifference);
+            tm.addData("Левый задний:", leftBackDifference);
+            tm.addData("Правый задний:", rightBackDifference);
+            tm.update();
         }
         rightBackDrive.setPower(0);
         rightFrontDrive.setPower(0);
@@ -240,10 +264,10 @@ public class Drivetrain {
      */
     public void course(double c) {
         while ((((imu.getAngles() < c - GYRO_COURSE_TOLERANCE) || (imu.getAngles() > c + GYRO_COURSE_TOLERANCE)) && opMode.opModeIsActive())) {
-            drive(0, 0, 0.5);
-            opMode.telemetry.addData("Angle:", imu.getAngles());
-            opMode.telemetry.addData("Course:", c);
-            opMode.telemetry.update();
+            driveRawPower(0, 0, rotatePower);
+            tm.addData("Angle:", imu.getAngles());
+            tm.addData("Course:", c);
+            tm.update();
         }
         stop();
     }
@@ -265,7 +289,7 @@ public class Drivetrain {
         }
         while (((imu.getAngles() < d - GYRO_COURSE_TOLERANCE) ||
                 (imu.getAngles() > d + GYRO_COURSE_TOLERANCE)) && opMode.opModeIsActive()) {
-            drive(0, 0, 0.6 * dSign); // поворачиваем с учётом направлением поворота
+            driveRawPower(0, 0, rotatePower * dSign); // поворачиваем с учётом направлением поворота
             opMode.telemetry.addData("Angle:", imu.getAngles());
             opMode.telemetry.addData("Rotate:", d);
             opMode.telemetry.update();
@@ -316,7 +340,7 @@ public class Drivetrain {
             dIntegral += dFrontier(d1) * calcTime.nanoseconds() * 10e-9;
 
             u = kP * (d1 - P_ANGLE_TOLERANCE) + kI * dIntegral + kD * dDerivative;
-            drive(0, 0, u * courseSign, 1);
+            driveRawPower(0, 0, u * courseSign);
             d0 = course - imu.getAngles();
 
             calcTime.reset();
@@ -392,36 +416,15 @@ public class Drivetrain {
         }
     }
 
-    public void driftLeftFront(double x, double y, double r) {
-        rightFrontDrive.setPower((x - y - r) * slow);
-        leftBackDrive.setPower((x + y - r) * slow);
-        rightBackDrive.setPower((-x - y - r) * slow);
-    }
-
-    public void driftRightFront(double x, double y, double r) {
-        leftFrontDrive.setPower((-x + y - r) * slow);
-        leftBackDrive.setPower((x + y - r) * slow);
-        rightBackDrive.setPower((-x - y - r) * slow);
-    }
-
-    public void driftLeftBack(double x, double y, double r) {
-        leftFrontDrive.setPower((-x + y - r) * slow);
-        rightFrontDrive.setPower((x - y - r) * slow);
-        rightBackDrive.setPower((-x - y - r) * slow);
-    }
-
-    public void driftRightBack(double x, double y, double r) {
-        leftFrontDrive.setPower((-x + y - r) * slow);
-        leftBackDrive.setPower((x + y - r) * slow);
-        rightFrontDrive.setPower((x - y - r) * slow);
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setCoursePIDModule(double setValue) {
-        imuPID.set(setValue);
+    public void driveFlawless(double x, double y, double r) {
+        double angle = acos(x) * (  y < 0 ? -1 : 1) + imu.getRadians();
+        double capacity = sqrt(x * x + y * y);
+        double p = PI / 4;
+        double u1 = capacity * sin(angle - p) + r;
+        double u2 = capacity * sin(angle + p) + r;
+        double[] powers = {u1, u2, u1, u2};
+        setPower(powers);
     }
 
 
 }
-
