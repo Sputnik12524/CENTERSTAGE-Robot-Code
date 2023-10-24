@@ -67,6 +67,32 @@ public class Drivetrain {
         tm = opMode.telemetry;
 
     }
+    public void drive(double x, double y, double r) {
+        leftFrontDrive.setPower((-x + y - r * R_SLOW) * slow);
+        rightFrontDrive.setPower((x - y - r * R_SLOW) * slow);
+        leftBackDrive.setPower((x + y - r * R_SLOW) * slow);
+        rightBackDrive.setPower((-x - y - r * R_SLOW) * slow);
+
+    }
+
+    public void drive(double x, double y, double r, double slow) {
+        leftFrontDrive.setPower((-x + y + r) * slow);
+        rightFrontDrive.setPower((x - y + r) * slow);
+        leftBackDrive.setPower((x + y + r) * slow);
+        rightBackDrive.setPower((-x - y + r) * slow);
+    }
+
+    /**
+     * Метод вращения колёсной базы
+     *
+     * @param r - мощность вращения
+     */
+    public void driveR(double r) {
+        leftFrontDrive.setPower(r);
+        rightFrontDrive.setPower(r);
+        leftBackDrive.setPower(r);
+        rightBackDrive.setPower(r);
+    }
 
     /**
      * Метод установления режима мотора
