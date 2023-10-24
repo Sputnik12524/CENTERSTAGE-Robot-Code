@@ -1,18 +1,21 @@
 package org.firstinspires.ftc.teamcode.opmodes.examples;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.modules.Intake;
 
+@TeleOp(group = "Examples", name = "IntakeExample")
 public class IntakeExample extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
-    public Intake intake = new Intake(this);
-    public boolean manualState = false;
-    public boolean xState = false;
+    // здесь следует создавать переменные и константы для сценария
+    private boolean manualState = false;
+    private boolean xState = false;
     @Override
     public void runOpMode(){
         // единожды выполняемые действия до инициализации
-
+        // здесь следует создавать экземпляры модулей
+        Intake intake = new Intake(this);
         while(opModeInInit()){
             // единожды выполняемые действия во время инициализации
 
