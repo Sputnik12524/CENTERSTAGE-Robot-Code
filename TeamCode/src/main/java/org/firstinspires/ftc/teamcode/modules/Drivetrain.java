@@ -1,6 +1,11 @@
 package org.firstinspires.ftc.teamcode.modules;
 
 
+import static java.lang.Math.PI;
+import static java.lang.Math.acos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,32 +14,15 @@ import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static java.lang.Math.PI;
-
-import static java.lang.Math.acos;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
-
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
 public class Drivetrain {
-    private final LinearOpMode opMode;
-
-    private final DcMotor leftFrontDrive;
-    private final DcMotor rightFrontDrive;
-    private final DcMotor leftBackDrive;
-    private final DcMotor rightBackDrive;
-
-    private final ImuSensor imu;// Гироскоп
-    private final Telemetry tm;
-
+    public static final double GYRO_COURSE_TOLERANCE = 2;
     public static double kX = 1;// Мощность по оси вперёд-назад
     public static double kY = 1;// Мощность по оси влево-вправо
     public static double kR = 1;// Мощность по оси вращения
     public static double rotatePower = 0.6;// Мощность вращения метода rotate
-
-    public static final double GYRO_COURSE_TOLERANCE = 2;
     public static double slow = 0.65; /*отвечает за замедление скорости езды робота. Если хотим ускорить робота, повышаем её.*/
     public static double R_SLOW = 1;
     public static double ANGULAR_VELOCITY_TOLERANCE = 1;
@@ -45,6 +33,13 @@ public class Drivetrain {
     public static double kP = 0.0225;
     public static double kD = 0.012;
     public static double kI = 0.017;
+    private final LinearOpMode opMode;
+    private final DcMotor leftFrontDrive;
+    private final DcMotor rightFrontDrive;
+    private final DcMotor leftBackDrive;
+    private final DcMotor rightBackDrive;
+    private final ImuSensor imu;// Гироскоп
+    private final Telemetry tm;
 
     /**
      * Конструктор: инициализирует моторы робота и OpMode:
@@ -145,6 +140,7 @@ public class Drivetrain {
     public void driveRawPower(double x, double y, double r) {
         setPower(calculatePower(x, y, r));
     }
+
     public void driveCoeffPower(double x, double y, double r) {
         setPower(calculatePower(x * kX, y * kY, r * kR));
     }
@@ -417,7 +413,7 @@ public class Drivetrain {
     }
 
     public void driveFlawless(double x, double y, double r) {
-        double angle = acos(x) * (  y < 0 ? -1 : 1) + imu.getRadians();
+        double angle = acos(x) * (y < 0 ? -1 : 1) + imu.getRadians();
         double capacity = sqrt(x * x + y * y);
         double p = PI / 4;
         double u1 = capacity * sin(angle - p) + r;

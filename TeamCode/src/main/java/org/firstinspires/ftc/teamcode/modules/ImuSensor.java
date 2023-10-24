@@ -66,6 +66,7 @@ public class ImuSensor {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return (AngleUnit.DEGREES.normalize(angles.firstAngle));
     }
+
     public double getRadians() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         return (AngleUnit.RADIANS.normalize(angles.firstAngle));
