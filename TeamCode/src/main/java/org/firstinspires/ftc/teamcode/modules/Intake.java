@@ -31,7 +31,7 @@ public class Intake {
      * Метод включения выброса
      */
     public void outtake() {
-        intakeDrive.setPower(OUTTAKE_POWER);
+        intakeDrive.setPower(-OUTTAKE_POWER);
     }
 
     /**

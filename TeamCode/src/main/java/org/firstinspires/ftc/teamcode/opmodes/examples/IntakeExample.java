@@ -9,15 +9,16 @@ import org.firstinspires.ftc.teamcode.modules.Intake;
 public class IntakeExample extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
-    private boolean manualState = false;
+    private int manualState = 1;
     private boolean xState = false;
     private boolean yState = false;
+
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
         // единожды выполняемые действия до инициализации
         // здесь следует создавать экземпляры модулей
         Intake intake = new Intake(this);
-        while(opModeInInit()){
+        while (opModeInInit()) {
             // единожды выполняемые действия во время инициализации
 
         }
@@ -26,27 +27,34 @@ public class IntakeExample extends LinearOpMode {
         waitForStart();
         // единожды выполняемые действия после запуска сценария
 
-        while(opModeIsActive()){
+        while (opModeIsActive()) {
             // многократно выполняемые действия после запуска сценария
-            if (gamepad1.a){
-                intake.intake();
-            } else if (gamepad1.b){
-                intake.outtake();
-            } else if (manualState){
+            if (manualState == 1) {
+                if (gamepad1.y && !yState) {
+                    intake.changeState();
+                }
+            } else if (manualState == 0) {
+                if (gamepad1.a) {
+                    intake.intake();
+                } else if (gamepad1.b) {
+                    intake.outtake();
+                } else {
+                    intake.stop();
+                }
+            } else if (manualState == 2) {
                 intake.setPower(gamepad1.left_stick_x);
-            } else {
+            }
+            if (gamepad1.x && !xState) {
+                manualState += 1;
+                manualState = manualState % 3;
                 intake.stop();
             }
-            if (gamepad1.x && !xState){
-                manualState = !manualState;
-            }
-            if (gamepad1.y && !yState){
-                intake.changeState();
-            }
+
             xState = gamepad1.x;
             yState = gamepad1.y;
+            telemetry.addData("Mode", manualState);
+            telemetry.update();
         }
-
     }
 
 }
