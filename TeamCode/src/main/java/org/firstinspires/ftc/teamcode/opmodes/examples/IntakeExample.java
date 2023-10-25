@@ -11,6 +11,7 @@ public class IntakeExample extends LinearOpMode {
     // здесь следует создавать переменные и константы для сценария
     private boolean manualState = false;
     private boolean xState = false;
+    private boolean yState = false;
     @Override
     public void runOpMode(){
         // единожды выполняемые действия до инициализации
@@ -39,7 +40,11 @@ public class IntakeExample extends LinearOpMode {
             if (gamepad1.x && !xState){
                 manualState = !manualState;
             }
+            if (gamepad1.y && !yState){
+                intake.changeState();
+            }
             xState = gamepad1.x;
+            yState = gamepad1.y;
         }
 
     }
