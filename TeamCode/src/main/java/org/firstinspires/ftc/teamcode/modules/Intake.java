@@ -11,7 +11,7 @@ public class Intake {
     private final DcMotor intakeDrive;
     public static final double INTAKE_POWER = 0.5;
     public static final double OUTTAKE_POWER = 0.5;
-    public boolean intakeState = true;
+    private boolean intakeState = true;
 
     public Intake(LinearOpMode opMode) {
         this.opMode = opMode;
