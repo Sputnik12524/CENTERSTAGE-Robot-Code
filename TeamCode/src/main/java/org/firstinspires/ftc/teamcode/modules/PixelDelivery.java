@@ -8,13 +8,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Config
 public class PixelDelivery {
 
-    public static double DOOR_CLOSED_POSITION = 0.01;
-    public static double DOOR_FULL_OPEN_POSITION = 0.26;
-    public static double DOOR_HALF_OPENED_POSITION = 0.228;
-    public static double BOX_ROTATION_TAKE_POSITION = 0.12345678;
-    public static double BOX_ROTATION_DROP_POSITION = 0.123456789;
-    public static double FLIP_TAKE_POSITION = 0.1090190910953159009;
-    public static double FLIP_DROP_POSITION = 0.0000012;
+    public static double DOOR_CLOSED_POSITION = 0;
+    public static double DOOR_FULL_OPEN_POSITION = 0.5;
+    public static double DOOR_HALF_OPENED_POSITION = 1;
+    public static double BOX_ROTATION_TAKE_POSITION = 0.5;
+    public static double BOX_ROTATION_DROP_POSITION = 0.7;
+    public static double FLIP_TAKE_POSITION = 0;
+    public static double FLIP_DROP_POSITION = 0.7;
 
     private final Servo servoDoor;
     private final Servo boxRotation;
