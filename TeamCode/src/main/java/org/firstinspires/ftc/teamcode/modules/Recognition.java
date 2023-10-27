@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Recognition {
-    public static final int rangeToElement = 200;
+    public static final int RANGE_TO_ELEMENT = 200;
     private DistanceSensor ds;
     private final Telemetry tm;
 
@@ -21,7 +21,7 @@ public class Recognition {
     public boolean isRecognized() {
         tm.addData("Distance", ds.getDistance(DistanceUnit.CM));
         tm.update();
-        boolean isrecognized = ds.getDistance(DistanceUnit.CM) < rangeToElement;
+        boolean isrecognized = ds.getDistance(DistanceUnit.CM) < RANGE_TO_ELEMENT;
         return isrecognized;
     }
 }
