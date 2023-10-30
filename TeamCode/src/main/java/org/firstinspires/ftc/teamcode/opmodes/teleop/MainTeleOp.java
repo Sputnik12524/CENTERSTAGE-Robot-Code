@@ -18,6 +18,7 @@ public class MainTeleOp extends LinearOpMode {
     public static double boxDelta = 0.01;
 
     private int doorMode = 0;
+    private boolean rbState = false;
     @Override
     public void runOpMode() {
         // единожды выполняемые действия до инициализации
@@ -85,9 +86,10 @@ public class MainTeleOp extends LinearOpMode {
             pd.setFlipPosition(flipPosition);
 
             //Управление дверью
-            if (gamepad2.right_bumper){
+            if (gamepad2.right_bumper && !rbState){
                 doorMode = (doorMode + 1) % 3;
             }
+            rbState = gamepad2.right_bumper;
             switch(doorMode){
                 case(0):
                     pd.fullOpenDoor();
