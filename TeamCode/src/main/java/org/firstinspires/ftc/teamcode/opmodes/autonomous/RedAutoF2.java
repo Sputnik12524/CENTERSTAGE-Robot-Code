@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
+import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
 import org.firstinspires.ftc.teamcode.modules.Recognition;
 
 @Config
@@ -20,6 +21,7 @@ public class RedAutoF2 extends LinearOpMode {
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
         Recognition rc = new Recognition(this);
+        PixelDelivery pd = new PixelDelivery(this);
 
         while(opModeInInit()){
             // единожды выполняемые действия во время инициализации
@@ -34,6 +36,7 @@ public class RedAutoF2 extends LinearOpMode {
             dt.driveEncoder(500,0.3);
             if (rc.isRecognized() == true){ //элемент по центру
                 dt.driveEncoder(1700,0.3);
+                pd.fullOpenDoor();
             }
             else {
                 dt.rotate(90);
@@ -41,12 +44,14 @@ public class RedAutoF2 extends LinearOpMode {
                 dt.rotate(-90);
                 if (rc.isRecognized() == true){ //элемент справа
                     dt.driveEncoder(1200,0.3);
+                    pd.fullOpenDoor();
                 }
                 else { //элемент слева
                     dt.rotate(-90);
                     dt.driveEncoder(700,0.3);
                     dt.rotate(90);
                     dt.driveEncoder(1200,0.3);
+                    pd.fullOpenDoor();
                 }
 
             dt.driveEncoder(1750,-0.3); //выравниваемся у борта
