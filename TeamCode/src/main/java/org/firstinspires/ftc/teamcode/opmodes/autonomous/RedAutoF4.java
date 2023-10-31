@@ -6,7 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
+<<<<<<< HEAD
 import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
+=======
+>>>>>>> bbe9e6ddb6c185071d76b2b19d612636765f6a98
 import org.firstinspires.ftc.teamcode.modules.Recognition;
 
 @Config
@@ -21,7 +24,10 @@ public class RedAutoF4 extends LinearOpMode {
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
         Recognition rc = new Recognition(this);
+<<<<<<< HEAD
         PixelDelivery pd = new PixelDelivery(this);
+=======
+>>>>>>> bbe9e6ddb6c185071d76b2b19d612636765f6a98
 
         while(opModeInInit()){
             // единожды выполняемые действия во время инициализации
@@ -36,8 +42,11 @@ public class RedAutoF4 extends LinearOpMode {
             dt.driveEncoder(500,0.3);
             if (rc.isRecognized() == true){ //элемент по центру
                 dt.driveEncoder(1700,0.3);
+<<<<<<< HEAD
                 pd.fullOpenDoor();
 
+=======
+>>>>>>> bbe9e6ddb6c185071d76b2b19d612636765f6a98
             }
             else {
                 dt.rotate(90);
@@ -45,14 +54,20 @@ public class RedAutoF4 extends LinearOpMode {
                 dt.rotate(-90);
                 if (rc.isRecognized() == true){ //элемент справа
                     dt.driveEncoder(1200,0.3);
+<<<<<<< HEAD
                     pd.fullOpenDoor();
+=======
+>>>>>>> bbe9e6ddb6c185071d76b2b19d612636765f6a98
                 }
                 else { //элемент слева
                     dt.rotate(-90);
                     dt.driveEncoder(700,0.3);
                     dt.rotate(90);
                     dt.driveEncoder(1200,0.3);
+<<<<<<< HEAD
                     pd.fullOpenDoor();
+=======
+>>>>>>> bbe9e6ddb6c185071d76b2b19d612636765f6a98
                 }
 
             dt.driveEncoder(1750,-0.3); //выравниваемся у борта
