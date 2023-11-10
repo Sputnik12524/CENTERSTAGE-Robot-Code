@@ -8,9 +8,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Config
 public class PixelDelivery {
 
-    public static double DOOR_CLOSED_POSITION = 0;
-    public static double DOOR_FULL_OPEN_POSITION = 0.5;
-    public static double DOOR_HALF_OPENED_POSITION = 1;
+    public static double DOOR_CLOSED_POSITION = 0.21;
+    public static double DOOR_FULL_OPEN_POSITION = 0.59;
+    public static double DOOR_HALF_OPENED_POSITION = 0.42;
     public static double BOX_ROTATION_TAKE_POSITION = 0.5;
     public static double BOX_ROTATION_DROP_POSITION = 0.7;
     public static double FLIP_TAKE_POSITION = 0;
