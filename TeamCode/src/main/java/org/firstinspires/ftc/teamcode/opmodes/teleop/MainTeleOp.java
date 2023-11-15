@@ -2,12 +2,13 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
 
-@Disabled
+@TeleOp(name = "teleop", group = "teleop")
 public class MainTeleOp extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
@@ -25,7 +26,7 @@ public class MainTeleOp extends LinearOpMode {
         // здесь следует создавать экземпляры модулей
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
-        PixelDelivery pd = new PixelDelivery(this);
+        //PixelDelivery pd = new PixelDelivery(this);
         while (opModeInInit()) {
             // единожды выполняемые действия во время инициализации
 
@@ -52,7 +53,7 @@ public class MainTeleOp extends LinearOpMode {
             }
 
             // Управление вращением коробочки
-            if (gamepad2.dpad_left) {
+            /*if (gamepad2.dpad_left) {
                 boxPosition += boxDelta;
                 sleep(5);
             }
@@ -100,7 +101,7 @@ public class MainTeleOp extends LinearOpMode {
                 case(2):
                     pd.closeDoor();
                     break;
-            }
+            }*/
 
             //  Отображение телеметрии
             telemetry.addLine("КБ - 1й геймпад");

@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.modules;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -16,7 +17,6 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 @Config
 public class Drivetrain {
     private final LinearOpMode opMode;
@@ -117,7 +117,12 @@ public class Drivetrain {
         leftFrontDrive.setPower(powers[0]);
         rightFrontDrive.setPower(powers[1]);
         leftBackDrive.setPower(powers[2]);
-        leftFrontDrive.setPower(powers[3]);
+        rightBackDrive.setPower(powers[3]);
+        tm.addData("lF", leftFrontDrive.getPower());
+        tm.addData("LB", leftBackDrive.getPower());
+        tm.addData("RF", rightFrontDrive.getPower());
+        tm.addData("RB", rightBackDrive.getPower());
+
     }
 
     /**
@@ -130,8 +135,8 @@ public class Drivetrain {
      */
     private double[] calculatePower(double x, double y, double r) {
         return new double[]{
-                (x - y + r), (-x + y + r),
-                (x + y + r), (-x - y + r)};
+                (x + y + r), (x - y + r),
+                (-x + y + r), (-x - y + r)};
     }
 
     /**
