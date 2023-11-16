@@ -39,6 +39,18 @@ public class PixelDeliveryExample extends LinearOpMode {
             if (gamepad1.x) {
                 pd.closeDoor();
             }
+            if (gamepad2.a) {
+                pd.boxTakePixel();
+            }
+            if (gamepad2.b) {
+                pd.boxDropPixel();
+            }
+            if (gamepad2.x) {
+                pd.flipDropPixel();
+            }
+            if (gamepad2.y) {
+                pd.flipTakePixel();
+            }
             if (gamepad1.dpad_left) {
                 boxPosition += 0.005;
                 sleep(5);
