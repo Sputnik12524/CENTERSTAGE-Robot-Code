@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.modules;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @Config
@@ -16,11 +17,14 @@ public class PixelDelivery {
     public static double FLIP_TAKE_POSITION = 0;
     public static double FLIP_DROP_POSITION = 0;
 
+    public static double FLIP_TIME = 0;
+
     private final Servo servoDoor;
     private final Servo boxRotation;
     private final Servo servoFlipLeft;
     private final Servo servoFlipRight;
     private final LinearOpMode opMode;
+    private final TakeDropHelper takeDropHelper;
 
     public PixelDelivery(LinearOpMode opMode) {
         this.opMode = opMode;
@@ -29,6 +33,8 @@ public class PixelDelivery {
         this.servoFlipLeft = opMode.hardwareMap.servo.get("servoFlipLeft");
         this.servoFlipRight = opMode.hardwareMap.servo.get("servoFlipRight");
         this.servoFlipRight.setDirection(Servo.Direction.REVERSE);
+        this.takeDropHelper = new TakeDropHelper();
+        takeDropHelper.start();
     }
 
     public void fullOpenDoor() {
@@ -49,6 +55,13 @@ public class PixelDelivery {
 
     public void boxDropPixel() {
         boxRotation.setPosition(BOX_ROTATION_DROP_POSITION);
+    }
+
+    public void workTake() {
+        takeDropHelper.needWorkTake = true;
+    }
+    public void workDrop(){
+        takeDropHelper.needWorkDrop = true;
     }
 
     public void flipTakePixel() {
@@ -73,6 +86,31 @@ public class PixelDelivery {
     public void setFlipPosition(double positionFlip) {
         servoFlipLeft.setPosition(positionFlip);
         servoFlipRight.setPosition(positionFlip);
+    }
+
+    class TakeDropHelper extends Thread {
+        boolean needWorkTake = false;
+        boolean needWorkDrop = false;
+
+        private ElapsedTime timer;
+        public void run () {
+            while (!isInterrupted()) {
+               if (needWorkTake) {
+                   flipTakePixel();
+                   timer.reset();
+                   while (timer.milliseconds() < FLIP_TIME );
+                   boxTakePixel();
+                   needWorkTake = false;
+               } else if (needWorkDrop) {
+                   flipDropPixel();
+                   timer.reset();
+                   while (timer.milliseconds() < FLIP_TIME );
+                   boxDropPixel();
+                   needWorkDrop = false;
+               }
+            }
+        }
+
     }
 
 

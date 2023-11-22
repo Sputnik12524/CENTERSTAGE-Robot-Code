@@ -30,6 +30,13 @@ public class PixelDeliveryExample extends LinearOpMode {
 
         while (opModeIsActive()) {
             // единожды выполняемые действия после запуска сценария
+            if (gamepad1.y) {
+                pd.workTake();
+            }
+            if (gamepad2.y){
+                pd.workDrop();
+            }
+
             if (gamepad1.a) {
                 pd.fullOpenDoor();
             }
@@ -48,7 +55,7 @@ public class PixelDeliveryExample extends LinearOpMode {
             if (gamepad2.x) {
                 pd.flipDropPixel();
             }
-            if (gamepad2.y) {
+            if (gamepad2.dpad_right) {
                 pd.flipTakePixel();
             }
             if (gamepad1.dpad_left) {
@@ -82,7 +89,6 @@ public class PixelDeliveryExample extends LinearOpMode {
                 servoFlip = 0;
             }
             pd.setFlipPosition(servoFlip);
-
             telemetry.addData("box", boxPosition);
             telemetry.addData("flip", servoFlip);
             telemetry.addLine(" A - Открытие двери ");
