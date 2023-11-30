@@ -26,7 +26,7 @@ public class MainTeleOp extends LinearOpMode {
         // здесь следует создавать экземпляры модулей
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
-        //PixelDelivery pd = new PixelDelivery(this);
+        PixelDelivery pd = new PixelDelivery(this);
         while (opModeInInit()) {
             // единожды выполняемые действия во время инициализации
 
@@ -53,7 +53,7 @@ public class MainTeleOp extends LinearOpMode {
             }
 
             // Управление вращением коробочки
-            /*if (gamepad2.dpad_left) {
+            if (gamepad2.dpad_left) {
                 boxPosition += boxDelta;
                 sleep(5);
             }
@@ -101,7 +101,7 @@ public class MainTeleOp extends LinearOpMode {
                 case(2):
                     pd.closeDoor();
                     break;
-            }*/
+            }
 
             //  Отображение телеметрии
             telemetry.addLine("КБ - 1й геймпад");
