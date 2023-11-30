@@ -26,7 +26,7 @@ public class MainTeleOp extends LinearOpMode {
         // здесь следует создавать экземпляры модулей
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
-        //PixelDelivery pd = new PixelDelivery(this);
+        PixelDelivery pd = new PixelDelivery(this);
         while (opModeInInit()) {
             // единожды выполняемые действия во время инициализации
 
@@ -40,11 +40,11 @@ public class MainTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
             // единожды выполняемые действия после запуска сценария
             //  Управление колёсной базой
-            dt.driveRawPower(gamepad1.left_stick_x, gamepad1.right_stick_y,
+            dt.driveRawPower(gamepad1.left_stick_y, gamepad1.right_stick_x,
                     gamepad1.left_trigger - gamepad1.right_trigger);
 
             // Управление захватом
-            /*if (gamepad2.x) {
+            if (gamepad2.x) {
                 it.intake();
             } else if (gamepad2.a) {
                 it.outtake();
@@ -101,7 +101,7 @@ public class MainTeleOp extends LinearOpMode {
                 case(2):
                     pd.closeDoor();
                     break;
-            }*/
+            }
             //  Отображение телеметрии
             telemetry.addLine("КБ - 1й геймпад");
             telemetry.addLine("КБ: влево-вправо - левый стик влево-вправо");

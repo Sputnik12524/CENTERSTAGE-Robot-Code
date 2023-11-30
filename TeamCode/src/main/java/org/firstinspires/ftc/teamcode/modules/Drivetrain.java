@@ -134,8 +134,8 @@ public class Drivetrain {
      */
     private double[] calculatePower(double x, double y, double r) {
         return new double[]{
-                (x + y + r), (x - y + r),
-                (-x + y + r), (-x - y + r)};
+                (x - y + r), (-x + y + r),
+                (x + y + r), (-x - y + r)};
     }
 
     /**
