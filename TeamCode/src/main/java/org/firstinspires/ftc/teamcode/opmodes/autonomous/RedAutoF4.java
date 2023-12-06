@@ -6,30 +6,27 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
-<<<<<<< HEAD
+
 import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
-=======
->>>>>>> bbe9e6ddb6c185071d76b2b19d612636765f6a98
+
 import org.firstinspires.ftc.teamcode.modules.Recognition;
 
 @Config
-@Autonomous(group="Auto", name = "RedAuto")
+@Autonomous(group = "Auto", name = "RedAuto")
 public class RedAutoF4 extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
 
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
         // единожды выполняемые действия до инициализации
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
         Recognition rc = new Recognition(this);
-<<<<<<< HEAD
         PixelDelivery pd = new PixelDelivery(this);
-=======
->>>>>>> bbe9e6ddb6c185071d76b2b19d612636765f6a98
 
-        while(opModeInInit()){
+
+        while (opModeInInit()) {
             // единожды выполняемые действия во время инициализации
 
         }
@@ -38,51 +35,42 @@ public class RedAutoF4 extends LinearOpMode {
         waitForStart();
         // единожды выполняемые действия после запуска сценария
 
-            // единожды выполняемые действия после запуска сценария
-            dt.driveEncoder(500,0.3);
-            if (rc.isRecognized() == true){ //элемент по центру
-                dt.driveEncoder(1700,0.3);
-<<<<<<< HEAD
+        // единожды выполняемые действия после запуска сценария
+        dt.driveEncoder(200, -0.3);
+        if (rc.isRecognized() == true) { //элемент по центру
+
+            dt.driveEncoder(700,-0.3);
+            pd.fullOpenDoor();
+
+
+        } else {
+            dt.driveEncoderSide(450, -0.3);
+            if (rc.isRecognized() == true) { //элемент справа
+                dt.driveEncoder(700, -0.3);
                 pd.fullOpenDoor();
 
-=======
->>>>>>> bbe9e6ddb6c185071d76b2b19d612636765f6a98
-            }
-            else {
+            } /*else { //элемент слева
                 dt.rotate(90);
-                dt.driveEncoder(200, 0.3);
+                dt.driveEncoder(-700, 0.3);
                 dt.rotate(-90);
-                if (rc.isRecognized() == true){ //элемент справа
-                    dt.driveEncoder(1200,0.3);
-<<<<<<< HEAD
-                    pd.fullOpenDoor();
-=======
->>>>>>> bbe9e6ddb6c185071d76b2b19d612636765f6a98
-                }
-                else { //элемент слева
-                    dt.rotate(-90);
-                    dt.driveEncoder(700,0.3);
-                    dt.rotate(90);
-                    dt.driveEncoder(1200,0.3);
-<<<<<<< HEAD
-                    pd.fullOpenDoor();
-=======
->>>>>>> bbe9e6ddb6c185071d76b2b19d612636765f6a98
-                }
+                dt.driveEncoder(-1200, 0.3);
 
-            dt.driveEncoder(1750,-0.3); //выравниваемся у борта
+                pd.fullOpenDoor();
+
+            }
+
+            /*dt.driveEncoder(1750,-0.3); //выравниваемся у борта
             dt.driveEncoder(100,0.3);
             dt.rotate(90);
             dt.driveEncoder(500,0.5);
             dt.rotate(-90);
             dt.driveEncoder(2000,0.3);
             dt.rotate(90);
-            dt.driveEncoder(1500,0.3);
-
+            dt.driveEncoder(1500,0.3);*/
 
 
         }
 
     }
 
-}
+    }
