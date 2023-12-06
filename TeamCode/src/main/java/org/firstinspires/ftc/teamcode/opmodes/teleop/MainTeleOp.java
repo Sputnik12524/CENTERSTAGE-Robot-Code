@@ -39,7 +39,7 @@ public class MainTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
             // единожды выполняемые действия после запуска сценария
             //  Управление колёсной базой
-            dt.driveRawPower(gamepad1.left_stick_y, gamepad1.right_stick_x,
+            dt.driveRawPower(gamepad1.right_stick_x, -gamepad1.left_stick_y,
                     gamepad1.left_trigger - gamepad1.right_trigger);
 
             // Управление захватом
