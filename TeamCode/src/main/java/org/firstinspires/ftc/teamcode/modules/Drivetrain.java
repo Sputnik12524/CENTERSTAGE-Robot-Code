@@ -16,6 +16,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @Config
 public class Drivetrain {
     private final LinearOpMode opMode;
@@ -134,8 +135,8 @@ public class Drivetrain {
      */
     private double[] calculatePower(double x, double y, double r) {
         return new double[]{
-                (x - y + r), (-x + y + r),
-                (x + y + r), (-x - y + r)};
+                (-y - x + r), (y + x + r),
+                (-y + x + r), (y - x + r)};
     }
 
     /**
@@ -149,6 +150,7 @@ public class Drivetrain {
     public void driveRawPower(double x, double y, double r) {
         setPower(calculatePower(x, y, r));
     }
+
     public void driveCoeffPower(double x, double y, double r) {
         setPower(calculatePower(x * kX, y * kY, r * kR));
     }
@@ -222,12 +224,20 @@ public class Drivetrain {
         opMode.telemetry.update();
     }
 
-    public void driveEncoder(double tick1, double power) {
+    public void driveEncoderSide(double tick1, double powerX) {
+        driveEncoder(tick1, powerX, 0);
+    }
+
+    public void driveEncoder(double tick1, double powerY) {
+        driveEncoder(tick1, 0, powerY);
+    }
+
+    public void driveEncoder(double tick1, double powerX, double powerY) {
         int position1 = leftFrontDrive.getCurrentPosition();
         int position2 = rightFrontDrive.getCurrentPosition();
         int position3 = leftBackDrive.getCurrentPosition();
         int position4 = rightBackDrive.getCurrentPosition();
-        driveRawPower(0, power, 0);
+        driveRawPower(powerX, powerY, 0);
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         while (!(leftFrontDrive.getPower() == 0 &&
                 rightFrontDrive.getPower() == 0 &&
@@ -421,7 +431,7 @@ public class Drivetrain {
     }
 
     public void driveFlawless(double x, double y, double r) {
-        double angle = acos(x) * (  y < 0 ? -1 : 1) + imu.getRadians();
+        double angle = acos(x) * (y < 0 ? -1 : 1) + imu.getRadians();
         double capacity = sqrt(x * x + y * y);
         double p = PI / 4;
         double u1 = capacity * sin(angle - p) + r;
