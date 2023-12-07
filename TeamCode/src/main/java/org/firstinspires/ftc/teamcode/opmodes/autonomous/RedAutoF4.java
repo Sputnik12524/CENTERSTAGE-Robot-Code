@@ -46,13 +46,11 @@ public class RedAutoF4 extends LinearOpMode {
         } else {
             dt.driveEncoderSide(450, -0.3);
             if (rc.isRecognized() == true) { //элемент справа
-                dt.driveEncoder(700, -0.3);
+                dt.driveEncoder(600, -0.3);
                 pd.fullOpenDoor();
 
-            } /*else { //элемент слева
-                dt.rotate(90);
-                dt.driveEncoder(-700, 0.3);
-                dt.rotate(-90);
+            } else { //элемент слева
+                dt.driveEncoderSide(450, 0.3);
                 dt.driveEncoder(-1200, 0.3);
 
                 pd.fullOpenDoor();
