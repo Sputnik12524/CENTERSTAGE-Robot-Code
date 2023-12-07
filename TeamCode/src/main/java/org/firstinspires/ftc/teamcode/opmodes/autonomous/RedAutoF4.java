@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 
@@ -27,8 +28,8 @@ public class RedAutoF4 extends LinearOpMode {
 
 
         while (opModeInInit()) {
-            // единожды выполняемые действия во время инициализации
-
+            telemetry.addData("Распознал?", rc.isRecognized());
+            telemetry.update();
         }
         // единожды выполняемые действия после инициализации, но до запуска сценария
 
@@ -36,35 +37,32 @@ public class RedAutoF4 extends LinearOpMode {
         // единожды выполняемые действия после запуска сценария
 
         // единожды выполняемые действия после запуска сценария
-        dt.driveEncoder(200, -0.3);
+        dt.driveEncoder(200, -0.4);
         if (rc.isRecognized() == true) { //элемент по центру
 
-            dt.driveEncoder(700,-0.3);
+            dt.driveEncoder(650,-0.4);
+            dt.driveEncoderSide(25,0.3);
             pd.fullOpenDoor();
 
 
         } else {
-            dt.driveEncoderSide(450, -0.3);
+            dt.driveEncoderSide(475, -0.4);
+            sleep(200);
             if (rc.isRecognized() == true) { //элемент справа
-                dt.driveEncoder(600, -0.3);
+                dt.driveEncoder(400, -0.4);
                 pd.fullOpenDoor();
 
             } else { //элемент слева
-                dt.driveEncoderSide(450, 0.3);
-                dt.driveEncoder(-1200, 0.3);
+                dt.driveEncoderSide(950, 0.4);
+                dt.driveEncoder(400, -0.4);
 
                 pd.fullOpenDoor();
 
             }
 
-            /*dt.driveEncoder(1750,-0.3); //выравниваемся у борта
-            dt.driveEncoder(100,0.3);
-            dt.rotate(90);
-            dt.driveEncoder(500,0.5);
-            dt.rotate(-90);
-            dt.driveEncoder(2000,0.3);
-            dt.rotate(90);
-            dt.driveEncoder(1500,0.3);*/
+            dt.driveEncoder(900,0.3); //выравниваемся у борта
+            dt.driveEncoder(100,-0.4);
+            dt.driveEncoderSide(1500, -0.4);
 
 
         }
