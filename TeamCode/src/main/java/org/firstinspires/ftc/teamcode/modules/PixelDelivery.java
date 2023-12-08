@@ -13,11 +13,11 @@ public class PixelDelivery {
     public static double DOOR_FULL_OPEN_POSITION = 0.59;
     public static double DOOR_HALF_OPENED_POSITION = 0.42;
     public static double BOX_ROTATION_TAKE_POSITION = 0;
-    public static double BOX_ROTATION_DROP_POSITION = 0;
-    public static double FLIP_TAKE_POSITION = 0;
-    public static double FLIP_DROP_POSITION = 0;
+    public static double BOX_ROTATION_DROP_POSITION = 1;
+    public static double FLIP_TAKE_POSITION = 0.3;
+    public static double FLIP_DROP_POSITION = 1;
 
-    public static double FLIP_TIME = 0;
+    public static double FLIP_TIME = 100;
 
     private final Servo servoDoor;
     private final Servo boxRotation;

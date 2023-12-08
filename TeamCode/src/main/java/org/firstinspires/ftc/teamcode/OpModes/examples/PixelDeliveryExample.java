@@ -72,7 +72,8 @@ public class PixelDeliveryExample extends LinearOpMode {
             if (boxPosition < 0) {
                 boxPosition = 0;
             }
-            pd.setBoxPosition(boxPosition);
+            //pd.setBoxPosition(boxPosition);
+
 
             if (gamepad1.dpad_up) {
                 servoFlip += 0.005;
@@ -88,7 +89,7 @@ public class PixelDeliveryExample extends LinearOpMode {
             if (servoFlip < 0) {
                 servoFlip = 0;
             }
-            pd.setFlipPosition(servoFlip);
+            //pd.setFlipPosition(servoFlip);
             telemetry.addData("box", boxPosition);
             telemetry.addData("flip", servoFlip);
             telemetry.addLine(" A - Открытие двери ");
