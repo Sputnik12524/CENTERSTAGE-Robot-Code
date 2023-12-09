@@ -12,12 +12,12 @@ public class PixelDelivery {
     public static double DOOR_CLOSED_POSITION = 0.21;
     public static double DOOR_FULL_OPEN_POSITION = 0.59;
     public static double DOOR_HALF_OPENED_POSITION = 0.42;
-    public static double BOX_ROTATION_TAKE_POSITION = 0;
-    public static double BOX_ROTATION_DROP_POSITION = 0;
-    public static double FLIP_TAKE_POSITION = 0;
-    public static double FLIP_DROP_POSITION = 0;
+    public static double BOX_ROTATION_TAKE_POSITION = 0.5;
+    public static double BOX_ROTATION_DROP_POSITION = 1;
+    public static double FLIP_TAKE_POSITION = 0.9;
+    public static double FLIP_DROP_POSITION = 0.4;
 
-    public static double FLIP_TIME = 0;
+    public static double FLIP_TIME = 100;
 
     private final Servo servoDoor;
     private final Servo boxRotation;
@@ -33,6 +33,7 @@ public class PixelDelivery {
         this.servoFlipLeft = opMode.hardwareMap.servo.get("servoFlipLeft");
         this.servoFlipRight = opMode.hardwareMap.servo.get("servoFlipRight");
         this.servoFlipRight.setDirection(Servo.Direction.REVERSE);
+        this.boxRotation.setDirection(Servo.Direction.REVERSE);
         this.takeDropHelper = new TakeDropHelper();
         takeDropHelper.start();
     }
@@ -92,7 +93,7 @@ public class PixelDelivery {
         boolean needWorkTake = false;
         boolean needWorkDrop = false;
 
-        private ElapsedTime timer;
+        private ElapsedTime timer = new ElapsedTime();
         public void run () {
             while (!isInterrupted()) {
                if (needWorkTake) {

@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
 import org.firstinspires.ftc.teamcode.modules.Recognition;
 
 @Config
-@Autonomous(group="Auto", name = "BlueAutoF4")
-public class BlueAutoF4 extends LinearOpMode {
+@Autonomous(group="Auto", name = "BlueAutoF2")
+public class BlueAutoF2 extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
 
@@ -59,7 +59,6 @@ public class BlueAutoF4 extends LinearOpMode {
                 pd.flipTakePixel();
                 pd.boxTakePixel();
                 pd.closeDoor();
-
             } else { //элемент слева
                 dt.driveEncoderSide(950, -0.4);
                 dt.driveEncoder(400, -0.4);
@@ -76,7 +75,8 @@ public class BlueAutoF4 extends LinearOpMode {
             dt.driveEncoder(900,0.3); //выравниваемся у борта
             dt.driveEncoder(200,-0.4);
             dt.driveEncoderSide(1500, 0.4);
-
+            dt.driveEncoder(350, 0.4);
+            dt.driveEncoderSide(1500, 0.3);
 
         }
 

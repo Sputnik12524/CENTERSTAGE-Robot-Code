@@ -40,28 +40,44 @@ public class RedAutoF4 extends LinearOpMode {
         dt.driveEncoder(200, -0.4);
         if (rc.isRecognized() == true) { //элемент по центру
 
-            dt.driveEncoder(650,-0.4);
-            dt.driveEncoderSide(25,0.3);
-            pd.fullOpenDoor();
-
+            dt.driveEncoder(650, -0.4);
+            dt.driveEncoderSide(25, 0.3);
+            pd.flipDropPixel();
+            pd.boxDropPixel();
+            pd.halfOpenDoor();
+            sleep(200);
+            pd.flipTakePixel();
+            pd.boxTakePixel();
+            pd.closeDoor();
 
         } else {
             dt.driveEncoderSide(475, -0.4);
             sleep(200);
             if (rc.isRecognized() == true) { //элемент справа
                 dt.driveEncoder(400, -0.4);
-                pd.fullOpenDoor();
-
+                pd.flipDropPixel();
+                pd.boxDropPixel();
+                pd.halfOpenDoor();
+                sleep(200);
+                pd.flipTakePixel();
+                pd.boxTakePixel();
+                pd.closeDoor();
             } else { //элемент слева
                 dt.driveEncoderSide(950, 0.4);
                 dt.driveEncoder(400, -0.4);
 
-                pd.fullOpenDoor();
+                pd.flipDropPixel();
+                pd.boxDropPixel();
+                pd.halfOpenDoor();
+                sleep(200);
+                pd.flipTakePixel();
+                pd.boxTakePixel();
+                pd.closeDoor();
 
             }
 
-            dt.driveEncoder(900,0.3); //выравниваемся у борта
-            dt.driveEncoder(200,-0.4);
+            dt.driveEncoder(900, 0.3); //выравниваемся у борта
+            dt.driveEncoder(200, -0.4);
             dt.driveEncoderSide(1500, -0.4);
 
 
@@ -69,4 +85,4 @@ public class RedAutoF4 extends LinearOpMode {
 
     }
 
-    }
+}

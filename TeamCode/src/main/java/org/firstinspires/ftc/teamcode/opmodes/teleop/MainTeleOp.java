@@ -106,6 +106,7 @@ public class MainTeleOp extends LinearOpMode {
             telemetry.addLine("КБ: влево-вправо - левый стик влево-вправо");
             telemetry.addLine("КБ: вперёд-назад - правый стик вверх-вниз");
             telemetry.addLine();
+            telemetry.addLine("PD - 2й геймпад");
             telemetry.addLine("Коробочка, переворот - 2й геймпад");
             telemetry.addLine("A - захват, B - обр. захват");
             telemetry.addLine("Дверь: левый бампер");
