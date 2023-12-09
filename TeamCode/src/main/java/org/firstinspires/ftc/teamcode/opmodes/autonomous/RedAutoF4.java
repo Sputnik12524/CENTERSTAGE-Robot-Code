@@ -61,7 +61,7 @@ public class RedAutoF4 extends LinearOpMode {
             }
 
             dt.driveEncoder(900,0.3); //выравниваемся у борта
-            dt.driveEncoder(100,-0.4);
+            dt.driveEncoder(200,-0.4);
             dt.driveEncoderSide(1500, -0.4);
 
 

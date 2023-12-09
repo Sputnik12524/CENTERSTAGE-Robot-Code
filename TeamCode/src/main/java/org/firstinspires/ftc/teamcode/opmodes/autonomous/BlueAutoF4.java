@@ -6,14 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
-
 import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
-
 import org.firstinspires.ftc.teamcode.modules.Recognition;
 
 @Config
-@Autonomous(group="Auto", name = "RedAutoF2")
-public class RedAutoF2 extends LinearOpMode {
+@Autonomous(group="Auto", name = "BlueAutoF4")
+public class BlueAutoF4 extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
 
@@ -45,14 +43,14 @@ public class RedAutoF2 extends LinearOpMode {
 
 
         } else {
-            dt.driveEncoderSide(475, -0.4);
+            dt.driveEncoderSide(475, 0.4);
             sleep(200);
             if (rc.isRecognized() == true) { //элемент справа
                 dt.driveEncoder(400, -0.4);
                 pd.fullOpenDoor();
 
             } else { //элемент слева
-                dt.driveEncoderSide(950, 0.4);
+                dt.driveEncoderSide(950, -0.4);
                 dt.driveEncoder(400, -0.4);
 
                 pd.fullOpenDoor();
@@ -61,10 +59,7 @@ public class RedAutoF2 extends LinearOpMode {
 
             dt.driveEncoder(900,0.3); //выравниваемся у борта
             dt.driveEncoder(200,-0.4);
-            dt.driveEncoderSide(1500, -0.4);
-            dt.driveEncoder(300,-0.3);
-            dt.driveEncoderSide(1500,-0.4);
-
+            dt.driveEncoderSide(1500, 0.4);
 
 
         }
