@@ -61,6 +61,8 @@ public class RedAutoF2 extends LinearOpMode {
                 pd.flipTakePixel();
                 pd.boxTakePixel();
                 pd.closeDoor();
+                dt.driveEncoderSide(100,0.4);
+
 
             } else { //элемент слева
                 dt.driveEncoderSide(950, 0.4);

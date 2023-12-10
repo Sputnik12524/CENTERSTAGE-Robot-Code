@@ -62,6 +62,8 @@ public class RedAutoF4 extends LinearOpMode {
                 pd.flipTakePixel();
                 pd.boxTakePixel();
                 pd.closeDoor();
+                dt.driveEncoderSide(100,0.4);
+
             } else { //элемент слева
                 dt.driveEncoderSide(950, 0.4);
                 dt.driveEncoder(400, -0.4);
@@ -73,6 +75,7 @@ public class RedAutoF4 extends LinearOpMode {
                 pd.flipTakePixel();
                 pd.boxTakePixel();
                 pd.closeDoor();
+                dt.driveEncoderSide(100,-0.4);
 
             }
 

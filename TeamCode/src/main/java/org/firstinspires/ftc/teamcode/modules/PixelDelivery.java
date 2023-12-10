@@ -78,6 +78,9 @@ public class PixelDelivery {
     public double flipGetPosition() {
         return servoFlipLeft.getPosition();
     }
+    public double boxGetPosition() {
+        return boxRotation.getPosition();
+    }
 
     public void setBoxPosition(double positionBox) {
         boxRotation.setPosition(positionBox);

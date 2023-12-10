@@ -48,10 +48,11 @@ public class BlueAutoF2 extends LinearOpMode {
             pd.closeDoor();
 
         } else {
-            dt.driveEncoderSide(475, 0.4);
+            dt.driveEncoder(200,-0.3);
+            dt.driveEncoderSide(475, -0.4);
             sleep(200);
             if (rc.isRecognized() == true) { //элемент справа
-                dt.driveEncoder(400, -0.4);
+                dt.driveEncoder(200, -0.4);
                 pd.flipDropPixel();
                 pd.boxDropPixel();
                 pd.halfOpenDoor();
@@ -59,9 +60,10 @@ public class BlueAutoF2 extends LinearOpMode {
                 pd.flipTakePixel();
                 pd.boxTakePixel();
                 pd.closeDoor();
+
             } else { //элемент слева
-                dt.driveEncoderSide(950, -0.4);
-                dt.driveEncoder(400, -0.4);
+                dt.driveEncoderSide(950, 0.4);
+                dt.driveEncoder(200, -0.4);
 
                 pd.flipDropPixel();
                 pd.boxDropPixel();
@@ -70,6 +72,7 @@ public class BlueAutoF2 extends LinearOpMode {
                 pd.flipTakePixel();
                 pd.boxTakePixel();
                 pd.closeDoor();
+                dt.driveEncoderSide(100,-0.4);
             }
 
             dt.driveEncoder(900,0.3); //выравниваемся у борта

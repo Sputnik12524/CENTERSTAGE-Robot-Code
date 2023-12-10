@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Intake {
     private final LinearOpMode opMode;
     private final DcMotor intakeDrive;
-    public static final double INTAKE_POWER = 0.5;
+    public static final double INTAKE_POWER = 0.75;
     public static final double OUTTAKE_POWER = 0.5;
     private boolean intakeState = true;
 

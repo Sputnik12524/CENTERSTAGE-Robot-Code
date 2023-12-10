@@ -12,8 +12,8 @@ import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
 public class MainTeleOp extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
-    public static double boxPosition = 0.5;
-    public static double flipPosition = 0.5;
+    public static double boxPosition = 0.72;
+    public static double flipPosition = 1;
 
     public static double flipDelta = 0.01;
     public static double boxDelta = 0.01;
@@ -92,19 +92,20 @@ public class MainTeleOp extends LinearOpMode {
             rbState = gamepad2.right_bumper;
             switch(doorMode){
                 case(0):
-                    pd.fullOpenDoor();
+                    pd.closeDoor();
                     break;
                 case(1):
                     pd.halfOpenDoor();
                     break;
                 case(2):
-                    pd.closeDoor();
+                    pd.fullOpenDoor();
                     break;
             }
             //  Отображение телеметрии
             telemetry.addLine("КБ - 1й геймпад");
             telemetry.addLine("КБ: влево-вправо - левый стик влево-вправо");
             telemetry.addLine("КБ: вперёд-назад - правый стик вверх-вниз");
+            telemetry.addLine("КБ: Вправо-влево - правый/левый триггеры");
             telemetry.addLine();
             telemetry.addLine("PD - 2й геймпад");
             telemetry.addLine("Коробочка, переворот - 2й геймпад");
@@ -112,6 +113,8 @@ public class MainTeleOp extends LinearOpMode {
             telemetry.addLine("Дверь: левый бампер");
             telemetry.addLine("Переворот: крестовина вверх-вниз");
             telemetry.addLine("Поворот коробочки: крестовина влево-вправо");
+            telemetry.addData("Позиция переворота", flipPosition);
+            telemetry.addData("Позиция вращения коробочки", boxPosition);
 
             telemetry.update();
         }
