@@ -49,7 +49,7 @@ public class BlueAutoF4 extends LinearOpMode {
 
         } else {
             dt.driveEncoderSide(475, 0.4);
-            sleep(200);
+            sleep(500);
             if (rc.isRecognized() == true) { //элемент справа
                 dt.driveEncoder(400, -0.4);
                 pd.flipDropPixel();

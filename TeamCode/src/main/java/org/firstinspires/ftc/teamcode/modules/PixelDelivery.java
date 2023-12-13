@@ -8,14 +8,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
 public class PixelDelivery {
-
-    public static double DOOR_CLOSED_POSITION = 0.21;
-    public static double DOOR_FULL_OPEN_POSITION = 0.59;
-    public static double DOOR_HALF_OPENED_POSITION = 0.42;
-    public static double BOX_ROTATION_TAKE_POSITION = 0.5;
-    public static double BOX_ROTATION_DROP_POSITION = 1;
-    public static double FLIP_TAKE_POSITION = 0.9;
-    public static double FLIP_DROP_POSITION = 0.4;
+//Уменьшить переменную-привести к закрытому положению
+//Увеличение переменной-привести к открытому положению
+    public static double DOOR_CLOSED_POSITION = 0.25;
+    public static double DOOR_FULL_OPEN_POSITION = 0.6;
+    public static double DOOR_HALF_OPENED_POSITION = 0.51;
+    public static double BOX_ROTATION_TAKE_POSITION = 0.79;
+    public static double BOX_ROTATION_DROP_POSITION = 0.45;
+    public static double FLIP_TAKE_POSITION = 0.805;
+    public static double FLIP_DROP_POSITION = 0.15;
 
     public static double FLIP_TIME = 100;
 

@@ -61,37 +61,44 @@ public class PixelDeliveryExample extends LinearOpMode {
 
 
 
-            if (gamepad1.dpad_left) {
+            if (gamepad1.dpad_left && boxPosition < 1) {
                 boxPosition += 0.005;
                 sleep(5);
+                pd.setBoxPosition(boxPosition);
+
             }
-            if (gamepad1.dpad_right) {
+            if (gamepad1.dpad_right && boxPosition > 0) {
                 boxPosition -= 0.005;
                 sleep(5);
-            }
-            if (boxPosition > 1) {
-                boxPosition = 1;
-            }
-            if (boxPosition < 0) {
-                boxPosition = 0;
-            }
-            pd.setBoxPosition(boxPosition);
+                pd.setBoxPosition(boxPosition);
 
-            if (gamepad1.dpad_up) {
+            }
+//            if (boxPosition > 1) {
+//                boxPosition = 1;
+//            }
+//            if (boxPosition < 0) {
+//                boxPosition = 0;
+//            }
+
+            if (gamepad1.dpad_up && servoFlip < 1) {
                 servoFlip += 0.005;
                 sleep(5);
+                pd.setFlipPosition(servoFlip);
+
             }
-            if (gamepad1.dpad_down) {
+            if (gamepad1.dpad_down && servoFlip > 0) {
                 servoFlip -= 0.005;
                 sleep(5);
+                pd.setFlipPosition(servoFlip);
+
             }
-            if (servoFlip > 1) {
-                servoFlip = 1;
-            }
-            if (servoFlip < 0) {
-                servoFlip = 0;
-            }
-            pd.setFlipPosition(servoFlip);
+//            if (servoFlip > 1) {
+//                servoFlip = 1;
+//            }
+//            if (servoFlip < 0) {
+//                servoFlip = 0;
+//            }
+
 
 
             telemetry.addData("box", boxPosition);

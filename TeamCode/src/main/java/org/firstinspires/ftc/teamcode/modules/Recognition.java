@@ -21,8 +21,7 @@ public class Recognition {
     public boolean isRecognized() {
         tm.addData("Distance", ds.getDistance(DistanceUnit.CM));
         tm.update();
-        boolean isrecognized = ds.getDistance(DistanceUnit.CM) < RANGE_TO_ELEMENT;
+        boolean isrecognized = ds.getDistance(DistanceUnit.CM) < RANGE_TO_ELEMENT && ds.getDistance(DistanceUnit.CM) > 29;
         return isrecognized;
     }
 }
-    
