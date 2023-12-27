@@ -15,7 +15,7 @@ public class StupidAutoBlueF2 extends LinearOpMode {
         waitForStart();
         dt.driveEncoder(100,0.3);
         dt.driveEncoderSide(3500,-0.3);
-        it.outtaketest();
+        it.outtakeAuto();
         sleep(10000);
         it.stop();
     }

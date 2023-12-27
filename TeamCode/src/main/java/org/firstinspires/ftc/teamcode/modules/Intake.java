@@ -33,7 +33,7 @@ public class Intake {
     public void outtake() {
         intakeDrive.setPower(-OUTTAKE_POWER);
     }
-    public void outtaketest() {
+    public void outtakeAuto() {
         intakeDrive.setPower(-OUTTAKE_POWER*1.3);
     }
 
