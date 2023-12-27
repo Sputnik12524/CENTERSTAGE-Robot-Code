@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 
@@ -41,50 +42,50 @@ public class RedAutoF2 extends LinearOpMode {
 
             dt.driveEncoder(650, -0.4);
             dt.driveEncoderSide(25, 0.3);
-            pd.flipDropPixel();
-            pd.boxDropPixel();
-            pd.halfOpenDoor();
-            sleep(200);
-            pd.flipTakePixel();
-            pd.boxTakePixel();
-            pd.closeDoor();
+//            sleep(1000);
+//            pd.flipDropPixel();
+//            pd.boxDropPixel();
+//            pd.halfOpenDoor();
+//            sleep(200);
+//            pd.flipTakePixel();
+//            pd.boxTakePixel();
+//            pd.closeDoor();
 
         } else {
-            dt.driveEncoderSide(475, -0.4);
-            sleep(200);
-            if (rc.isRecognized() == true) { //элемент справа
+            dt.driveEncoderSide(475, 0.4);
+            sleep(500);
+            if (rc.isRecognized() == true) { //элемент слева
                 dt.driveEncoder(400, -0.4);
-                pd.flipDropPixel();
-                pd.boxDropPixel();
-                pd.halfOpenDoor();
-                sleep(200);
-                pd.flipTakePixel();
-                pd.boxTakePixel();
-                pd.closeDoor();
-                dt.driveEncoderSide(100,0.4);
+                dt.driveEncoderSide(100, -0.4);
+//                sleep(1000);
+//                pd.flipDropPixel();
+//                pd.boxDropPixel();
+//                pd.halfOpenDoor();
+//                sleep(200);
+//                pd.flipTakePixel();
+//                pd.boxTakePixel();
+//                pd.closeDoor();
 
-
-            } else { //элемент слева
-                dt.driveEncoderSide(950, 0.4);
+            } else { //элемент справа
+                dt.driveEncoder(550, -0.4);
+                dt.driveEncoderSide(950, -0.4);
                 dt.driveEncoder(400, -0.4);
+//                sleep(1000);
+//                pd.flipDropPixel();
+//                pd.boxDropPixel();
+//                pd.halfOpenDoor();
+//                sleep(200);
+//                pd.flipTakePixel();
+//                pd.boxTakePixel();
+//                pd.closeDoor();
+                dt.driveEncoderSide(100, -0.4);
 
-                pd.flipDropPixel();
-                pd.boxDropPixel();
-                pd.halfOpenDoor();
-                sleep(200);
-                pd.flipTakePixel();
-                pd.boxTakePixel();
-                pd.closeDoor();
             }
-
-            dt.driveEncoder(900, 0.3); //выравниваемся у борта
-            dt.driveEncoder(200, -0.4);
-            dt.driveEncoderSide(1500, -0.4);
-            dt.driveEncoder(300, -0.3);
-            dt.driveEncoderSide(1500, -0.4);
-
-
         }
+        dt.driveEncoder(900, 0.3); //выравниваемся у борта
+        dt.driveEncoder(200, -0.4);
+        dt.driveEncoderSide(4500, -0.4);
+
 
     }
 

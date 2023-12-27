@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Intake {
     private final LinearOpMode opMode;
     private final DcMotor intakeDrive;
-    public static final double INTAKE_POWER = 1;
-    public static final double OUTTAKE_POWER = 1;
+    public static final double INTAKE_POWER = 0.7;
+    public static final double OUTTAKE_POWER = 0.7;
     private boolean intakeState = true;
 
     public Intake(LinearOpMode opMode) {
@@ -32,6 +32,9 @@ public class Intake {
      */
     public void outtake() {
         intakeDrive.setPower(-OUTTAKE_POWER);
+    }
+    public void outtaketest() {
+        intakeDrive.setPower(-OUTTAKE_POWER*1.3);
     }
 
     /**

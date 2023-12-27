@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
 import org.firstinspires.ftc.teamcode.modules.Recognition;
 
 @Config
-@Autonomous(group = "Auto", name = "RedAuto")
+@Autonomous(group = "Auto", name = "RedAutoF4")
 public class RedAutoF4 extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
@@ -57,7 +57,7 @@ public class RedAutoF4 extends LinearOpMode {
             if (rc.isRecognized() == true) { //элемент справа
                 dt.driveEncoder(400, -0.4);
                 dt.driveEncoderSide(100, 0.4);
-                sleep(1000);
+//                sleep(1000);
 //                pd.flipDropPixel();
 //                pd.boxDropPixel();
 //                pd.halfOpenDoor();
@@ -70,7 +70,7 @@ public class RedAutoF4 extends LinearOpMode {
                 dt.driveEncoder(550, -0.4);
                 dt.driveEncoderSide(950, 0.4);
                 dt.driveEncoder(400, -0.4);
-                sleep(1000);
+                //sleep(1000);
 //                pd.flipDropPixel();
 //                pd.boxDropPixel();
 //                pd.halfOpenDoor();

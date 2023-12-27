@@ -62,7 +62,7 @@ public class MainTeleOp extends LinearOpMode {
             /**
              * Позиционное управление Переворотом и вращением
              */
-            /* if (gamepad2.x) {
+            if (gamepad2.x) {
               pd.boxTakePixel();
             }
             if (gamepad2.b)  {
@@ -73,14 +73,14 @@ public class MainTeleOp extends LinearOpMode {
             }
             if (gamepad2.a)  {
                 pd.flipTakePixel();
-            } */
+            }
 
 
             /**
              * Диапозонное управление перевотора и вращения
              */
             // вращение
-           /* if (gamepad2.dpad_left) {
+           if (gamepad2.dpad_left) {
                 boxPosition += boxDelta;
                 sleep(5);
             }
@@ -111,7 +111,7 @@ public class MainTeleOp extends LinearOpMode {
             if (flipPosition < 0) {
                 flipPosition = 0;
             }
-            pd.setFlipPosition(flipPosition); */
+            pd.setFlipPosition(flipPosition);
 
             /**
              * Управление дверью
@@ -159,10 +159,10 @@ public class MainTeleOp extends LinearOpMode {
             telemetry.addLine("Переворот и вращение принятие/сброс: Y");
 
 
-            //telemetry.addLine("Переворот: крестовина вверх-вниз");
-            //telemetry.addLine("Поворот коробочки: крестовина влево-вправо");
-            //telemetry.addData("Позиция переворота", flipPosition);
-            //telemetry.addData("Позиция вращения коробочки", boxPosition);
+            telemetry.addLine("Переворот: крестовина вверх-вниз");
+            telemetry.addLine("Поворот коробочки: крестовина влево-вправо");
+            telemetry.addData("Позиция переворота", flipPosition);
+            telemetry.addData("Позиция вращения коробочки", boxPosition);
 
             telemetry.update();
         }
