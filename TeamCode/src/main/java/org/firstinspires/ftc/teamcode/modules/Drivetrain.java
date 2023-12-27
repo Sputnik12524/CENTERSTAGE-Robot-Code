@@ -360,22 +360,6 @@ public class Drivetrain {
             calcTime.reset();
 
 
-//            dm.addData("SettingTime", setTime.seconds());
-//            dm.addData("deltaTime", deltaTime.nanoseconds() * 10e-9);
-//            dm.addLine("");
-//            dm.addData("SetCourse", course);
-//            dm.addData("ImuCourse", imu.getAngles());
-//            dm.addData("D0", d0);
-//            dm.addData("D1", d1);
-//            dm.addLine("");
-//            dm.addData("dDerivative", dDerivative);
-//            dm.addData("dIntegral", dIntegral);
-//            dm.addLine("");
-//            dm.addData("U", u);
-//            dm.addData("uP", kP * d1);
-//            dm.addData("uI", kI * dIntegral);
-//            dm.addData("uD", kD * dDerivative);
-//            dm.update();
             if (setTime.seconds() > COURSEPID_MAX_TIME) {
                 break;
             }

@@ -12,14 +12,19 @@ import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
 public class MainTeleOp extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
-    public static double boxPosition = 0.5;
-    public static double flipPosition = 0.5;
+    public static double boxPosition = 0.72;
+    public static double flipPosition = 1;
 
     public static double flipDelta = 0.01;
     public static double boxDelta = 0.01;
 
     private int doorMode = 0;
+
+    private int pixelDeliveryMod = 0;
     private boolean rbState = false;
+    private boolean yState = false;
+    private boolean flipState = false;
+
     @Override
     public void runOpMode() {
         // единожды выполняемые действия до инициализации
@@ -42,7 +47,9 @@ public class MainTeleOp extends LinearOpMode {
             dt.driveRawPower(gamepad1.right_stick_x, -gamepad1.left_stick_y,
                     gamepad1.left_trigger - gamepad1.right_trigger);
 
-            // Управление захватом
+            /**
+             * Управление захватом
+              */
             if (gamepad2.x) {
                 it.intake();
             } else if (gamepad2.a) {
@@ -51,8 +58,29 @@ public class MainTeleOp extends LinearOpMode {
                 it.stop();
             }
 
-            // Управление вращением коробочки
-            if (gamepad2.dpad_left) {
+
+            /**
+             * Позиционное управление Переворотом и вращением
+             */
+            if (gamepad2.x) {
+              pd.boxTakePixel();
+            }
+            if (gamepad2.b)  {
+                pd.boxDropPixel();
+            }
+            if (gamepad2.y)    {
+                pd.flipDropPixel();
+            }
+            if (gamepad2.a)  {
+                pd.flipTakePixel();
+            }
+
+
+            /**
+             * Диапозонное управление перевотора и вращения
+             */
+            // вращение
+           if (gamepad2.dpad_left) {
                 boxPosition += boxDelta;
                 sleep(5);
             }
@@ -68,7 +96,7 @@ public class MainTeleOp extends LinearOpMode {
             }
             pd.setBoxPosition(boxPosition);
 
-            // Управление переворотом
+            // переворот
             if (gamepad2.dpad_up) {
                 flipPosition += flipDelta;
                 sleep(5);
@@ -85,32 +113,56 @@ public class MainTeleOp extends LinearOpMode {
             }
             pd.setFlipPosition(flipPosition);
 
-            //Управление дверью
-            if (gamepad2.right_bumper && !rbState){
+            /**
+             * Управление дверью
+             */
+
+            if (gamepad2.right_bumper && !rbState && flipState){
                 doorMode = (doorMode + 1) % 3;
             }
             rbState = gamepad2.right_bumper;
             switch(doorMode){
                 case(0):
-                    pd.fullOpenDoor();
+                    pd.closeDoor();
                     break;
                 case(1):
                     pd.halfOpenDoor();
                     break;
                 case(2):
-                    pd.closeDoor();
+                    pd.fullOpenDoor();
                     break;
             }
-            //  Отображение телеметрии
+
+            if (gamepad2.y) {
+                doorMode = 0;
+                pd.boxTakePixel();
+                pd.flipTakePixel();
+                flipState = false;
+            }
+            if (gamepad2.b){
+                pd.boxDropPixel();
+                pd.flipDropPixel();
+                flipState = true;
+            }
+
+            /**
+             * Отображение телеметрии
+              */
             telemetry.addLine("КБ - 1й геймпад");
             telemetry.addLine("КБ: влево-вправо - левый стик влево-вправо");
             telemetry.addLine("КБ: вперёд-назад - правый стик вверх-вниз");
+            telemetry.addLine("КБ: Вправо-влево - правый/левый триггеры");
             telemetry.addLine();
-            telemetry.addLine("Коробочка, переворот - 2й геймпад");
-            telemetry.addLine("A - захват, B - обр. захват");
+            telemetry.addLine("PD - 2й геймпад");
+            telemetry.addLine("X - захват, A - обр. захват");
             telemetry.addLine("Дверь: левый бампер");
+            telemetry.addLine("Переворот и вращение принятие/сброс: Y");
+
+
             telemetry.addLine("Переворот: крестовина вверх-вниз");
             telemetry.addLine("Поворот коробочки: крестовина влево-вправо");
+            telemetry.addData("Позиция переворота", flipPosition);
+            telemetry.addData("Позиция вращения коробочки", boxPosition);
 
             telemetry.update();
         }
