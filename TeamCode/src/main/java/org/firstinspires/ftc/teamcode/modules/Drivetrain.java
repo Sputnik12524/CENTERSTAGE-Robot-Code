@@ -265,6 +265,10 @@ public class Drivetrain {
             tm.addData("Левый передний:", rightFrontDifference);
             tm.addData("Левый задний:", leftBackDifference);
             tm.addData("Правый задний:", rightBackDifference);
+            tm.addData("tick1:", tick1);
+            tm.addData("tick1:", tick1);
+            tm.addData("tick1:", tick1);
+            tm.addData("tick1:", tick1);
             tm.update();
         }
         rightBackDrive.setPower(0);

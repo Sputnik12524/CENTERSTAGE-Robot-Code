@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 
@@ -69,7 +68,6 @@ public class BlueAutoF4 extends LinearOpMode {
             } else { //элемент справа
                 dt.driveEncoder(550, -0.4);
                 dt.driveEncoderSide(950, -0.4);
-                dt.driveEncoder(400, -0.4);
                 sleep(1000);
                 pd.flipDropPixel();
                 pd.boxDropPixel();
@@ -78,14 +76,13 @@ public class BlueAutoF4 extends LinearOpMode {
                 pd.flipTakePixel();
                 pd.boxTakePixel();
                 pd.closeDoor();
-                dt.driveEncoderSide(100, -0.4);
+                dt.driveEncoderSide(350, 0.4);
 
             }
         }
-        dt.driveEncoder(900, 0.3); //выравниваемся у борта
+        dt.driveEncoder(1000, 0.3); //выравниваемся у борта
         dt.driveEncoder(200, -0.4);
-        dt.driveEncoderSide(2000, 0.4);
-
+        dt.driveEncoderSide(1999, 0.4);
 
     }
 

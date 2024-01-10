@@ -43,13 +43,13 @@ public class RedAutoF4 extends LinearOpMode {
             dt.driveEncoder(650, -0.4);
             dt.driveEncoderSide(25, 0.3);
             sleep(1000);
-            pd.flipDropPixel();
-            pd.boxDropPixel();
-            pd.halfOpenDoor();
-            sleep(200);
-            pd.flipTakePixel();
-            pd.boxTakePixel();
-            pd.closeDoor();
+//            pd.flipDropPixel();
+//            pd.boxDropPixel();
+//            pd.halfOpenDoor();
+//            sleep(200);
+//            pd.flipTakePixel();
+//            pd.boxTakePixel();
+//            pd.closeDoor();
 
         } else {
             dt.driveEncoderSide(475, -0.4);
@@ -58,31 +58,30 @@ public class RedAutoF4 extends LinearOpMode {
                 dt.driveEncoder(400, -0.4);
                 dt.driveEncoderSide(100, 0.4);
                 sleep(1000);
-                pd.flipDropPixel();
-                pd.boxDropPixel();
-                pd.halfOpenDoor();
-                sleep(200);
-                pd.flipTakePixel();
-                pd.boxTakePixel();
-                pd.closeDoor();
+//                pd.flipDropPixel();
+//                pd.boxDropPixel();
+//                pd.halfOpenDoor();
+//                sleep(200);
+//                pd.flipTakePixel();
+//                pd.boxTakePixel();
+//                pd.closeDoor();
 
             } else { //элемент слева
                 dt.driveEncoder(550, -0.4);
                 dt.driveEncoderSide(950, 0.4);
-                dt.driveEncoder(400, -0.4);
-                sleep(1000);
-                pd.flipDropPixel();
-                pd.boxDropPixel();
-                pd.halfOpenDoor();
-                sleep(200);
-                pd.flipTakePixel();
-                pd.boxTakePixel();
-                pd.closeDoor();
-                dt.driveEncoderSide(100, -0.4);
+//                sleep(1000);
+//                pd.flipDropPixel();
+//                pd.boxDropPixel();
+//                pd.halfOpenDoor();
+//                sleep(200);
+//                pd.flipTakePixel();
+//                pd.boxTakePixel();
+//                pd.closeDoor();
+                dt.driveEncoderSide(350, -0.4);
 
             }
         }
-        dt.driveEncoder(900, 0.3); //выравниваемся у борта
+        dt.driveEncoder(999, 0.3); //выравниваемся у борта
         dt.driveEncoder(200, -0.4);
         dt.driveEncoderSide(2000, -0.4);
 
