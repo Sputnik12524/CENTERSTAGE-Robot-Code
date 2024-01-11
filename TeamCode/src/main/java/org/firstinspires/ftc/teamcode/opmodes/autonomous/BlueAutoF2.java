@@ -62,9 +62,6 @@ public class BlueAutoF2 extends LinearOpMode {
                 dt.driveEncoder(400, -0.4);
                 dt.driveEncoderSide(100, 0.4);
                 sleep(1000);
-                telemetry.addData("Распознал?", rc.isRecognized());
-                telemetry.update();
-                sleep(1000);
 //                pd.flipDropPixel();
 //                pd.boxDropPixel();
 //                pd.halfOpenDoor();

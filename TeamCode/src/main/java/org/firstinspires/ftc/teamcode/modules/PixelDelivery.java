@@ -24,6 +24,9 @@ public class PixelDelivery {
     private final Servo boxRotation;
     private final Servo servoFlipLeft;
     private final Servo servoFlipRight;
+
+    private final Servo forPurple;
+
     private final LinearOpMode opMode;
     private final TakeDropHelper takeDropHelper;
 
@@ -33,6 +36,9 @@ public class PixelDelivery {
         this.boxRotation = opMode.hardwareMap.servo.get("boxRotation");
         this.servoFlipLeft = opMode.hardwareMap.servo.get("servoFlipLeft");
         this.servoFlipRight = opMode.hardwareMap.servo.get("servoFlipRight");
+
+        this.forPurple = opMode.hardwareMap.servo.get("forPurple");
+
         this.servoFlipRight.setDirection(Servo.Direction.REVERSE);
         this.boxRotation.setDirection(Servo.Direction.REVERSE);
         this.takeDropHelper = new TakeDropHelper();
@@ -91,6 +97,9 @@ public class PixelDelivery {
     public void setFlipPosition(double positionFlip) {
         servoFlipLeft.setPosition(positionFlip);
         servoFlipRight.setPosition(positionFlip);
+    }
+    public void setForPurple(double position){
+        forPurple.setPosition(position);
     }
 
     class TakeDropHelper extends Thread {

@@ -52,9 +52,12 @@ public class BlueAutoF4 extends LinearOpMode {
 
         } else {
             dt.driveEncoderSide(475, 0.4);
-            sleep(500);
+            sleep(1000);
+            telemetry.addData("Распознал?", rc.isRecognized());
+            telemetry.update();
+            sleep(3000);
             if (rc.isRecognized() == true) { //элемент слева
-                dt.driveEncoder(400, -0.4);
+                dt.driveEncoder(520, -0.4);
                 dt.driveEncoderSide(100, -0.4);
                 sleep(1000);
                 pd.flipDropPixel();

@@ -32,56 +32,42 @@ public class RedAutoF4 extends LinearOpMode {
             telemetry.update();
         }
         // единожды выполняемые действия после инициализации, но до запуска сценария
-
+        pd.setForPurple(1);
         waitForStart();
         // единожды выполняемые действия после запуска сценария
 
         // единожды выполняемые действия после запуска сценария
         dt.driveEncoder(200, -0.4);
         if (rc.isRecognized() == true) { //элемент по центру
-
-            dt.driveEncoder(650, -0.4);
+            dt.driveEncoder(875, -0.4);
             dt.driveEncoderSide(25, 0.3);
             sleep(1000);
-//            pd.flipDropPixel();
-//            pd.boxDropPixel();
-//            pd.halfOpenDoor();
-//            sleep(200);
-//            pd.flipTakePixel();
-//            pd.boxTakePixel();
-//            pd.closeDoor();
+            pd.setForPurple(0);
+            sleep(1000);
+            dt.driveEncoder(1200, 0.3); //выравниваемся у борта
 
         } else {
             dt.driveEncoderSide(475, -0.4);
-            sleep(500);
+            sleep(1000);
+            telemetry.addData("Распознал?", rc.isRecognized());
+            telemetry.update();
+            sleep(3000);
             if (rc.isRecognized() == true) { //элемент справа
-                dt.driveEncoder(400, -0.4);
-                dt.driveEncoderSide(100, 0.4);
+                dt.driveEncoder(520, -0.4);
                 sleep(1000);
-//                pd.flipDropPixel();
-//                pd.boxDropPixel();
-//                pd.halfOpenDoor();
-//                sleep(200);
-//                pd.flipTakePixel();
-//                pd.boxTakePixel();
-//                pd.closeDoor();
+                pd.setForPurple(0);
+                dt.driveEncoder(1100, 0.3); //выравниваемся у борта
 
             } else { //элемент слева
                 dt.driveEncoder(550, -0.4);
                 dt.driveEncoderSide(950, 0.4);
-//                sleep(1000);
-//                pd.flipDropPixel();
-//                pd.boxDropPixel();
-//                pd.halfOpenDoor();
-//                sleep(200);
-//                pd.flipTakePixel();
-//                pd.boxTakePixel();
-//                pd.closeDoor();
+                sleep(1000);
+                pd.setForPurple(0);
+                sleep(1000);
                 dt.driveEncoderSide(350, -0.4);
-
+                dt.driveEncoder(999, 0.3); //выравниваемся у борта
             }
         }
-        dt.driveEncoder(999, 0.3); //выравниваемся у борта
         dt.driveEncoder(200, -0.4);
         dt.driveEncoderSide(2000, -0.4);
 

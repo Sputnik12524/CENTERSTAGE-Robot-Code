@@ -22,15 +22,14 @@ public class PixelDeliveryExample extends LinearOpMode {
             // единожды выполняемые действия во время инициализации
 
         }
-        // единожды выполняемые действия после инициализации, но до запуска сценария
-
+        pd.setForPurple(0);
         waitForStart();
         // единожды выполняемые действия после запуска сценария
 
 
         while (opModeIsActive()) {
             // единожды выполняемые действия после запуска сценария
-            if (gamepad2.y) {
+            /*if (gamepad2.y) {
                 pd.workTake();
             }
             if (gamepad2.right_bumper) {
@@ -70,6 +69,12 @@ public class PixelDeliveryExample extends LinearOpMode {
                 sleep(5);
                 pd.setFlipPosition(servoFlip);
 
+            }*/
+            if (gamepad1.a){
+                pd.setForPurple(0);
+            }
+            if (gamepad1.b){
+                pd.setForPurple(1);
             }
 
 

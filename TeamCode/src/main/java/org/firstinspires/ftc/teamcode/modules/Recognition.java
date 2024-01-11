@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Recognition {
-    public static final int RANGE_TO_ELEMENT = 100;
+    public static final int RANGE_TO_ELEMENT = 55;
     private DistanceSensor ds;
     private final Telemetry tm;
 
