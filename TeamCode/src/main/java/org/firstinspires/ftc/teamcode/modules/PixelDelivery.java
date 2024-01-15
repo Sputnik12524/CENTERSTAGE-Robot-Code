@@ -10,18 +10,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class PixelDelivery {
 //Уменьшить переменную-привести к закрытому положению
 //Увеличение переменной-привести к открытому положению
-    public static double DOOR_CLOSED_POSITION = 0.25;
-    public static double DOOR_FULL_OPEN_POSITION = 0.6;
-    public static double DOOR_HALF_OPENED_POSITION = 0.51;
-    public static double BOX_ROTATION_DROP_POSITION = 0.45;
-    public static double BOX_ROTATION_TAKE_POSITION = 0.79;
-    public static double FLIP_TAKE_POSITION = 0.805;
-    public static double FLIP_DROP_POSITION = 0.15;
+    public static double DOOR_CLOSED_POSITION = 0.475;
+    public static double DOOR_FULL_OPEN_POSITION = 1;
+    public static double DOOR_HALF_OPENED_POSITION = 0.7;
+    public static double BOX_ROTATION_DROP_POSITION = 0.955;
+    public static double BOX_ROTATION_TAKE_POSITION = 0.46;
+    public static double FLIP_TAKE_POSITION = 0.065;
+    public static double FLIP_DROP_POSITION = 0.92;
 
     public static double FLIP_TIME = 100;
 
     private final Servo servoDoor;
-    private final Servo boxRotation;
+    private final Servo boxRotationLeft;
+    private final Servo boxRotationRight;
     private final Servo servoFlipLeft;
     private final Servo servoFlipRight;
 
@@ -33,14 +34,15 @@ public class PixelDelivery {
     public PixelDelivery(LinearOpMode opMode) {
         this.opMode = opMode;
         this.servoDoor = opMode.hardwareMap.servo.get("servoDoor");
-        this.boxRotation = opMode.hardwareMap.servo.get("boxRotation");
+        this.boxRotationLeft = opMode.hardwareMap.servo.get("boxRotationLeft");
+        this.boxRotationRight = opMode.hardwareMap.servo.get("boxRotationRight");
         this.servoFlipLeft = opMode.hardwareMap.servo.get("servoFlipLeft");
         this.servoFlipRight = opMode.hardwareMap.servo.get("servoFlipRight");
 
         this.forPurple = opMode.hardwareMap.servo.get("forPurple");
 
         this.servoFlipRight.setDirection(Servo.Direction.REVERSE);
-        this.boxRotation.setDirection(Servo.Direction.REVERSE);
+        this.boxRotationRight.setDirection(Servo.Direction.REVERSE);
         this.takeDropHelper = new TakeDropHelper();
         takeDropHelper.start();
     }
@@ -58,11 +60,13 @@ public class PixelDelivery {
     }
 
     public void boxTakePixel() {
-        boxRotation.setPosition(BOX_ROTATION_TAKE_POSITION);
+        boxRotationLeft.setPosition(BOX_ROTATION_TAKE_POSITION);
+        boxRotationRight.setPosition(BOX_ROTATION_TAKE_POSITION);
     }
 
     public void boxDropPixel() {
-        boxRotation.setPosition(BOX_ROTATION_DROP_POSITION);
+        boxRotationLeft.setPosition(BOX_ROTATION_DROP_POSITION);
+        boxRotationRight.setPosition(BOX_ROTATION_DROP_POSITION);
     }
 
     public void workTake() {
@@ -86,11 +90,12 @@ public class PixelDelivery {
         return servoFlipLeft.getPosition();
     }
     public double boxGetPosition() {
-        return boxRotation.getPosition();
+        return boxRotationLeft.getPosition();
     }
 
     public void setBoxPosition(double positionBox) {
-        boxRotation.setPosition(positionBox);
+        boxRotationLeft.setPosition(positionBox);
+        boxRotationRight.setPosition(positionBox);
 
     }
 

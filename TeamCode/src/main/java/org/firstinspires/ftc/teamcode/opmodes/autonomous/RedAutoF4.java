@@ -32,14 +32,13 @@ public class RedAutoF4 extends LinearOpMode {
             telemetry.update();
         }
         // единожды выполняемые действия после инициализации, но до запуска сценария
-        pd.setForPurple(1);
         waitForStart();
         // единожды выполняемые действия после запуска сценария
 
         // единожды выполняемые действия после запуска сценария
         dt.driveEncoder(200, -0.4);
         if (rc.isRecognized() == true) { //элемент по центру
-            dt.driveEncoder(875, -0.4);
+            dt.driveEncoder(890, -0.4);
             dt.driveEncoderSide(25, 0.3);
             sleep(1000);
             pd.setForPurple(0);
@@ -51,7 +50,7 @@ public class RedAutoF4 extends LinearOpMode {
             sleep(1000);
             telemetry.addData("Распознал?", rc.isRecognized());
             telemetry.update();
-            sleep(3000);
+            sleep(2000);
             if (rc.isRecognized() == true) { //элемент справа
                 dt.driveEncoder(520, -0.4);
                 sleep(1000);

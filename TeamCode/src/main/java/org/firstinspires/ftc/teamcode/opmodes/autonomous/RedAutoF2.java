@@ -25,10 +25,9 @@ public class RedAutoF2 extends LinearOpMode {
         Intake it = new Intake(this);
         Recognition rc = new Recognition(this);
         PixelDelivery pd = new PixelDelivery(this);
-        int path = 2; //1 - центр, 2 - дальняя зона
+        int path = 1; //1 - центр, 2 - дальняя зона
 
         while (opModeInInit()) {
-            pd.setForPurple(1);
             telemetry.addData("Распознал?", rc.isRecognized());
             telemetry.update();
 
@@ -42,48 +41,54 @@ public class RedAutoF2 extends LinearOpMode {
         dt.driveEncoder(200, -0.4);
         if (rc.isRecognized() == true) { //элемент по центру
 
-            dt.driveEncoder(875, -0.4);
+            dt.driveEncoder(890, -0.4);
             dt.driveEncoderSide(25, 0.3);
             sleep(500);
             pd.setForPurple(0);
             sleep(1000);
+            dt.driveEncoder(1225, 0.3); //выравниваемся у борта
 
         } else {
             dt.driveEncoderSide(475, 0.4);
             sleep(1000);
             telemetry.addData("Распознал?", rc.isRecognized());
             telemetry.update();
-            sleep(3000);
+            sleep(2000);
             if (rc.isRecognized() == true) { //элемент слева
-                dt.driveEncoder(400, -0.4);
+                dt.driveEncoder(520, -0.4);
                 sleep(1000);
                 pd.setForPurple(0);
                 sleep(1000);
+                dt.driveEncoder(100,0.4);
+                dt.driveEncoderSide(250,-0.4);
+                dt.driveEncoder(840, 0.3); //выравниваемся у борта
+
 
             } else { //элемент справа
-                dt.driveEncoder(550, -0.4);
+                dt.driveEncoder(720, -0.4);
                 dt.driveEncoderSide(950, -0.4);
                 sleep(1000);
                 pd.setForPurple(0);
                 sleep(1000);
-                dt.driveEncoderSide(100,0.4);
+                dt.driveEncoderSide(500,0.4);
+                dt.driveEncoder(980,0.4);
             }
         }
         if (path==1) {
-            dt.driveEncoder(1220, 0.3); //выравниваемся у борта
-            dt.driveEncoder(200, -0.4);
-            dt.driveEncoderSide(2300, -0.4);
-            dt.driveEncoder(300, 0.3);
+            dt.driveEncoder(25, -0.4);
+            dt.driveEncoderSide(2500, -0.4);
+            dt.driveEncoder(200, 0.3);
             dt.driveEncoderSide(2500, -0.4);
         }
         else{
-            dt.driveEncoder(1220, 0.3); //выравниваемся у борта
-            dt.driveEncoder(200, -0.4);
+            dt.driveEncoder(25, -0.4);
             dt.driveEncoderSide(2300, -0.4);
             dt.driveEncoder(400, -0.3);
             dt.driveEncoderSide(2500, -0.4);
         }
-
+        it.outtakeAuto();
+        sleep(2000);
+        it.stop();
     }
 
 }

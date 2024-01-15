@@ -25,7 +25,7 @@ public class BlueAutoF2 extends LinearOpMode {
         Intake it = new Intake(this);
         Recognition rc = new Recognition(this);
         PixelDelivery pd = new PixelDelivery(this);
-        int path = 2; //1 - центр, 2 - дальняя зона
+        int path = 1; //1 - центр, 2 - дальняя зона
 
 
         while (opModeInInit()) {
@@ -41,54 +41,37 @@ public class BlueAutoF2 extends LinearOpMode {
         dt.driveEncoder(200, -0.4);
         if (rc.isRecognized() == true) { //элемент по центру
 
-            dt.driveEncoder(650, -0.4);
+            dt.driveEncoder(890, -0.4);
             dt.driveEncoderSide(25, 0.3);
             sleep(1000);
-//            pd.flipDropPixel();
-//            pd.boxDropPixel();
-//            pd.halfOpenDoor();
-//            sleep(200);
-//            pd.flipTakePixel();
-//            pd.boxTakePixel();
-//            pd.closeDoor();
+            pd.setForPurple(0);
+            sleep(1000);
 
         } else {
-            dt.driveEncoderSide(475, -0.4);
+            dt.driveEncoderSide(520, -0.4);
             sleep(1000);
             telemetry.addData("Распознал?", rc.isRecognized());
             telemetry.update();
             sleep(3000);
             if (rc.isRecognized() == true) { //элемент справа
-                dt.driveEncoder(400, -0.4);
+                dt.driveEncoder(520, -0.4);
                 dt.driveEncoderSide(100, 0.4);
                 sleep(1000);
-//                pd.flipDropPixel();
-//                pd.boxDropPixel();
-//                pd.halfOpenDoor();
-//                sleep(200);
-//                pd.flipTakePixel();
-//                pd.boxTakePixel();
-//                pd.closeDoor();
-
-            } else { //элемент слева
-                dt.driveEncoder(300, -0.4);
-                dt.driveEncoderSide(950, 0.4);
+                pd.setForPurple(0);
                 sleep(1000);
-//                sleep(1000);
-//                pd.flipDropPixel();
-//                pd.boxDropPixel();
-//                pd.halfOpenDoor();
-//                sleep(200);
-//                pd.flipTakePixel();
-//                pd.boxTakePixel();
-//                pd.closeDoor();
+            } else { //элемент слева
+                dt.driveEncoder(670, -0.4);
+                dt.driveEncoderSide(970, 0.4);
+                sleep(1000);
+                pd.setForPurple(0);
+                sleep(1000);
                 dt.driveEncoderSide(350, -0.4);
 
             }
         }
         if (path == 1) {
             dt.driveEncoder(920, 0.3); //выравниваемся у борта
-            dt.driveEncoder(200, -0.4);
+            dt.driveEncoder(100, -0.4);
             dt.driveEncoderSide(4600, 0.4);
         }
         else {
