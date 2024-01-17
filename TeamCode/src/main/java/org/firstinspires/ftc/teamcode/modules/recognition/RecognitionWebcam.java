@@ -52,40 +52,39 @@ public class RecognitionWebcam extends LinearOpMode {
             }
             gamepad1DpadRightFlag = gamepad1.dpad_right;
             if (!gamepad1DpadUpFlag && gamepad1.dpad_up) {
-                pipeline.mainRegionY += 5;
+                pipeline.middleRegionY += 5;
                 pipeline.leftRegionX += 5;
             }
             gamepad1DpadUpFlag = gamepad1.dpad_up;
             if (!gamepad1DpadDownFlag && gamepad1.dpad_down) {
-                pipeline.mainRegionY -= 5;
+                pipeline.middleRegionY -= 5;
                 pipeline.leftRegionX -= 5;
             }
             gamepad1DpadDownFlag = gamepad1.dpad_down;
             if (!gamepad1AFlag && gamepad1.a) {
-                pipeline.maxval += 2;
+                pipeline.maxvalCb += 2;
             }
             gamepad1AFlag = gamepad1.a;
             if (!gamepad1BFlag && gamepad1.b) {
-                pipeline.maxval -= 2;
+                pipeline.maxvalCb -= 2;
             }
             gamepad1BFlag = gamepad1.b;
             if (!gamepad1XFlag && gamepad1.x) {
-                pipeline.thresh += 2;
+                pipeline.threshCr += 2;
             }
             gamepad1XFlag = gamepad1.x;
             if (!gamepad1YFlag && gamepad1.y) {
-                pipeline.thresh -= 2;
+                pipeline.threshCr -= 2;
             }
             gamepad1YFlag = gamepad1.y;
             telemetry.addData("position is ", pipeline.getAnalysis());
             telemetry.addData("avgLeft is ", pipeline.getAvgLeft());
             telemetry.addData("avgMiddle is", pipeline.getAvgMiddle());
             telemetry.addData("avgRight is", pipeline.getAvgRight());
-            telemetry.addData("avgCalibration is", pipeline.getAvgCalibration());
             telemetry.addData("shiftRightLeft", pipeline.middleRegionX);
-            telemetry.addData("shiftUpDowm", pipeline.mainRegionY);
-            telemetry.addData("thresh", pipeline.thresh);
-            telemetry.addData("maxval", pipeline.maxval);
+            telemetry.addData("shiftUpDowm", pipeline.middleRegionY);
+            telemetry.addData("thresh", pipeline.threshCb);
+            telemetry.addData("maxval", pipeline.maxvalCb);
             telemetry.update();
         }
 
