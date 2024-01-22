@@ -16,16 +16,16 @@ import java.util.LinkedList;
 
 @Config
 public class Recognition extends OpenCvPipeline {
-    public static int leftRegionX = 10, middleRegionX = 135, rightRegionX = 270, leftRegionY = 155,rightRegionY = 155,middleRegionY = 130;
-    public static int  threshCb = 150, threshCr = 120, maxvalCb = 255, maxvalCr = 255;
+    public static int LEFTREGIONX = 10, MIDDLEREGIONX = 135, RIGHTREGIONX = 270, LEFTREGIONY = 155,RIGHTREGIONY = 155,MIDDLEREGIONY = 130;
+    public static int  THRESHCB = 150, THRESHCR = 120, MAXVALCB = 255, MAXVALCR = 255;
     public static int allianceColor = 1; //  0 - red alliance
                                     //  1 - blue alliance
     public static int output = 0;
     private static final int VALUEFORRECOGNITION = 150; // В Cb - синий, в Cr - красный
     public Position position = Position.MIDDLE;
-    private Point regionLeftTopLeftAnchorPoint = new Point(leftRegionX, leftRegionY);
-    private Point regionMiddleTopLeftAnchorPoint = new Point(middleRegionX, middleRegionY);
-    private Point regionRightTopLeftAnchorPoint = new Point(rightRegionX, rightRegionY);
+    private Point regionLeftTopLeftAnchorPoint = new Point(LEFTREGIONX, LEFTREGIONY);
+    private Point regionMiddleTopLeftAnchorPoint = new Point(MIDDLEREGIONX, MIDDLEREGIONY);
+    private Point regionRightTopLeftAnchorPoint = new Point(RIGHTREGIONX, RIGHTREGIONY);
     private int REGION_WIDTH = 25;
     private int REGION_HEIGHT = 25;
 
@@ -79,19 +79,21 @@ public class Recognition extends OpenCvPipeline {
     void inputToCb(Mat input) {
         Imgproc.cvtColor(input, cb, Imgproc.COLOR_RGB2YCrCb);
         Core.extractChannel(cb, bin, 2);
-        Imgproc.threshold(bin, bin, threshCb, maxvalCb, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(bin, bin, THRESHCB, MAXVALCB, Imgproc.THRESH_BINARY);
     }
+
     void inputToCr(Mat input) {
         Imgproc.cvtColor(input, cr, Imgproc.COLOR_RGB2YCrCb);
         Core.extractChannel(cr, bin, 2);
-        Imgproc.threshold(bin, bin, threshCr, maxvalCr, Imgproc.THRESH_BINARY_INV);
+        Imgproc.threshold(bin, bin, THRESHCR, MAXVALCR, Imgproc.THRESH_BINARY_INV);
     }
+
     void setAllianceColor(int alliance){
         allianceColor = alliance;
     }
 
-    public void depictingRegions(Position barcode, Mat input) {
-        switch (barcode) {
+    public void depictingRegions(Position team_element, Mat input) {
+        switch (team_element) {
             case LEFT:
                 Imgproc.rectangle(
                         input,
@@ -118,19 +120,10 @@ public class Recognition extends OpenCvPipeline {
                 break;
 
         }
-
-
     }
+
     @Override
     public void init(Mat firstFrame) {
-        /*
-         *Нам нужно вызвать это, чтобы убедиться, что "Cb"
-         * объект инициализируется, так что подматы, которые мы делаем
-         * будут по-прежнему привязаны к нему в последующих кадрах. (Если
-         * объект нужно было инициализировать только в processFrame,
-         * тогда субматарицы будут отсоединены, потому что
-         * буфер будет перераспределен при первом реальном кадре)
-         */
         if (allianceColor == 1)
             inputToCb(firstFrame);
         else inputToCr(firstFrame);
