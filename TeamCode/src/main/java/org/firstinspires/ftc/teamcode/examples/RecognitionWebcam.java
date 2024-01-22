@@ -47,47 +47,47 @@ public class RecognitionWebcam extends LinearOpMode {
         while (!isStopRequested()) {
             sleep(50);
             if (!gamepad1DpadLeftFlag && gamepad1.dpad_left) {
-                pipeline.MIDDLEREGIONX += 5;
+                pipeline.MIDDLE_REGION_X += 5;
             }
             gamepad1DpadLeftFlag = gamepad1.dpad_left;
             if (gamepad1DpadRightFlag && gamepad1.dpad_right) {
-                pipeline.MIDDLEREGIONX -= 5;
+                pipeline.MIDDLE_REGION_X -= 5;
             }
             gamepad1DpadRightFlag = gamepad1.dpad_right;
             if (!gamepad1DpadUpFlag && gamepad1.dpad_up) {
-                pipeline.MIDDLEREGIONY += 5;
-                pipeline.LEFTREGIONY += 5;
+                pipeline.MIDDLE_REGION_Y += 5;
+                pipeline.LEFT_REGION_Y += 5;
             }
             gamepad1DpadUpFlag = gamepad1.dpad_up;
             if (!gamepad1DpadDownFlag && gamepad1.dpad_down) {
-                pipeline.MIDDLEREGIONY -= 5;
-                pipeline.LEFTREGIONX -= 5;
+                pipeline.MIDDLE_REGION_Y -= 5;
+                pipeline.LEFT_REGION_X -= 5;
             }
             gamepad1DpadDownFlag = gamepad1.dpad_down;
             if (!gamepad1AFlag && gamepad1.a) {
-                pipeline.MAXVALCB += 2;
+                pipeline.MAXVAL_CB += 2;
             }
             gamepad1AFlag = gamepad1.a;
             if (!gamepad1BFlag && gamepad1.b) {
-                pipeline.MAXVALCB -= 2;
+                pipeline.MAXVAL_CB -= 2;
             }
             gamepad1BFlag = gamepad1.b;
             if (!gamepad1XFlag && gamepad1.x) {
-                pipeline.THRESHCR += 2;
+                pipeline.THRESH_CR += 2;
             }
             gamepad1XFlag = gamepad1.x;
             if (!gamepad1YFlag && gamepad1.y) {
-                pipeline.THRESHCR -= 2;
+                pipeline.THRESH_CR -= 2;
             }
             gamepad1YFlag = gamepad1.y;
             telemetry.addData("position is ", pipeline.getAnalysis());
             telemetry.addData("avgLeft is ", pipeline.getAvgLeft());
             telemetry.addData("avgMiddle is", pipeline.getAvgMiddle());
             telemetry.addData("avgRight is", pipeline.getAvgRight());
-            telemetry.addData("shiftRightLeft", pipeline.MIDDLEREGIONX);
-            telemetry.addData("shiftUpDowm", pipeline.MIDDLEREGIONY);
-            telemetry.addData("thresh", pipeline.THRESHCB);
-            telemetry.addData("maxval", pipeline.MAXVALCB);
+            telemetry.addData("shiftRightLeft", pipeline.MIDDLE_REGION_X);
+            telemetry.addData("shiftUpDowm", pipeline.MIDDLE_REGION_Y);
+            telemetry.addData("thresh", pipeline.THRESH_CB);
+            telemetry.addData("maxval", pipeline.MAXVAL_CB);
             telemetry.update();
         }
 

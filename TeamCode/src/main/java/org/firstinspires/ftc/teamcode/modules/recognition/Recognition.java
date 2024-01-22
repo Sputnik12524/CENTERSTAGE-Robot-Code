@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.modules.recognition;
 
 import com.acmerobotics.dashboard.config.Config;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -11,21 +10,19 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-import java.util.LinkedList;
-
 
 @Config
 public class Recognition extends OpenCvPipeline {
-    public static int LEFTREGIONX = 10, MIDDLEREGIONX = 135, RIGHTREGIONX = 270, LEFTREGIONY = 155,RIGHTREGIONY = 155,MIDDLEREGIONY = 130;
-    public static int  THRESHCB = 150, THRESHCR = 120, MAXVALCB = 255, MAXVALCR = 255;
-    public static int allianceColor = 1; //  0 - red alliance
+    public static int LEFT_REGION_X = 10, MIDDLE_REGION_X = 135, RIGHT_REGION_X = 270, LEFT_REGION_Y = 155,RIGHT_REGION_Y = 155, MIDDLE_REGION_Y = 130;
+    public static int THRESH_CB = 150, THRESH_CR = 120, MAXVAL_CB = 255, MAXVAL_CR = 255;
+    public static int ALLIANCE_COLOR = 1; //  0 - red alliance
                                     //  1 - blue alliance
-    public static int output = 0;
+    public static int OUTPUT = 0;
     private static final int VALUEFORRECOGNITION = 150; // В Cb - синий, в Cr - красный
     public Position position = Position.MIDDLE;
-    private Point regionLeftTopLeftAnchorPoint = new Point(LEFTREGIONX, LEFTREGIONY);
-    private Point regionMiddleTopLeftAnchorPoint = new Point(MIDDLEREGIONX, MIDDLEREGIONY);
-    private Point regionRightTopLeftAnchorPoint = new Point(RIGHTREGIONX, RIGHTREGIONY);
+    private Point regionLeftTopLeftAnchorPoint = new Point(LEFT_REGION_X, LEFT_REGION_Y);
+    private Point regionMiddleTopLeftAnchorPoint = new Point(MIDDLE_REGION_X, MIDDLE_REGION_Y);
+    private Point regionRightTopLeftAnchorPoint = new Point(RIGHT_REGION_X, RIGHT_REGION_Y);
     private int REGION_WIDTH = 25;
     private int REGION_HEIGHT = 25;
 
@@ -79,17 +76,17 @@ public class Recognition extends OpenCvPipeline {
     void inputToCb(Mat input) {
         Imgproc.cvtColor(input, cb, Imgproc.COLOR_RGB2YCrCb);
         Core.extractChannel(cb, bin, 2);
-        Imgproc.threshold(bin, bin, THRESHCB, MAXVALCB, Imgproc.THRESH_BINARY);
+        Imgproc.threshold(bin, bin, THRESH_CB, MAXVAL_CB, Imgproc.THRESH_BINARY);
     }
 
     void inputToCr(Mat input) {
         Imgproc.cvtColor(input, cr, Imgproc.COLOR_RGB2YCrCb);
         Core.extractChannel(cr, bin, 2);
-        Imgproc.threshold(bin, bin, THRESHCR, MAXVALCR, Imgproc.THRESH_BINARY_INV);
+        Imgproc.threshold(bin, bin, THRESH_CR, MAXVAL_CR, Imgproc.THRESH_BINARY_INV);
     }
 
     void setAllianceColor(int alliance){
-        allianceColor = alliance;
+        ALLIANCE_COLOR = alliance;
     }
 
     public void depictingRegions(Position team_element, Mat input) {
@@ -124,7 +121,7 @@ public class Recognition extends OpenCvPipeline {
 
     @Override
     public void init(Mat firstFrame) {
-        if (allianceColor == 1)
+        if (ALLIANCE_COLOR == 1)
             inputToCb(firstFrame);
         else inputToCr(firstFrame);
         /*
@@ -155,7 +152,7 @@ public class Recognition extends OpenCvPipeline {
         /*
          *Получить канал Cb входного кадра после преобразования в YCrCb
          */
-        if (allianceColor == 1)
+        if (ALLIANCE_COLOR == 1)
             inputToCb(input);
         else inputToCr(input);        /*
          * Вычислите среднее значение пикселя для каждой области ПодМата.
@@ -204,7 +201,7 @@ public class Recognition extends OpenCvPipeline {
             }
         }
         depictingRegions(position, input);
-        if (output == 0)
+        if (OUTPUT == 0)
             return bin;
         else
             return input;
