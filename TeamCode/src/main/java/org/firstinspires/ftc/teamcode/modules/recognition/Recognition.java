@@ -18,7 +18,7 @@ public class Recognition extends OpenCvPipeline {
     public static int ALLIANCE_COLOR = 1; //  0 - red alliance
                                     //  1 - blue alliance
     public static int OUTPUT = 0;
-    private static final int VALUEFORRECOGNITION = 150; // В Cb - синий, в Cr - красный
+    private static final int VALUE_FOR_RECOGNITION = 150; // В Cb - синий, в Cr - красный
     public Position position = Position.MIDDLE;
     private Point regionLeftTopLeftAnchorPoint = new Point(LEFT_REGION_X, LEFT_REGION_Y);
     private Point regionMiddleTopLeftAnchorPoint = new Point(MIDDLE_REGION_X, MIDDLE_REGION_Y);
@@ -189,13 +189,13 @@ public class Recognition extends OpenCvPipeline {
                 regionRight_pointB, // вторая точка, которая распознает прямоугольник
                 BLUE, // Цвет, которым нарисован прямоугольник
                 2); // Толщина линий прямоугольника
-        if (avgLeft > VALUEFORRECOGNITION && avgRight < VALUEFORRECOGNITION && avgMiddle < VALUEFORRECOGNITION) {
+        if (avgLeft > VALUE_FOR_RECOGNITION && avgRight < VALUE_FOR_RECOGNITION && avgMiddle < VALUE_FOR_RECOGNITION) {
             position = Position.LEFT;
         } else {
-            if (avgLeft < VALUEFORRECOGNITION && avgRight < VALUEFORRECOGNITION && avgMiddle > VALUEFORRECOGNITION) {
+            if (avgLeft < VALUE_FOR_RECOGNITION && avgRight < VALUE_FOR_RECOGNITION && avgMiddle > VALUE_FOR_RECOGNITION) {
                 position = Position.MIDDLE;
             } else {
-                if (avgLeft < VALUEFORRECOGNITION && avgRight > VALUEFORRECOGNITION && avgMiddle < VALUEFORRECOGNITION) {
+                if (avgLeft < VALUE_FOR_RECOGNITION && avgRight > VALUE_FOR_RECOGNITION && avgMiddle < VALUE_FOR_RECOGNITION) {
                     position = Position.RIGHT;
                 }
             }
