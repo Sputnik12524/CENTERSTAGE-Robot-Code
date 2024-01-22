@@ -1,10 +1,11 @@
-package org.firstinspires.ftc.teamcode.modules.recognition;
+package org.firstinspires.ftc.teamcode.examples;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.modules.recognition.Recognition;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -46,47 +47,47 @@ public class RecognitionWebcam extends LinearOpMode {
         while (!isStopRequested()) {
             sleep(50);
             if (!gamepad1DpadLeftFlag && gamepad1.dpad_left) {
-                pipeline.middleRegionX += 5;
+                pipeline.MIDDLEREGIONX += 5;
             }
             gamepad1DpadLeftFlag = gamepad1.dpad_left;
             if (gamepad1DpadRightFlag && gamepad1.dpad_right) {
-                pipeline.middleRegionX -= 5;
+                pipeline.MIDDLEREGIONX -= 5;
             }
             gamepad1DpadRightFlag = gamepad1.dpad_right;
             if (!gamepad1DpadUpFlag && gamepad1.dpad_up) {
-                pipeline.middleRegionY += 5;
-                pipeline.leftRegionX += 5;
+                pipeline.MIDDLEREGIONY += 5;
+                pipeline.LEFTREGIONY += 5;
             }
             gamepad1DpadUpFlag = gamepad1.dpad_up;
             if (!gamepad1DpadDownFlag && gamepad1.dpad_down) {
-                pipeline.middleRegionY -= 5;
-                pipeline.leftRegionX -= 5;
+                pipeline.MIDDLEREGIONY -= 5;
+                pipeline.LEFTREGIONX -= 5;
             }
             gamepad1DpadDownFlag = gamepad1.dpad_down;
             if (!gamepad1AFlag && gamepad1.a) {
-                pipeline.maxvalCb += 2;
+                pipeline.MAXVALCB += 2;
             }
             gamepad1AFlag = gamepad1.a;
             if (!gamepad1BFlag && gamepad1.b) {
-                pipeline.maxvalCb -= 2;
+                pipeline.MAXVALCB -= 2;
             }
             gamepad1BFlag = gamepad1.b;
             if (!gamepad1XFlag && gamepad1.x) {
-                pipeline.threshCr += 2;
+                pipeline.THRESHCR += 2;
             }
             gamepad1XFlag = gamepad1.x;
             if (!gamepad1YFlag && gamepad1.y) {
-                pipeline.threshCr -= 2;
+                pipeline.THRESHCR -= 2;
             }
             gamepad1YFlag = gamepad1.y;
             telemetry.addData("position is ", pipeline.getAnalysis());
             telemetry.addData("avgLeft is ", pipeline.getAvgLeft());
             telemetry.addData("avgMiddle is", pipeline.getAvgMiddle());
             telemetry.addData("avgRight is", pipeline.getAvgRight());
-            telemetry.addData("shiftRightLeft", pipeline.middleRegionX);
-            telemetry.addData("shiftUpDowm", pipeline.middleRegionY);
-            telemetry.addData("thresh", pipeline.threshCb);
-            telemetry.addData("maxval", pipeline.maxvalCb);
+            telemetry.addData("shiftRightLeft", pipeline.MIDDLEREGIONX);
+            telemetry.addData("shiftUpDowm", pipeline.MIDDLEREGIONY);
+            telemetry.addData("thresh", pipeline.THRESHCB);
+            telemetry.addData("maxval", pipeline.MAXVALCB);
             telemetry.update();
         }
 
