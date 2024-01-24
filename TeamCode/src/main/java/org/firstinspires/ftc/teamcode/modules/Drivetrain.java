@@ -19,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
 public class Drivetrain {
+    private double sumErr;
     private final LinearOpMode opMode;
 
     private final DcMotor leftFrontDrive;
@@ -45,7 +46,7 @@ public class Drivetrain {
     public static double kP = 0.0225;
     public static double kD = 0.012;
     public static double kI = 0.017;
-
+    ElapsedTime calcTime = new ElapsedTime();
     /**
      * Конструктор: инициализирует моторы робота и OpMode:
      * lf - левый передний
@@ -285,7 +286,14 @@ public class Drivetrain {
         }
         stop();
     }
-
+    private void calculatePIDPower(double kP, double kI, double kD, double d){
+            double power;
+            double err = imu.getAngles();
+            double prewErr = err;
+            sumErr = sumErr + calcTime.milliseconds() * err;
+            power = kP * err +sumErr * kI + kD * (err - prewErr)/calcTime.milliseconds();
+            calcTime.reset();
+    }
     /**
      * Поворот робота на градус(d) от его положения в момент
      *
