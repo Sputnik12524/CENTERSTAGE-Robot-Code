@@ -16,6 +16,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 
 @Config
 public class Drivetrain {
@@ -290,7 +291,10 @@ public class Drivetrain {
     private void calculatePIDPower(double d){
             double power;
             double err = 0;
-            err = d - imu.getAngles();
+            if (Math.abs(d- imu.getAngles()) <= 180)
+                err = d - imu.getAngles();
+            else
+                err = d - imu.getAngles() - Math.signum(d- imu.getAngles())*360;
             prevErr = err;
             sumErr = sumErr + calcTime.milliseconds() * err;
             power = kP * err +sumErr * kI + kD * (err - prevErr)/calcTime.milliseconds();
