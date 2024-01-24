@@ -20,6 +20,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @Config
 public class Drivetrain {
     private double sumErr;
+    private double prevErr = 0;
     private final LinearOpMode opMode;
 
     private final DcMotor leftFrontDrive;
@@ -43,9 +44,9 @@ public class Drivetrain {
     public static double ANGLES_TOLERANCE = 0.5;
     public static double D_TOLERANCE = 8;
     public static double COURSEPID_MAX_TIME = 5;
-    public static double kP = 0.0225;
-    public static double kD = 0.012;
-    public static double kI = 0.017;
+    private static double kP = 0.0225;
+    private static double kD = 0.012;
+    private static double kI = 0.017;
     ElapsedTime calcTime = new ElapsedTime();
     /**
      * Конструктор: инициализирует моторы робота и OpMode:
@@ -286,12 +287,13 @@ public class Drivetrain {
         }
         stop();
     }
-    private void calculatePIDPower(double kP, double kI, double kD, double d){
+    private void calculatePIDPower(double d){
             double power;
-            double err = imu.getAngles();
-            double prewErr = err;
+            double err = 0;
+            err = d - imu.getAngles();
+            prevErr = err;
             sumErr = sumErr + calcTime.milliseconds() * err;
-            power = kP * err +sumErr * kI + kD * (err - prewErr)/calcTime.milliseconds();
+            power = kP * err +sumErr * kI + kD * (err - prevErr)/calcTime.milliseconds();
             calcTime.reset();
     }
     /**
