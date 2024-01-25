@@ -262,7 +262,10 @@ public class Drivetrain {
         stop();
     }
 
-    public void driveSidePid(double tick1, double powerX, double angle) {
+    public void driveLeftPid(double tick1, double powerX, double angle) {
+        driveRawPower(tick1,-powerX,0.5*calculatePIDPower(angle));
+    }
+    public void driverightPid(double tick1, double powerX, double angle) {
         driveRawPower(tick1,powerX,0.5*calculatePIDPower(angle));
     }
     /**
