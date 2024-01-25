@@ -154,66 +154,11 @@ public class Drivetrain {
         setPower(calculatePower(x, y, r));
     }
 
-    public void driveCoeffPower(double x, double y, double r) {
-        setPower(calculatePower(x * kX, y * kY, r * kR));
-    }
-
-    /**
-     * Состояние работы мотора
-     *
-     * @return Истина если моторы заняты и подается достаточная минимальная сила
-     */
-    public boolean isBusy() {
-        boolean busy = leftFrontDrive.isBusy() &&
-                rightFrontDrive.isBusy() &&
-                leftBackDrive.isBusy() &&
-                rightBackDrive.isBusy();
-
-        boolean pows = (Math.abs(leftFrontDrive.getPower()) +
-                Math.abs(rightFrontDrive.getPower()) +
-                Math.abs(leftBackDrive.getPower()) +
-                Math.abs(rightBackDrive.getPower())) > 0.05;
-
-        return busy && pows;
-    }
-
     /**
      * Устанавливает нулевую силу на моторы, останавливая их
      */
     public void stop() {
         setPower(new double[]{0, 0, 0, 0});
-    }
-
-    /**
-     * Метод движения по времени вперед
-     * Метод движения по времени назад
-     * Метод движения по времени вправо
-     * Метод движения по времени налево
-     *
-     * @param ms время движения
-     */
-    public void driveFront(double y, long ms) {
-        driveCoeffPower(0, y, 0);
-        opMode.sleep(ms);
-        stop();
-    }
-
-    public void driveBack(double y, long ms) {
-        driveCoeffPower(0, -y, 0);
-        opMode.sleep(ms);
-        stop();
-    }
-
-    public void driveRight(double x, long ms) {
-        driveCoeffPower(x, 0, 0);
-        opMode.sleep(ms);
-        stop();
-    }
-
-    public void driveLeft(double x, long ms) {
-        driveCoeffPower(-x, 0, 0);
-        opMode.sleep(ms);
-        stop();
     }
 
     public void dataTelePositions() {
@@ -288,7 +233,7 @@ public class Drivetrain {
         }
         stop();
     }
-    private void calculatePIDPower(double d){
+    private double calculatePIDPower(double d){
             double power;
             double err = 0;
             if (Math.abs(d- imu.getAngles()) <= 180)
@@ -299,6 +244,7 @@ public class Drivetrain {
             sumErr = sumErr + calcTime.milliseconds() * err;
             power = kP * err +sumErr * kI + kD * (err - prevErr)/calcTime.milliseconds();
             calcTime.reset();
+            return power;
     }
     /**
      * Поворот робота на градус(d) от его положения в момент
@@ -306,26 +252,19 @@ public class Drivetrain {
      * @param d - градус
      */
     public void rotate(double d) {
-        d = -d; //меняем знак из-за
-        double dSign = -Math.signum(d); // берём направление поворота: налево или направо по знаку
-        d += imu.getAngles(); // прибавляем к повороту наше положение в градусах
-        if (d < -180) { // если сумма меньше -180, для её совместимости с гироскопом прибавляем 360 градусов
-            d += 360;
-        }
-        if (d > 180) { // если сумма больше 180 градусов, для её совместимости с гироскопом вычитаем 360 градусов
-            d -= 360;
-        }
-        while (((imu.getAngles() < d - GYRO_COURSE_TOLERANCE) ||
-                (imu.getAngles() > d + GYRO_COURSE_TOLERANCE)) && opMode.opModeIsActive()) {
-            driveRawPower(0, 0, rotatePower * dSign); // поворачиваем с учётом направлением поворота
+        while (imu.getAngles() < d){
+            driveRawPower(0, 0, 0.5 * calculatePIDPower(d));
             opMode.telemetry.addData("Angle:", imu.getAngles());
-            opMode.telemetry.addData("Rotate:", d);
+            opMode.telemetry.addData("d:", d);
             opMode.telemetry.update();
 
         }
         stop();
     }
 
+    public void driveSidePid(double tick1, double powerX, double angle) {
+        driveRawPower(tick1,powerX,0.5*calculatePIDPower(angle));
+    }
     /**
      * Поворот робота на курс(с) от его положения инициализации с помощью PID-регулятора
      * course - [0, 360] - заданное значение
@@ -339,9 +278,9 @@ public class Drivetrain {
      * setTime - время установки на курс
      * deltaTime - время обновления показаний
      *
-     * @param course - курс в градусах, заданное значение
+     * param course - курс в градусах, заданное значение
      */
-    public void coursePID(double course) {
+    /*public void coursePID(double course) { // прошлогодний
         course = (course + 180) % 360;
         double courseSign = 1;//Math.signum(course - imu.getAngles());
         double d0 = angleDiff(course, imu.getAngles());
@@ -383,16 +322,6 @@ public class Drivetrain {
         setTime.reset();
     }
 
-    public void rotatePID(double course) {
-        course += imu.getAngles();
-        if (course > 360) {
-            course -= 360;
-        } else if (course < 0) {
-            course += 360;
-        }
-        coursePID(course);
-    }
-
     public double angleDiff(double a, double b) {
         double d = a - b;
         if (d < -180) {
@@ -401,7 +330,7 @@ public class Drivetrain {
             d -= 360;
         }
         return d;
-    }
+    }*/
 
     public double dFrontier(double d) {
         return (Math.abs(d) < D_TOLERANCE) ? d : 0;
