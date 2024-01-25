@@ -16,7 +16,6 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.internal.camera.delegating.DelegatingCaptureSequence;
 
 @Config
 public class Drivetrain {
@@ -185,7 +184,7 @@ public class Drivetrain {
         int position2 = rightFrontDrive.getCurrentPosition();
         int position3 = leftBackDrive.getCurrentPosition();
         int position4 = rightBackDrive.getCurrentPosition();
-        driveRawPower(powerX, powerY, 0);
+        driveRawPower(powerX, powerY, calculatePIDPower(0));
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         while (!(leftFrontDrive.getPower() == 0 &&
                 rightFrontDrive.getPower() == 0 &&
@@ -252,21 +251,13 @@ public class Drivetrain {
      * @param d - градус
      */
     public void rotate(double d) {
-        while (imu.getAngles() < d){
-            driveRawPower(0, 0, 0.5 * calculatePIDPower(d));
+        while (imu.getAngles() < d && opMode.opModeIsActive()){
+            driveRawPower(0, 0, calculatePIDPower(d));
             opMode.telemetry.addData("Angle:", imu.getAngles());
             opMode.telemetry.addData("d:", d);
             opMode.telemetry.update();
-
         }
         stop();
-    }
-
-    public void driveLeftPid(double tick1, double powerX, double angle) {
-        driveRawPower(tick1,-powerX,0.5*calculatePIDPower(angle));
-    }
-    public void driverightPid(double tick1, double powerX, double angle) {
-        driveRawPower(tick1,powerX,0.5*calculatePIDPower(angle));
     }
     /**
      * Поворот робота на курс(с) от его положения инициализации с помощью PID-регулятора
@@ -369,6 +360,4 @@ public class Drivetrain {
         double[] powers = {u1, u2, u1, u2};
         setPower(powers);
     }
-
-
 }
