@@ -38,17 +38,14 @@ public class Drivetrain {
 
     public static final double GYRO_COURSE_TOLERANCE = 2;
     public static double slow = 0.65; /*отвечает за замедление скорости езды робота. Если хотим ускорить робота, повышаем её.*/
-    public static double R_SLOW = 1;
-    public static double ANGULAR_VELOCITY_TOLERANCE = 1;
-    public static double P_ANGLE_TOLERANCE = 0;
-    public static double ANGLES_TOLERANCE = 0.5;
     public static double D_TOLERANCE = 8;
     public static double COURSEPID_MAX_TIME = 5;
-    private static double kP = 0.0225;
-    private static double kD = 0.012;
-    private static double kI = 0.017;
+    public static double kP = 0.0225;
+    public static double kD = 0.012;
+    public static double kI = 0.017;
     private final static double ROTATE_ACCURACY = 1;
-    ElapsedTime calcTime = new ElapsedTime();
+    private ElapsedTime calcTime = new ElapsedTime();
+
     /**
      * Конструктор: инициализирует моторы робота и OpMode:
      * lf - левый передний
@@ -66,7 +63,6 @@ public class Drivetrain {
         rightFrontDrive = hm.get(DcMotor.class, "rb");
         rightBackDrive = hm.get(DcMotor.class, "rf");
         imu = new ImuSensor(opMode);
-        //mh = new MetryHandler(opMode);
         tm = opMode.telemetry;
 
     }
@@ -219,6 +215,7 @@ public class Drivetrain {
         rightBackDrive.setPower(0);
         rightFrontDrive.setPower(0);
     }
+
     private double angleDiff(double a, double b) {
         double d = a - b;
         if (d < -180) {
@@ -229,132 +226,32 @@ public class Drivetrain {
         return d;
     }
 
-    private double calculatePIDPower(double d){
-            double power;
-            double err = 0;
-            if (Math.abs(d- imu.getAngles()) <= 180)
-                err = d - imu.getAngles();
-            else
-                err = d - imu.getAngles() - Math.signum(d- imu.getAngles())*360;
-            sumErr = sumErr + calcTime.milliseconds() * err;
-            power = kP * err +sumErr * kI + kD * (err - prevErr)/calcTime.seconds();
-            calcTime.reset();
-            prevErr = err;
-            return power;
+    private double calculatePIDPower(double d) {
+        double power;
+        double err = 0;
+        if (Math.abs(d - imu.getAngles()) <= 180)
+            err = d - imu.getAngles();
+        else
+            err = d - imu.getAngles() - Math.signum(d - imu.getAngles()) * 360;
+        sumErr = sumErr + calcTime.milliseconds() * err;
+        power = kP * err + sumErr * kI + kD * (err - prevErr) / calcTime.seconds();
+        calcTime.reset();
+        prevErr = err;
+        return power;
     }
+
     /**
      * Поворот робота на градус(d) от его положения в момент
      *
      * @param d - градус
      */
     public void rotate(double d) {
-        while (angleDiff(imu.getAngles(), d) < ROTATE_ACCURACY && opMode.opModeIsActive()){
+        while (Math.abs(angleDiff(imu.getAngles(), d)) < ROTATE_ACCURACY && opMode.opModeIsActive()) {
             driveRawPower(0, 0, calculatePIDPower(d));
             opMode.telemetry.addData("Angle:", imu.getAngles());
             opMode.telemetry.addData("d:", d);
             opMode.telemetry.update();
         }
         stop();
-    }
-    /**
-     * Поворот робота на курс(с) от его положения инициализации с помощью PID-регулятора
-     * course - [0, 360] - заданное значение
-     * kP, kI, kD - коэффициенты PID
-     * d0 - ошибка
-     * d1 - ошибка спустя время обновления показаний датчиков
-     * dDerivative - производная ошибки
-     * dIntegral - интеграл ошибки
-     * u - управляющее воздействие
-     * calcTime - период про
-     * setTime - время установки на курс
-     * deltaTime - время обновления показаний
-     *
-     * param course - курс в градусах, заданное значение
-     */
-    /*public void coursePID(double course) { // прошлогодний
-        course = (course + 180) % 360;
-        double courseSign = 1;//Math.signum(course - imu.getAngles());
-        double d0 = angleDiff(course, imu.getAngles());
-        double d1 = angleDiff(course, imu.getAngles());
-
-        ElapsedTime calcTime = new ElapsedTime();
-        ElapsedTime setTime = new ElapsedTime();
-        ElapsedTime deltaTime = new ElapsedTime();
-
-        double dIntegral = 0;
-        double dDerivative = (d1 - d0) / (calcTime.nanoseconds() * 10e-9);
-        double u = kP * (d1 - P_ANGLE_TOLERANCE) + kI * dIntegral + kD * dDerivative;
-
-        setTime.reset();
-        calcTime.reset();
-        deltaTime.reset();
-
-        while (opMode.opModeIsActive() &&
-                ((Math.abs(d0) > ANGLES_TOLERANCE) ||
-                        (Math.abs(imu.getAngularVelocity()) > ANGULAR_VELOCITY_TOLERANCE))) {
-            deltaTime.reset();
-            d1 = angleDiff(course, imu.getAngles());
-            dDerivative = (d1 - d0) / (calcTime.nanoseconds() * 10e-9);
-            dIntegral += dFrontier(d1) * calcTime.nanoseconds() * 10e-9;
-
-            u = kP * (d1 - P_ANGLE_TOLERANCE) + kI * dIntegral + kD * dDerivative;
-            driveRawPower(0, 0, u * courseSign);
-            d0 = course - imu.getAngles();
-
-            calcTime.reset();
-
-
-            if (setTime.seconds() > COURSEPID_MAX_TIME) {
-                break;
-            }
-
-        }
-        stop();
-        setTime.reset();
-    }
-
-    public double angleDiff(double a, double b) {
-        double d = a - b;
-        if (d < -180) {
-            d += 360;
-        } else if (d > 180) {
-            d -= 360;
-        }
-        return d;
-    }*/
-
-    public double dFrontier(double d) {
-        return (Math.abs(d) < D_TOLERANCE) ? d : 0;
-    }
-
-    /**
-     * Метод проверки моторов.
-     * каждая переменная отвечает за свой мотор.
-     */
-    public void checkMotors(boolean lf, boolean rf, boolean lb, boolean rb) {
-        if (lf) {
-            leftFrontDrive.setPower(slow);
-        }
-        if (rf) {
-            rightFrontDrive.setPower(slow);
-        }
-        if (lb) {
-            leftBackDrive.setPower(slow);
-        }
-        if (rb) {
-            rightBackDrive.setPower(slow);
-        } else {
-            stop();
-        }
-    }
-
-    public void driveFlawless(double x, double y, double r) {
-        double angle = acos(x) * (y < 0 ? -1 : 1) + imu.getRadians();
-        double capacity = sqrt(x * x + y * y);
-        double p = PI / 4;
-        double u1 = capacity * sin(angle - p) + r;
-        double u2 = capacity * sin(angle + p) + r;
-        double[] powers = {u1, u2, u1, u2};
-        setPower(powers);
     }
 }
