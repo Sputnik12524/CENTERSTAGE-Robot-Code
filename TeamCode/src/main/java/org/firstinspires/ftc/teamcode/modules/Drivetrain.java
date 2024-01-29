@@ -47,6 +47,7 @@ public class Drivetrain {
     private static double kP = 0.0225;
     private static double kD = 0.012;
     private static double kI = 0.017;
+    private final static double ROTATE_ACCURACY = 1;
     ElapsedTime calcTime = new ElapsedTime();
     /**
      * Конструктор: инициализирует моторы робота и OpMode:
@@ -172,19 +173,20 @@ public class Drivetrain {
     }
 
     public void driveEncoderSide(double tick1, double powerX) {
-        driveEncoder(tick1, powerX, 0, 0 );
+        driveEncoder(tick1, powerX, 0);
     }
 
     public void driveEncoder(double tick1, double powerY) {
-        driveEncoder(tick1, 0, powerY, 0);
+        driveEncoder(tick1, 0, powerY);
     }
 
-    public void driveEncoder(double tick1, double powerX, double powerY, double angle) {
+    public void driveEncoder(double tick1, double powerX, double powerY) {
         int position1 = leftFrontDrive.getCurrentPosition();
         int position2 = rightFrontDrive.getCurrentPosition();
         int position3 = leftBackDrive.getCurrentPosition();
         int position4 = rightBackDrive.getCurrentPosition();
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
+        double angle = imu.getAngles();
         while (!(leftFrontDrive.getPower() == 0 &&
                 rightFrontDrive.getPower() == 0 &&
                 leftBackDrive.getPower() == 0 &&
@@ -226,6 +228,7 @@ public class Drivetrain {
         }
         return d;
     }
+
     private double calculatePIDPower(double d){
             double power;
             double err = 0;
@@ -234,7 +237,7 @@ public class Drivetrain {
             else
                 err = d - imu.getAngles() - Math.signum(d- imu.getAngles())*360;
             sumErr = sumErr + calcTime.milliseconds() * err;
-            power = kP * err +sumErr * kI + kD * (err - prevErr)/calcTime.milliseconds();
+            power = kP * err +sumErr * kI + kD * (err - prevErr)/calcTime.seconds();
             calcTime.reset();
             prevErr = err;
             return power;
@@ -245,7 +248,7 @@ public class Drivetrain {
      * @param d - градус
      */
     public void rotate(double d) {
-        while (angleDiff(imu.getAngles(), d) != 0 && opMode.opModeIsActive()){
+        while (angleDiff(imu.getAngles(), d) < ROTATE_ACCURACY && opMode.opModeIsActive()){
             driveRawPower(0, 0, calculatePIDPower(d));
             opMode.telemetry.addData("Angle:", imu.getAngles());
             opMode.telemetry.addData("d:", d);
