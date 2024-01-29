@@ -172,19 +172,18 @@ public class Drivetrain {
     }
 
     public void driveEncoderSide(double tick1, double powerX) {
-        driveEncoder(tick1, powerX, 0);
+        driveEncoder(tick1, powerX, 0, 0 );
     }
 
     public void driveEncoder(double tick1, double powerY) {
-        driveEncoder(tick1, 0, powerY);
+        driveEncoder(tick1, 0, powerY, 0);
     }
 
-    public void driveEncoder(double tick1, double powerX, double powerY) {
+    public void driveEncoder(double tick1, double powerX, double powerY, double angle) {
         int position1 = leftFrontDrive.getCurrentPosition();
         int position2 = rightFrontDrive.getCurrentPosition();
         int position3 = leftBackDrive.getCurrentPosition();
         int position4 = rightBackDrive.getCurrentPosition();
-        driveRawPower(powerX, powerY, calculatePIDPower(0));
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         while (!(leftFrontDrive.getPower() == 0 &&
                 rightFrontDrive.getPower() == 0 &&
@@ -195,6 +194,7 @@ public class Drivetrain {
             int rightFrontDifference = Math.abs(position2 - rightFrontDrive.getCurrentPosition());
             int leftBackDifference = Math.abs(position3 - leftBackDrive.getCurrentPosition());
             int rightBackDifference = Math.abs(position4 - rightBackDrive.getCurrentPosition());
+            driveRawPower(powerX, powerY, calculatePIDPower(angle));
             if (leftFrontDifference >= tick1) {
                 leftFrontDrive.setPower(0);
             }
@@ -217,20 +217,14 @@ public class Drivetrain {
         rightBackDrive.setPower(0);
         rightFrontDrive.setPower(0);
     }
-
-    /**
-     * Поворот робота на курс(с) от его положения инициализации
-     *
-     * @param c - курс в градусах
-     */
-    public void course(double c) {
-        while ((((imu.getAngles() < c - GYRO_COURSE_TOLERANCE) || (imu.getAngles() > c + GYRO_COURSE_TOLERANCE)) && opMode.opModeIsActive())) {
-            driveRawPower(0, 0, rotatePower);
-            tm.addData("Angle:", imu.getAngles());
-            tm.addData("Course:", c);
-            tm.update();
+    private double angleDiff(double a, double b) {
+        double d = a - b;
+        if (d < -180) {
+            d += 360;
+        } else if (d > 180) {
+            d -= 360;
         }
-        stop();
+        return d;
     }
     private double calculatePIDPower(double d){
             double power;
@@ -239,10 +233,10 @@ public class Drivetrain {
                 err = d - imu.getAngles();
             else
                 err = d - imu.getAngles() - Math.signum(d- imu.getAngles())*360;
-            prevErr = err;
             sumErr = sumErr + calcTime.milliseconds() * err;
             power = kP * err +sumErr * kI + kD * (err - prevErr)/calcTime.milliseconds();
             calcTime.reset();
+            prevErr = err;
             return power;
     }
     /**
@@ -251,7 +245,7 @@ public class Drivetrain {
      * @param d - градус
      */
     public void rotate(double d) {
-        while (imu.getAngles() < d && opMode.opModeIsActive()){
+        while (angleDiff(imu.getAngles(), d) != 0 && opMode.opModeIsActive()){
             driveRawPower(0, 0, calculatePIDPower(d));
             opMode.telemetry.addData("Angle:", imu.getAngles());
             opMode.telemetry.addData("d:", d);
