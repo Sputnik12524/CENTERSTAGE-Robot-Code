@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
+import org.firstinspires.ftc.teamcode.modules.Suspension;
 
 @TeleOp(name = "teleop", group = "teleop")
 public class MainTeleOp extends LinearOpMode {
@@ -32,6 +33,7 @@ public class MainTeleOp extends LinearOpMode {
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
         PixelDelivery pd = new PixelDelivery(this);
+        Suspension susp = new Suspension(this);
         while (opModeInInit()) {
             // единожды выполняемые действия во время инициализации
 
@@ -56,6 +58,12 @@ public class MainTeleOp extends LinearOpMode {
                 it.outtake();
             } else {
                 it.stop();
+            }
+            if (gamepad2.dpad_up){
+                susp.openSuspension();
+            }
+            else if(gamepad2.dpad_down){
+                susp.closeSuspension();
             }
 
 
