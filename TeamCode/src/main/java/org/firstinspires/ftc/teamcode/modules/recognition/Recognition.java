@@ -22,10 +22,6 @@ import org.openftc.easyopencv.OpenCvPipeline;
 
 @Config
 public class Recognition extends OpenCvPipeline {
-    int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-    OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
-
-
 
     public static int LEFT_REGION_X = 10, MIDDLE_REGION_X = 135, RIGHT_REGION_X = 270, LEFT_REGION_Y = 155,RIGHT_REGION_Y = 155, MIDDLE_REGION_Y = 130;
     public static int THRESH_CB = 150, THRESH_CR = 120, MAXVAL_CB = 255, MAXVAL_CR = 255;
@@ -146,7 +142,7 @@ public class Recognition extends OpenCvPipeline {
 
     public Mat processFrame(Mat input) {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam"), cameraMonitorViewId);
+        OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
 
         /*
          * Сначала мы преобразуем в цветовое пространство YCrCb из цветового пространства RGB.

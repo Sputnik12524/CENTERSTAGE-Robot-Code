@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static java.lang.Math.PI;
@@ -43,9 +44,9 @@ public class Drivetrain {
     public static double slow = 0.65; /*отвечает за замедление скорости езды робота. Если хотим ускорить робота, повышаем её.*/
     public static double D_TOLERANCE = 8;
     public static double COURSEPID_MAX_TIME = 5;
-    public static double kP = 0.0225;
-    public static double kD = 0.012;
-    public static double kI = 0.017;
+    public static double kP = 0.03;
+    public static double kD = 0;
+    public static double kI = 0;
     private final static double ROTATE_ACCURACY = 1;
     private ElapsedTime calcTime = new ElapsedTime();
 
@@ -65,7 +66,7 @@ public class Drivetrain {
         leftBackDrive = hm.get(DcMotor.class, "lb");
         rightFrontDrive = hm.get(DcMotor.class, "rb");
         rightBackDrive = hm.get(DcMotor.class, "rf");
-
+        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
         imu = new ImuSensor(opMode);
         tm = opMode.telemetry;
 
@@ -187,6 +188,7 @@ public class Drivetrain {
         int position4 = rightBackDrive.getCurrentPosition();
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         double angle = imu.getAngles();
+        driveRawPower(powerX, powerY, 0);
         while (!(leftFrontDrive.getPower() == 0 &&
                 rightFrontDrive.getPower() == 0 &&
                 leftBackDrive.getPower() == 0 &&

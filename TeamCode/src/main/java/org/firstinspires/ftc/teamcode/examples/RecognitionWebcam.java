@@ -17,7 +17,7 @@ public class RecognitionWebcam extends LinearOpMode {
 
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam,0);
         pipeline = new Recognition();
         webcam.setPipeline(pipeline);
