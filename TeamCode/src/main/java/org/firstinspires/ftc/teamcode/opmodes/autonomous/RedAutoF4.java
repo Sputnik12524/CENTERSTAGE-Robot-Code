@@ -71,10 +71,11 @@ public class RedAutoF4 extends LinearOpMode {
         }
         else if(pipeline.getAnalysis() == LEFT){
             dt.driveEncoder(400,-0.4);
-            dt.driveEncoderSide(400,-0.4);
-            dt.driveEncoder(100,-0.4);
-            dt.driveEncoderSide(200, 0.4);
+            dt.driveEncoderSide(250,-0.4);
+            dt.driveEncoder(100,0.4);
             pd.setForPurple(0);
+            sleep(1000);
+            dt.driveEncoderSide(200, 0.4);
             dt.driveEncoder(400,0.4);
         }
         dt.driveEncoderSide(1500,-0.4);

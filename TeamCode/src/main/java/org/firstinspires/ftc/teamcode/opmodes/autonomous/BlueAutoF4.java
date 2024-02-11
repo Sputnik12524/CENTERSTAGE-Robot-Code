@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
-import static org.firstinspires.ftc.teamcode.modules.recognition.Position.LEFT;
 import static org.firstinspires.ftc.teamcode.modules.recognition.Position.MIDDLE;
 import static org.firstinspires.ftc.teamcode.modules.recognition.Position.RIGHT;
 
@@ -58,12 +57,7 @@ public class BlueAutoF4 extends LinearOpMode {
 
         // единожды выполняемые действия после запуска сценария
         dt.driveEncoder(200, -0.4);
-        if (pipeline.getAnalysis() == LEFT) { //элемент слева
-            dt.driveEncoderSide(520, 0.4);
-            pd.setForPurple(0);
-            sleep(1000);
-            dt.driveEncoder(300, 0.4);
-        } else if (pipeline.getAnalysis() == MIDDLE){
+        if (pipeline.getAnalysis() == MIDDLE){
             dt.driveEncoder(600,-0.4);
             pd.setForPurple(0);
             sleep(1000);

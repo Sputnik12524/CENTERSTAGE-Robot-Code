@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules.recognition;
 
 public enum Position {
-    LEFT,     /*1*/
+    LEFT,
     MIDDLE,  /*2*/
     RIGHT;   /*3*/
 }

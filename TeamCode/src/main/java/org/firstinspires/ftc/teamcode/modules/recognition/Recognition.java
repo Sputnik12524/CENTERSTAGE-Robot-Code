@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules.recognition;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.teamcode.modules.recognition.Position.LEFT;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -23,30 +24,23 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @Config
 public class Recognition extends OpenCvPipeline {
 
-    public static int LEFT_REGION_X = 10, MIDDLE_REGION_X = 135, RIGHT_REGION_X = 270, LEFT_REGION_Y = 155,RIGHT_REGION_Y = 155, MIDDLE_REGION_Y = 130;
+    public static int LEFT_REGION_X = 10, MIDDLE_REGION_X = 120, RIGHT_REGION_X = 270, LEFT_REGION_Y = 155,RIGHT_REGION_Y = 155, MIDDLE_REGION_Y = 130;
     public static int THRESH_CB = 150, THRESH_CR = 120, MAXVAL_CB = 255, MAXVAL_CR = 255;
-    public static int ALLIANCE_COLOR = 1; //  0 - red alliance
+    public static int ALLIANCE_COLOR = 0; //  0 - red alliance
                                     //  1 - blue alliance
-    public static int OUTPUT = 0;
-    private static final int VALUE_FOR_RECOGNITION = 150; // В Cb - синий, в Cr - красный
-    public Position position = Position.MIDDLE;
-    private Point regionLeftTopLeftAnchorPoint = new Point(LEFT_REGION_X, LEFT_REGION_Y);
+    public static int OUTPUT = 1;
+    private static final int VALUE_FOR_RECOGNITION = 200; // В Cb - синий, в Cr - красный
+    public Position position = Position.LEFT;
     private Point regionMiddleTopLeftAnchorPoint = new Point(MIDDLE_REGION_X, MIDDLE_REGION_Y);
     private Point regionRightTopLeftAnchorPoint = new Point(RIGHT_REGION_X, RIGHT_REGION_Y);
     private int REGION_WIDTH = 25;
     private int REGION_HEIGHT = 25;
 
-    private Point regionLeft_pointA = new Point(
-            regionLeftTopLeftAnchorPoint.x,
-            regionLeftTopLeftAnchorPoint.y);
-    private Point regionLeft_pointB = new Point(
-            regionLeftTopLeftAnchorPoint.x + REGION_WIDTH,
-            regionLeftTopLeftAnchorPoint.y + REGION_HEIGHT);
     private Point regionMiddle_pointA = new Point(
             regionMiddleTopLeftAnchorPoint.x,
             regionMiddleTopLeftAnchorPoint.y);
     private Point regionMiddle_pointB = new Point(
-            regionMiddleTopLeftAnchorPoint.x + REGION_WIDTH,
+            regionMiddleTopLeftAnchorPoint.x + 110,
             regionMiddleTopLeftAnchorPoint.y + REGION_HEIGHT);
     private Point regionRight_pointA = new Point(
             regionRightTopLeftAnchorPoint.x,
@@ -77,11 +71,11 @@ public class Recognition extends OpenCvPipeline {
 
     // используемые переменные в Mat
 
-    private Mat regionLeft, regionMiddle, regionRight;
+    private Mat  regionMiddle, regionRight;
     private Mat cb = new Mat();
     private Mat bin = new Mat();
     private Mat cr = new Mat();
-    private int avgLeft, avgMiddle, avgRight;
+    private int avgMiddle, avgRight;
 
     void inputToCb(Mat input) {
         Imgproc.cvtColor(input, cb, Imgproc.COLOR_RGB2YCrCb);
@@ -101,14 +95,6 @@ public class Recognition extends OpenCvPipeline {
 
     public void depictingRegions(Position team_element, Mat input) {
         switch (team_element) {
-            case LEFT:
-                Imgproc.rectangle(
-                        input,
-                        regionLeft_pointA,
-                        regionLeft_pointB,
-                        GREEN,
-                        -1);
-                break;
             case MIDDLE:
                 Imgproc.rectangle(
                         input,
@@ -141,9 +127,6 @@ public class Recognition extends OpenCvPipeline {
     }
 
     public Mat processFrame(Mat input) {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
-
         /*
          * Сначала мы преобразуем в цветовое пространство YCrCb из цветового пространства RGB.
          * так как в цветовом пространстве RGB, цветности и
@@ -174,20 +157,12 @@ public class Recognition extends OpenCvPipeline {
          * значение в пикселях 3-канального изображения и указанное значение
          * здесь по индексу 2
          */
-        regionLeft = bin.submat(new Rect(regionLeft_pointA, regionLeft_pointB));
+
         regionMiddle = bin.submat(new Rect(regionMiddle_pointA, regionMiddle_pointB));
         regionRight = bin.submat(new Rect(regionRight_pointA, regionRight_pointB));
 
-        avgLeft = (int) Core.mean(regionLeft).val[0];
         avgMiddle = (int) Core.mean(regionMiddle).val[0];
         avgRight = (int) Core.mean(regionRight).val[0];
-
-        Imgproc.rectangle(
-                input, // буфер для рисования
-                regionLeft_pointA, // первая точка, которая распознает прямоугольник
-                regionLeft_pointB, // вторая точка, которая распознает прямоугольник
-                BLUE, //  Цвет, которым нарисован прямоугольник
-                2); // Толщина линий прямоугольника
 
         Imgproc.rectangle(
                 input, // буфер для рисования
@@ -202,17 +177,15 @@ public class Recognition extends OpenCvPipeline {
                 regionRight_pointB, // вторая точка, которая распознает прямоугольник
                 BLUE, // Цвет, которым нарисован прямоугольник
                 2); // Толщина линий прямоугольника
-        if (avgLeft > VALUE_FOR_RECOGNITION && avgRight < VALUE_FOR_RECOGNITION && avgMiddle < VALUE_FOR_RECOGNITION) {
-            position = Position.LEFT;
-        } else {
-            if (avgLeft < VALUE_FOR_RECOGNITION && avgRight < VALUE_FOR_RECOGNITION && avgMiddle > VALUE_FOR_RECOGNITION) {
+            if (avgRight < VALUE_FOR_RECOGNITION && avgMiddle > VALUE_FOR_RECOGNITION) {
                 position = Position.MIDDLE;
             } else {
-                if (avgLeft < VALUE_FOR_RECOGNITION && avgRight > VALUE_FOR_RECOGNITION && avgMiddle < VALUE_FOR_RECOGNITION) {
+                if (avgRight > VALUE_FOR_RECOGNITION && avgMiddle < VALUE_FOR_RECOGNITION) {
                     position = Position.RIGHT;
                 }
+                else
+                    position = Position.LEFT;
             }
-        }
         depictingRegions(position, input);
         if (OUTPUT == 0)
             return bin;
@@ -221,10 +194,6 @@ public class Recognition extends OpenCvPipeline {
     }
     public Position getAnalysis() {
         return position;
-    }
-
-    public int getAvgLeft() {
-        return avgLeft;
     }
 
     public int getAvgMiddle() {

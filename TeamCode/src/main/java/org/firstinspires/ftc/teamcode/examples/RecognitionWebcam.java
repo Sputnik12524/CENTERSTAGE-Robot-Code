@@ -81,7 +81,6 @@ public class RecognitionWebcam extends LinearOpMode {
             }
             gamepad1YFlag = gamepad1.y;
             telemetry.addData("position is ", pipeline.getAnalysis());
-            telemetry.addData("avgLeft is ", pipeline.getAvgLeft());
             telemetry.addData("avgMiddle is", pipeline.getAvgMiddle());
             telemetry.addData("avgRight is", pipeline.getAvgRight());
             telemetry.addData("shiftRightLeft", pipeline.MIDDLE_REGION_X);
