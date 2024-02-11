@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class ImuSensor {
     private final BNO055IMU imu;
     private Orientation angles;
-
+    private BNO055IMU.Parameters parameters;
     /**
      * Параметры сенсора
      * Bandwidth - частота обновления датчика
@@ -24,7 +24,6 @@ public class ImuSensor {
      * @param _opMode ссылка на opMode вызвавший конструктором
      */
     public ImuSensor(LinearOpMode _opMode) {
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         // Accelerometer
         parameters.accelBandwidth = BNO055IMU.AccelBandwidth.HZ1000;
         parameters.accelPowerMode = BNO055IMU.AccelPowerMode.NORMAL;
@@ -70,6 +69,9 @@ public class ImuSensor {
     public double getRadians() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         return (AngleUnit.RADIANS.normalize(angles.firstAngle));
+    }
+    public void init(){
+        imu.initialize(parameters);
     }
 
     // получение угловой скорости

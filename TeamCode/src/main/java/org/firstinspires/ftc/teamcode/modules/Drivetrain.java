@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.modules;
 import static java.lang.Math.PI;
 import static java.lang.Math.acos;
 import static java.lang.Math.sin;
+import static java.lang.Math.cos;
 import static java.lang.Math.sqrt;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -291,13 +292,10 @@ public class Drivetrain {
     }
 
     public void driveFlawless(double x, double y, double r) {
-        double angle = acos(x) * (y < 0 ? -1 : 1) + imu.getRadians();
-        double capacity = sqrt(x * x + y * y);
-        double p = PI / 4;
-        double u1 = capacity * sin(angle - p) + r;
-        double u2 = capacity * sin(angle + p) + r;
-        double[] powers = {u1, u2, u1, u2};
-        setPower(powers);
+        double angle = imu.getRadians();
+        double _x= x * cos(angle) - y * sin(angle);
+        double _y =x * sin(angle) + y * cos(angle);
+        setPower(calculatePower(_x, _y, r));
     }
     public void checkMotors(boolean lf, boolean rf, boolean lb, boolean rb) {
         if (lf) {
@@ -314,8 +312,11 @@ public class Drivetrain {
         } else {
             stop();
         }
-    }
 
+    }
+    public void initIMU(){
+        imu.init();
+    }
 
 
 }
