@@ -12,34 +12,44 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
 
 @Config
 public class Drivetrain {
     public static final double GYRO_COURSE_TOLERANCE = 2;
+    private double sumErr;
+    private double prevErr = 0;
+    private final LinearOpMode opMode;
+
+    private final DcMotor leftFrontDrive;
+    private final DcMotor rightFrontDrive;
+    private final DcMotor leftBackDrive;
+    private final DcMotor rightBackDrive;
+
+    private final ImuSensor imu;// Гироскоп
+    private final Telemetry tm;
+
     public static double kX = 1;// Мощность по оси вперёд-назад
     public static double kY = 1;// Мощность по оси влево-вправо
     public static double kR = 1;// Мощность по оси вращения
     public static double rotatePower = 0.6;// Мощность вращения метода rotate
     public static double slow = 0.65; /*отвечает за замедление скорости езды робота. Если хотим ускорить робота, повышаем её.*/
-    public static double R_SLOW = 1;
-    public static double ANGULAR_VELOCITY_TOLERANCE = 1;
-    public static double P_ANGLE_TOLERANCE = 0;
-    public static double ANGLES_TOLERANCE = 0.5;
     public static double D_TOLERANCE = 8;
     public static double COURSEPID_MAX_TIME = 5;
+
     public static double kP = 0.0225;
     public static double kD = 0.012;
     public static double kI = 0.017;
-    private final LinearOpMode opMode;
-    private final DcMotor leftFrontDrive;
-    private final DcMotor rightFrontDrive;
-    private final DcMotor leftBackDrive;
-    private final DcMotor rightBackDrive;
-    private final ImuSensor imu;// Гироскоп
-    private final Telemetry tm;
+
+    private final static double ROTATE_ACCURACY = 1;
+    private ElapsedTime calcTime = new ElapsedTime();
+
 
     /**
      * Конструктор: инициализирует моторы робота и OpMode:
@@ -57,8 +67,8 @@ public class Drivetrain {
         leftBackDrive = hm.get(DcMotor.class, "lb");
         rightFrontDrive = hm.get(DcMotor.class, "rb");
         rightBackDrive = hm.get(DcMotor.class, "rf");
+        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
         imu = new ImuSensor(opMode);
-        //mh = new MetryHandler(opMode);
         tm = opMode.telemetry;
 
     }
@@ -112,7 +122,12 @@ public class Drivetrain {
         leftFrontDrive.setPower(powers[0]);
         rightFrontDrive.setPower(powers[1]);
         leftBackDrive.setPower(powers[2]);
-        leftFrontDrive.setPower(powers[3]);
+        rightBackDrive.setPower(powers[3]);
+        tm.addData("lF", leftFrontDrive.getPower());
+        tm.addData("LB", leftBackDrive.getPower());
+        tm.addData("RF", rightFrontDrive.getPower());
+        tm.addData("RB", rightBackDrive.getPower());
+
     }
 
     /**
@@ -125,8 +140,8 @@ public class Drivetrain {
      */
     private double[] calculatePower(double x, double y, double r) {
         return new double[]{
-                (x - y + r), (-x + y + r),
-                (x + y + r), (-x - y + r)};
+                (-y - x + r), (y + x + r),
+                (-y + x + r), (y - x + r)};
     }
 
     /**
@@ -140,6 +155,7 @@ public class Drivetrain {
     public void driveRawPower(double x, double y, double r) {
         setPower(calculatePower(x, y, r));
     }
+
 
     public void driveCoeffPower(double x, double y, double r) {
         setPower(calculatePower(x * kX, y * kY, r * kR));
@@ -171,38 +187,6 @@ public class Drivetrain {
         setPower(new double[]{0, 0, 0, 0});
     }
 
-    /**
-     * Метод движения по времени вперед
-     * Метод движения по времени назад
-     * Метод движения по времени вправо
-     * Метод движения по времени налево
-     *
-     * @param ms время движения
-     */
-    public void driveFront(double y, long ms) {
-        driveCoeffPower(0, y, 0);
-        opMode.sleep(ms);
-        stop();
-    }
-
-    public void driveBack(double y, long ms) {
-        driveCoeffPower(0, -y, 0);
-        opMode.sleep(ms);
-        stop();
-    }
-
-    public void driveRight(double x, long ms) {
-        driveCoeffPower(x, 0, 0);
-        opMode.sleep(ms);
-        stop();
-    }
-
-    public void driveLeft(double x, long ms) {
-        driveCoeffPower(-x, 0, 0);
-        opMode.sleep(ms);
-        stop();
-    }
-
     public void dataTelePositions() {
         tm.addLine("Motors: Port, Position, Powers");
         tm.addData("LeftFront", leftFrontDrive.getCurrentPosition());
@@ -214,13 +198,22 @@ public class Drivetrain {
         opMode.telemetry.update();
     }
 
-    public void driveEncoder(double tick1, double power) {
+    public void driveEncoderSide(double tick1, double powerX) {
+        driveEncoder(tick1, powerX, 0);
+    }
+
+    public void driveEncoder(double tick1, double powerY) {
+        driveEncoder(tick1, 0, powerY);
+    }
+
+    public void driveEncoder(double tick1, double powerX, double powerY) {
         int position1 = leftFrontDrive.getCurrentPosition();
         int position2 = rightFrontDrive.getCurrentPosition();
         int position3 = leftBackDrive.getCurrentPosition();
         int position4 = rightBackDrive.getCurrentPosition();
-        driveRawPower(0, power, 0);
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
+        double angle = imu.getAngles();
+        driveRawPower(powerX, powerY, 0);
         while (!(leftFrontDrive.getPower() == 0 &&
                 rightFrontDrive.getPower() == 0 &&
                 leftBackDrive.getPower() == 0 &&
@@ -230,6 +223,7 @@ public class Drivetrain {
             int rightFrontDifference = Math.abs(position2 - rightFrontDrive.getCurrentPosition());
             int leftBackDifference = Math.abs(position3 - leftBackDrive.getCurrentPosition());
             int rightBackDifference = Math.abs(position4 - rightBackDrive.getCurrentPosition());
+            driveRawPower(powerX, powerY, calculatePIDPower(angle));
             if (leftFrontDifference >= tick1) {
                 leftFrontDrive.setPower(0);
             }
@@ -247,137 +241,17 @@ public class Drivetrain {
             tm.addData("Левый передний:", rightFrontDifference);
             tm.addData("Левый задний:", leftBackDifference);
             tm.addData("Правый задний:", rightBackDifference);
+            tm.addData("tick1:", tick1);
+            tm.addData("tick1:", tick1);
+            tm.addData("tick1:", tick1);
+            tm.addData("tick1:", tick1);
             tm.update();
         }
         rightBackDrive.setPower(0);
         rightFrontDrive.setPower(0);
     }
 
-    /**
-     * Поворот робота на курс(с) от его положения инициализации
-     *
-     * @param c - курс в градусах
-     */
-    public void course(double c) {
-        while ((((imu.getAngles() < c - GYRO_COURSE_TOLERANCE) || (imu.getAngles() > c + GYRO_COURSE_TOLERANCE)) && opMode.opModeIsActive())) {
-            driveRawPower(0, 0, rotatePower);
-            tm.addData("Angle:", imu.getAngles());
-            tm.addData("Course:", c);
-            tm.update();
-        }
-        stop();
-    }
-
-    /**
-     * Поворот робота на градус(d) от его положения в момент
-     *
-     * @param d - градус
-     */
-    public void rotate(double d) {
-        d = -d; //меняем знак из-за
-        double dSign = -Math.signum(d); // берём направление поворота: налево или направо по знаку
-        d += imu.getAngles(); // прибавляем к повороту наше положение в градусах
-        if (d < -180) { // если сумма меньше -180, для её совместимости с гироскопом прибавляем 360 градусов
-            d += 360;
-        }
-        if (d > 180) { // если сумма больше 180 градусов, для её совместимости с гироскопом вычитаем 360 градусов
-            d -= 360;
-        }
-        while (((imu.getAngles() < d - GYRO_COURSE_TOLERANCE) ||
-                (imu.getAngles() > d + GYRO_COURSE_TOLERANCE)) && opMode.opModeIsActive()) {
-            driveRawPower(0, 0, rotatePower * dSign); // поворачиваем с учётом направлением поворота
-            opMode.telemetry.addData("Angle:", imu.getAngles());
-            opMode.telemetry.addData("Rotate:", d);
-            opMode.telemetry.update();
-
-        }
-        stop();
-    }
-
-    /**
-     * Поворот робота на курс(с) от его положения инициализации с помощью PID-регулятора
-     * course - [0, 360] - заданное значение
-     * kP, kI, kD - коэффициенты PID
-     * d0 - ошибка
-     * d1 - ошибка спустя время обновления показаний датчиков
-     * dDerivative - производная ошибки
-     * dIntegral - интеграл ошибки
-     * u - управляющее воздействие
-     * calcTime - период про
-     * setTime - время установки на курс
-     * deltaTime - время обновления показаний
-     *
-     * @param course - курс в градусах, заданное значение
-     */
-    public void coursePID(double course) {
-        course = (course + 180) % 360;
-        double courseSign = 1;//Math.signum(course - imu.getAngles());
-        double d0 = angleDiff(course, imu.getAngles());
-        double d1 = angleDiff(course, imu.getAngles());
-
-        ElapsedTime calcTime = new ElapsedTime();
-        ElapsedTime setTime = new ElapsedTime();
-        ElapsedTime deltaTime = new ElapsedTime();
-
-        double dIntegral = 0;
-        double dDerivative = (d1 - d0) / (calcTime.nanoseconds() * 10e-9);
-        double u = kP * (d1 - P_ANGLE_TOLERANCE) + kI * dIntegral + kD * dDerivative;
-
-        setTime.reset();
-        calcTime.reset();
-        deltaTime.reset();
-
-        while (opMode.opModeIsActive() &&
-                ((Math.abs(d0) > ANGLES_TOLERANCE) ||
-                        (Math.abs(imu.getAngularVelocity()) > ANGULAR_VELOCITY_TOLERANCE))) {
-            deltaTime.reset();
-            d1 = angleDiff(course, imu.getAngles());
-            dDerivative = (d1 - d0) / (calcTime.nanoseconds() * 10e-9);
-            dIntegral += dFrontier(d1) * calcTime.nanoseconds() * 10e-9;
-
-            u = kP * (d1 - P_ANGLE_TOLERANCE) + kI * dIntegral + kD * dDerivative;
-            driveRawPower(0, 0, u * courseSign);
-            d0 = course - imu.getAngles();
-
-            calcTime.reset();
-
-
-//            dm.addData("SettingTime", setTime.seconds());
-//            dm.addData("deltaTime", deltaTime.nanoseconds() * 10e-9);
-//            dm.addLine("");
-//            dm.addData("SetCourse", course);
-//            dm.addData("ImuCourse", imu.getAngles());
-//            dm.addData("D0", d0);
-//            dm.addData("D1", d1);
-//            dm.addLine("");
-//            dm.addData("dDerivative", dDerivative);
-//            dm.addData("dIntegral", dIntegral);
-//            dm.addLine("");
-//            dm.addData("U", u);
-//            dm.addData("uP", kP * d1);
-//            dm.addData("uI", kI * dIntegral);
-//            dm.addData("uD", kD * dDerivative);
-//            dm.update();
-            if (setTime.seconds() > COURSEPID_MAX_TIME) {
-                break;
-            }
-
-        }
-        stop();
-        setTime.reset();
-    }
-
-    public void rotatePID(double course) {
-        course += imu.getAngles();
-        if (course > 360) {
-            course -= 360;
-        } else if (course < 0) {
-            course += 360;
-        }
-        coursePID(course);
-    }
-
-    public double angleDiff(double a, double b) {
+    private double angleDiff(double a, double b) {
         double d = a - b;
         if (d < -180) {
             d += 360;
@@ -387,14 +261,44 @@ public class Drivetrain {
         return d;
     }
 
-    public double dFrontier(double d) {
-        return (Math.abs(d) < D_TOLERANCE) ? d : 0;
+    private double calculatePIDPower(double d) {
+        double power;
+        double err = 0;
+        if (Math.abs(d - imu.getAngles()) <= 180)
+            err = d - imu.getAngles();
+        else
+            err = d - imu.getAngles() - Math.signum(d - imu.getAngles()) * 360;
+        sumErr = sumErr + calcTime.milliseconds() * err;
+        power = kP * err + sumErr * kI + kD * (err - prevErr) / calcTime.seconds();
+        calcTime.reset();
+        prevErr = err;
+        return power;
     }
 
     /**
-     * Метод проверки моторов.
-     * каждая переменная отвечает за свой мотор.
+     * Поворот робота на градус(d) от его положения в момент
+     *
+     * @param d - градус
      */
+    public void rotate(double d) {
+        while (Math.abs(angleDiff(imu.getAngles(), d)) < ROTATE_ACCURACY && opMode.opModeIsActive()) {
+            driveRawPower(0, 0, calculatePIDPower(d));
+            opMode.telemetry.addData("Angle:", imu.getAngles());
+            opMode.telemetry.addData("d:", d);
+            opMode.telemetry.update();
+        }
+        stop();
+    }
+
+    public void driveFlawless(double x, double y, double r) {
+        double angle = acos(x) * (y < 0 ? -1 : 1) + imu.getRadians();
+        double capacity = sqrt(x * x + y * y);
+        double p = PI / 4;
+        double u1 = capacity * sin(angle - p) + r;
+        double u2 = capacity * sin(angle + p) + r;
+        double[] powers = {u1, u2, u1, u2};
+        setPower(powers);
+    }
     public void checkMotors(boolean lf, boolean rf, boolean lb, boolean rb) {
         if (lf) {
             leftFrontDrive.setPower(slow);
@@ -412,15 +316,6 @@ public class Drivetrain {
         }
     }
 
-    public void driveFlawless(double x, double y, double r) {
-        double angle = acos(x) * (y < 0 ? -1 : 1) + imu.getRadians();
-        double capacity = sqrt(x * x + y * y);
-        double p = PI / 4;
-        double u1 = capacity * sin(angle - p) + r;
-        double u2 = capacity * sin(angle + p) + r;
-        double[] powers = {u1, u2, u1, u2};
-        setPower(powers);
-    }
 
 
 }
