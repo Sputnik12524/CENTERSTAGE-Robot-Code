@@ -314,8 +314,8 @@ public class Drivetrain {
         }
 
     }
-    public void initIMU(){
-        imu.init();
+    public void resetDirection(){
+        imu.resetYaw();
     }
 
 

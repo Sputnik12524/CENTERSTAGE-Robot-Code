@@ -45,7 +45,7 @@ public class ImuSensor {
         angles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         return (AngleUnit.RADIANS.normalize(angles.firstAngle));
     }
-    public void init(){
+    public void resetYaw(){
         imu.resetYaw();
     }
 

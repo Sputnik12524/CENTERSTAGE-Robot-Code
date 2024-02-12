@@ -39,7 +39,7 @@ public class DrivetrainExample extends LinearOpMode {
                     telemetry.addLine("Вы управляете базой с независимым направлением.");
                     dt.driveFlawless(-gamepad1.right_stick_x,-gamepad1.left_stick_y, gamepad1.left_trigger - gamepad1.right_trigger);
                     if (gamepad1.right_bumper){
-                        dt.initIMU();
+                        dt.resetDirection();
                     }
                     break;
 
