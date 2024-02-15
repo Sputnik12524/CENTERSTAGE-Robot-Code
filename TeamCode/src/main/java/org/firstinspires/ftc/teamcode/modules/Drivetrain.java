@@ -19,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
 public class Drivetrain {
+    private double power;
     private double sumErr;
     private double prevErr = 0;
     private final LinearOpMode opMode;
@@ -227,7 +228,7 @@ public class Drivetrain {
     }
 
     private double calculatePIDPower(double d) {
-        double power;
+        power = 0;
         double err = 0;
         if (Math.abs(d - imu.getAngles()) <= 180)
             err = d - imu.getAngles();
@@ -239,7 +240,12 @@ public class Drivetrain {
         prevErr = err;
         return power;
     }
-
+    public double getPIDPower(){
+        return power;
+    }
+    public double getPrevErr(){
+        return prevErr;
+    }
     /**
      * Поворот робота на градус(d) от его положения в момент
      *
