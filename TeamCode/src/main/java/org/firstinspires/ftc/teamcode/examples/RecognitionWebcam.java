@@ -66,18 +66,23 @@ public class RecognitionWebcam extends LinearOpMode {
             gamepad1DpadDownFlag = gamepad1.dpad_down;
             if (!gamepad1AFlag && gamepad1.a) {
                 pipeline.MAXVAL_CB += 2;
+                pipeline.MAXVAL_CR += 2;
             }
             gamepad1AFlag = gamepad1.a;
             if (!gamepad1BFlag && gamepad1.b) {
                 pipeline.MAXVAL_CB -= 2;
+                pipeline.MAXVAL_CR -= 2;
             }
             gamepad1BFlag = gamepad1.b;
             if (!gamepad1XFlag && gamepad1.x) {
                 pipeline.THRESH_CR += 2;
+                pipeline.THRESH_CB += 2;
             }
             gamepad1XFlag = gamepad1.x;
             if (!gamepad1YFlag && gamepad1.y) {
                 pipeline.THRESH_CR -= 2;
+                pipeline.THRESH_CB += 2;
+
             }
             gamepad1YFlag = gamepad1.y;
             telemetry.addData("position is ", pipeline.getAnalysis());
