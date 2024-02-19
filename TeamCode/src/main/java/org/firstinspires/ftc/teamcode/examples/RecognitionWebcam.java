@@ -17,7 +17,7 @@ public class RecognitionWebcam extends LinearOpMode {
 
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam,0);
         pipeline = new Recognition();
         webcam.setPipeline(pipeline);
@@ -81,7 +81,6 @@ public class RecognitionWebcam extends LinearOpMode {
             }
             gamepad1YFlag = gamepad1.y;
             telemetry.addData("position is ", pipeline.getAnalysis());
-            telemetry.addData("avgLeft is ", pipeline.getAvgLeft());
             telemetry.addData("avgMiddle is", pipeline.getAvgMiddle());
             telemetry.addData("avgRight is", pipeline.getAvgRight());
             telemetry.addData("shiftRightLeft", pipeline.MIDDLE_REGION_X);
