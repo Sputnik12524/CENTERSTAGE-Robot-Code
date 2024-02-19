@@ -20,6 +20,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @Config
 public class Drivetrain {
     private double power;
+    private double diff;
     private double sumErr;
     private double prevErr = 0;
     private final LinearOpMode opMode;
@@ -229,16 +230,21 @@ public class Drivetrain {
 
     private double calculatePIDPower(double d) {
         power = 0;
+        diff = 0;
         double err = 0;
         if (Math.abs(d - imu.getAngles()) <= 180)
             err = d - imu.getAngles();
         else
             err = d - imu.getAngles() - Math.signum(d - imu.getAngles()) * 360;
         sumErr = sumErr + calcTime.milliseconds() * err;
-        power = kP * err + sumErr * kI + kD * (err - prevErr) / calcTime.seconds();
+        diff = (err - prevErr) / calcTime.seconds();
+        power = kP * err + sumErr * kI + kD * diff;
         calcTime.reset();
         prevErr = err;
         return power;
+    }
+    public double getDiff(){
+        return diff;
     }
     public double getPIDPower(){
         return power;

@@ -23,14 +23,15 @@ public class PIDExample extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()){
             if (gamepad1.dpad_right){
-                dt.rotate(imu.getAngles() + rotate);
+                dt.rotate(rotate);
             } else if (gamepad1.dpad_left) {
-                dt.rotate(imu.getAngles() - rotate);
+                dt.rotate(-rotate);
             }
             tm.addData("rotatePower: ", dt.getPIDPower());
             tm.addData("P: ", dt.kP);
             tm.addData("I: ", dt.kI);
             tm.addData("D: ", dt.kD);
+            tm.addData("diff", dt.getDiff());
             tm.addData("Err: ", dt.getPrevErr());
             tm.update();
         }
