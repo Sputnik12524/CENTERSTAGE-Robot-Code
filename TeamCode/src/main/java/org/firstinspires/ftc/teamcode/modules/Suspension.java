@@ -2,30 +2,66 @@ package org.firstinspires.ftc.teamcode.modules;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @Config
 public class Suspension {
-    public static double RIGHT_POSITION_OPEN = 1;
-    public static double LEFT_POSITION_OPEN = 1;
-    public static double RIGHT_POSITION_CLOSE = 0;
-    public static double LEFT_POSITION_CLOSE = 0;
-    private final Servo leftSuspension;
-    private final Servo rightSuspension;
     private final LinearOpMode opMode;
+    private final DcMotor SuspensionDrive;
+    public static final double Suspension_POWER = -1;
+    public static final double Suspension_POWER1 = 1;
+    private boolean SuspensionState = true;
 
-    public Suspension(LinearOpMode opMode){
+    public Suspension(LinearOpMode opMode) {
         this.opMode = opMode;
-        this.leftSuspension = opMode.hardwareMap.servo.get("leftSuspension");
-        this.rightSuspension = opMode.hardwareMap.servo.get("rightSuspension");
+        HardwareMap hw = opMode.hardwareMap;
+        SuspensionDrive = hw.get(DcMotor.class, "SuspensionDrive");
+        SuspensionDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
-    public void openSuspension(){
-        leftSuspension.setPosition(LEFT_POSITION_OPEN);
-        rightSuspension.setPosition(RIGHT_POSITION_OPEN);
-    }
-    public void closeSuspension(){
-        leftSuspension.setPosition(LEFT_POSITION_CLOSE);
-        rightSuspension.setPosition(RIGHT_POSITION_CLOSE);
-    }
-}
 
+    /**
+     * Метод включения захвата
+     */
+    public void up() {
+        SuspensionDrive.setPower(Suspension_POWER);
+    }
+
+    /**
+     * Метод включения выброса
+     */
+    public void Down() {
+        SuspensionDrive.setPower(Suspension_POWER1);
+    }
+    public void outtakeAuto() {
+        SuspensionDrive.setPower(Suspension_POWER);
+    }
+
+    /**
+     * Метод остановки вращения захвата
+     */
+    public void stop() {
+        SuspensionDrive.setPower(0);
+    }
+
+    /**
+     * Метод установки мощности вращения захвата
+     * @param power - мощность
+     */
+    public void setPower(double power) {
+        SuspensionDrive.setPower(power);
+    }
+
+    /**
+     * Метод переключения между состояниями захвата и выброса
+     */
+    public void changeState() {
+        if (SuspensionState) {
+            up();
+        } else {
+            stop();
+        }
+        SuspensionState = !SuspensionState;
+    }
+
+}
