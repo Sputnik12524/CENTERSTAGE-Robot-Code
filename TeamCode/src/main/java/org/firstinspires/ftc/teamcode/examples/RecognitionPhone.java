@@ -20,7 +20,7 @@ public class RecognitionPhone extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
-        pipeline = new Recognition();
+        pipeline = new Recognition(this);
         phoneCam.setPipeline(pipeline);
         phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
 

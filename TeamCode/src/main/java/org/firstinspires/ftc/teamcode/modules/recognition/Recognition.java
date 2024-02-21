@@ -6,8 +6,10 @@ import static org.firstinspires.ftc.teamcode.modules.recognition.Position.LEFT;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -76,6 +78,10 @@ public class Recognition extends OpenCvPipeline {
     private Mat bin = new Mat();
     private Mat cr = new Mat();
     private int avgMiddle, avgRight;
+    private final Telemetry telemetry;
+    public Recognition(LinearOpMode opMode){
+        telemetry = opMode.telemetry;
+    }
 
     void inputToCb(Mat input) {
         Imgproc.cvtColor(input, cb, Imgproc.COLOR_RGB2YCrCb);
@@ -191,6 +197,39 @@ public class Recognition extends OpenCvPipeline {
             return bin;
         else
             return input;
+    }
+    public void editRec(Gamepad gamepad1){
+        if (gamepad1.a) {
+                MAXVAL_CB += 1;
+                MAXVAL_CR += 1;
+            }
+        if (gamepad1.b) {
+                MAXVAL_CB -= 1;
+                MAXVAL_CR -= 1;
+            }
+            if (gamepad1.x) {
+                THRESH_CR += 1;
+                THRESH_CB += 1;
+            }
+            if (gamepad1.y) {
+                THRESH_CR -= 1;
+                THRESH_CB -= 1;
+            }
+            if(gamepad1.dpad_left){
+                OUTPUT = 1;
+            }
+            if(gamepad1.dpad_right){
+                OUTPUT = 0;
+            }
+            telemetry.addData("position is ",getAnalysis());
+            telemetry.addData("avgMiddle is",getAvgMiddle());
+            telemetry.addData("avgRight is", getAvgRight());
+            telemetry.addData("threshCb", THRESH_CB);
+            telemetry.addData("threshCr", THRESH_CR);
+            telemetry.addData("maxvalCb", MAXVAL_CB);
+            telemetry.addData("maxvalCr", MAXVAL_CR);
+            telemetry.update();
+
     }
     public Position getAnalysis() {
         return position;
