@@ -39,7 +39,6 @@ public class RecognitionPhone extends LinearOpMode {
         while(!isStopRequested()){
             sleep(50);
             telemetry.addData("position is ", pipeline.getAnalysis());
-            telemetry.addData("avgLeft is ", pipeline.getAvgLeft());
             telemetry.addData("avgMiddle is", pipeline.getAvgMiddle());
             telemetry.addData("avgRight is", pipeline.getAvgRight());
             telemetry.update();

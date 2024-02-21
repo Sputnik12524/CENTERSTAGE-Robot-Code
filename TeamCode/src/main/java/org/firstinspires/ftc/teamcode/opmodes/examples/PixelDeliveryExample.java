@@ -9,8 +9,8 @@ import org.opencv.core.Range;
 @TeleOp(group = "Example", name = "PixelDeliveryExample")
 public class PixelDeliveryExample extends LinearOpMode {
 
-    private double boxPosition = 0.5;
-    private double servoFlip = 0.5;
+    private double boxPosition = 0.485;
+    private double servoFlip = 0.1;
 
     @Override
     public void runOpMode() {
@@ -22,28 +22,27 @@ public class PixelDeliveryExample extends LinearOpMode {
             // единожды выполняемые действия во время инициализации
 
         }
-        // единожды выполняемые действия после инициализации, но до запуска сценария
-
         waitForStart();
         // единожды выполняемые действия после запуска сценария
 
 
         while (opModeIsActive()) {
             // единожды выполняемые действия после запуска сценария
-            if (gamepad2.y) {
+           /* if (gamepad1.left_bumper) {
                 pd.workTake();
             }
-            if (gamepad2.right_bumper) {
+            if (gamepad1.right_bumper) {
                 pd.workDrop();
             }
+            */
 
-            if (gamepad2.a) {
+            if (gamepad1.x) {
                 pd.fullOpenDoor();
             }
-            if (gamepad2.x) {
+            if (gamepad1.y) {
                 pd.halfOpenDoor();
             }
-            if (gamepad2.b) {
+            if (gamepad1.b) {
                 pd.closeDoor();
             }
             if (gamepad1.dpad_left && boxPosition < 1) {
@@ -73,18 +72,19 @@ public class PixelDeliveryExample extends LinearOpMode {
             }
 
 
+
             telemetry.addData("box", boxPosition);
             telemetry.addData("flip", servoFlip);
-            telemetry.addLine("Gamepad2");
-            telemetry.addLine(" A - Открытие двери ");
-            telemetry.addLine(" B - Открытие двери на половину ");
-            telemetry.addLine(" X - Закрытие двери ");
+            telemetry.addLine("Управление Gamepad1");
+            telemetry.addLine(" X - Открытие двери ");
+            telemetry.addLine(" Y - Открытие двери на половину ");
+            telemetry.addLine(" B - Закрытие двери ");
             telemetry.addLine(" dpad_UP - переворот сброс");
             telemetry.addLine(" dpad_DOWN - переворот принятие ");
             telemetry.addLine(" dpad_LEFT - поворот коробки для сброса ");
             telemetry.addLine(" dpad_RIGHT - поворот коробки для принятия ");
             telemetry.addLine(" right_bumper - многопоточное движение сброс");
-            telemetry.addLine(" Y - многопоточное движение принятие");
+            telemetry.addLine(" left_bumper - многопоточное движение принятие");
             telemetry.update();
 
         }
