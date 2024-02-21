@@ -11,11 +11,13 @@ public class PixelDelivery {
 //Уменьшить переменную-привести к закрытому положению
 //Увеличение переменной-привести к открытому положению
     public static double DOOR_CLOSED_POSITION = 0.475;
-    public static double DOOR_FULL_OPEN_POSITION = 1;
+    public static double DOOR_FULL_OPEN_POSITION = 0.85;
     public static double DOOR_HALF_OPENED_POSITION = 0.7;
-    public static double BOX_ROTATION_DROP_POSITION = 0.84;
+    public static double BOX_ROTATION_DROP_POSITION = 0.36;
+    public static double BOX_ROTATION_DROP_POSITION__FIRST_LINE = 0.545;
     public static double BOX_ROTATION_TAKE_POSITION = 0.335;
-    public static double FLIP_DROP_POSITION = 0.98;
+    public static double FLIP_DROP_POSITION = 0.85;
+    public static double FLIP_DROP_POSITION_FIRST_LINE = 0.915;
     public static double FLIP_TAKE_POSITION = 0.16;
 
     public static double FLIP_TIME = 100;
@@ -69,6 +71,11 @@ public class PixelDelivery {
         boxRotationRight.setPosition(BOX_ROTATION_DROP_POSITION);
     }
 
+    public void boxDropPixelfirstline() {
+        boxRotationLeft.setPosition(BOX_ROTATION_DROP_POSITION__FIRST_LINE);
+        boxRotationRight.setPosition(BOX_ROTATION_DROP_POSITION__FIRST_LINE);
+    }
+
     public void workTake() {
         takeDropHelper.needWorkTake = true;
     }
@@ -84,6 +91,12 @@ public class PixelDelivery {
     public void flipDropPixel() {
         servoFlipLeft.setPosition(FLIP_DROP_POSITION);
         servoFlipRight.setPosition(FLIP_DROP_POSITION);
+    }
+
+
+    public void flipDropPixelfirstline() {
+        servoFlipLeft.setPosition(FLIP_DROP_POSITION_FIRST_LINE);
+        servoFlipRight.setPosition(FLIP_DROP_POSITION_FIRST_LINE);
     }
 
     public double flipGetPosition() {

@@ -63,10 +63,10 @@ public class MainTeleOp extends LinearOpMode {
                     it.stop();
                 }
                 if (gamepad2.dpad_up){
-                    susp.openSuspension();
+                    susp.Up();
                 }
                 else if(gamepad2.dpad_down){
-                    susp.closeSuspension();
+                    susp.Down();
                 }
                 if (gamepad1.right_bumper)
                     slow = 0.4;
@@ -74,66 +74,6 @@ public class MainTeleOp extends LinearOpMode {
                     slow = 1;
                 if (gamepad2.left_trigger == 1)
                     dl.launch();
-
-                /**
-                 * Позиционное управление Переворотом и вращением
-                 */
-                /* if (gamepad2.x) {
-                  pd.boxTakePixel();
-                }
-                if (gamepad2.b)  {
-                    pd.boxDropPixel();
-                }
-                if (gamepad2.y)    {
-                    pd.flipDropPixel();
-                }
-                if (gamepad2.a)  {
-                    pd.flipTakePixel();
-                }
-
-
-
-                 */
-
-
-                /**
-                 * Диапозонное управление перевотора и вращения
-                 */
-                // вращение
-               /* if (gamepad2.dpad_left) {
-                    boxPosition += boxDelta;
-                    sleep(5);
-                }
-                if (gamepad2.dpad_right) {
-                    boxPosition -= boxDelta;
-                    sleep(5);
-                }
-                if (boxPosition > 1) {
-                    boxPosition = 1;
-                }
-                if (boxPosition < 0) {
-                    boxPosition = 0;
-                }
-                pd.setBoxPosition(boxPosition);
-
-                // переворот
-                if (gamepad2.dpad_up) {
-                    flipPosition += flipDelta;
-                    sleep(5);
-                }
-                if (gamepad2.dpad_down) {
-                    flipPosition -= flipDelta;
-                    sleep(5);
-                }
-                if (flipPosition > 1) {
-                    flipPosition = 1;
-                }
-                if (flipPosition < 0) {
-                    flipPosition = 0;
-                }
-                pd.setFlipPosition(flipPosition);
-
-                */
 
                 /**
                  * Управление дверью
@@ -160,19 +100,26 @@ public class MainTeleOp extends LinearOpMode {
                  *  Управление переворотом и выбросом вместе
                  */
 
-                if (gamepad2.y) {
+                if (gamepad2.a) {
                     doorMode = 0;
                     pd.boxTakePixel();
                     sleep(200);
                     pd.flipTakePixel();
                     flipState = false;
                 }
-                if (gamepad2.b){
+                if (gamepad2.y){
                     pd.flipDropPixel();
                     sleep(200);
                     pd.boxDropPixel();
                     flipState = true;
                 }
+
+            if (gamepad2.x){
+                pd.flipDropPixelfirstline();
+                sleep(200);
+                pd.boxDropPixelfirstline();
+                flipState = true;
+            }
 
 
 

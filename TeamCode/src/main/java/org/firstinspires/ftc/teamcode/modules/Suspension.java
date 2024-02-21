@@ -23,7 +23,7 @@ public class Suspension {
     /**
      * Метод включения захвата
      */
-    public void up() {
+    public void Up() {
         SuspensionDrive.setPower(Suspension_POWER);
     }
 
@@ -57,7 +57,7 @@ public class Suspension {
      */
     public void changeState() {
         if (SuspensionState) {
-            up();
+            Up();
         } else {
             stop();
         }
