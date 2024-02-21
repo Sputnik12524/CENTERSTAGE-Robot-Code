@@ -15,10 +15,10 @@ public class PixelDelivery {
     public static double DOOR_HALF_OPENED_POSITION = 0.7;
     public static double BOX_ROTATION_DROP_POSITION = 0.36;
     public static double BOX_ROTATION_DROP_POSITION__FIRST_LINE = 0.545;
-    public static double BOX_ROTATION_TAKE_POSITION = 0.335;
+    public static double BOX_ROTATION_TAKE_POSITION = 0.575;
     public static double FLIP_DROP_POSITION = 0.85;
     public static double FLIP_DROP_POSITION_FIRST_LINE = 0.915;
-    public static double FLIP_TAKE_POSITION = 0.16;
+    public static double FLIP_TAKE_POSITION = 0.145;
 
     public static double FLIP_TIME = 100;
 

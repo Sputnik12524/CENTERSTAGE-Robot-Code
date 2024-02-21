@@ -103,7 +103,7 @@ public class MainTeleOp extends LinearOpMode {
                 if (gamepad2.a) {
                     doorMode = 0;
                     pd.boxTakePixel();
-                    sleep(200);
+                    sleep(500);
                     pd.flipTakePixel();
                     flipState = false;
                 }
