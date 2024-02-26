@@ -11,7 +11,8 @@ public class MetryHandler {
     String mode;
     Boolean D = false;
     Boolean T = false;
-    public MetryHandler(LinearOpMode opMode){
+
+    public MetryHandler(LinearOpMode opMode) {
         tm = opMode.telemetry;
     }
 
