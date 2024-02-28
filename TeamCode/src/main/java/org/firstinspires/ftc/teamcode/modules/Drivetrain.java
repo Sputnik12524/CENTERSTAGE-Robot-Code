@@ -41,8 +41,8 @@ public class Drivetrain {
     public static double COURSEPID_MAX_TIME = 5;
 
     public static double kP = 0.0225;
-    public static double kD = 0.012;
-    public static double kI = 0.017;
+    public static double kD = 0;
+    public static double kI = 0;
 
     private final static double ROTATE_ACCURACY = 1;
     private ElapsedTime calcTime = new ElapsedTime();

@@ -56,22 +56,35 @@ public class BlueAutoF4 extends LinearOpMode {
         // единожды выполняемые действия после запуска сценария
 
         // единожды выполняемые действия после запуска сценария
-        dt.driveEncoder(200, -0.4);
-        if (pipeline.getAnalysis() == MIDDLE){
-            dt.driveEncoder(600,-0.4);
+        if (pipeline.getAnalysis() == RIGHT) { //элемент справа
+            dt.driveEncoder(200, -0.3);
+            sleep(100);
+            dt.driveEncoderSide(50, 0.3);
+            sleep (100);
+            pd.setForPurple(0);
+            sleep (1000);
+            dt.driveEncoder(500, -0.3);
+            sleep(10000);
+        } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
+            dt.driveEncoder(600,-0.3);
+            sleep(100);
             pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoder(600,0);
+            dt.driveEncoderSide(650, 0.3);
+            it.outtakeAuto();
+            sleep(10000);
         }
-        else if(pipeline.getAnalysis() == RIGHT){
-            dt.driveEncoder(400,-0.4);
-            dt.driveEncoderSide(400,-0.4);
-            dt.driveEncoder(100,-0.4);
-            dt.driveEncoderSide(200, 0.4);
+        else { //Элемент слева
+            dt.driveEncoder(450,-0.3);
+            dt.driveEncoderSide(200,-0.3);
+            dt.driveEncoder(45, 0.2);
+            sleep(100);
             pd.setForPurple(0);
-            dt.driveEncoder(400,0.4);
+            sleep(1000);
+            dt.driveEncoderSide(800, 0.3);
+            it.outtakeAuto();
+            sleep(10000);
         }
-        dt.driveEncoderSide(1500,-0.4);
     }
 
 }
