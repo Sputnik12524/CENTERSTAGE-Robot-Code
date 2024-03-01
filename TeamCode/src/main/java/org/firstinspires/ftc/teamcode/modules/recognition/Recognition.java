@@ -6,8 +6,10 @@ import static org.firstinspires.ftc.teamcode.modules.recognition.Position.LEFT;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -24,10 +26,10 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @Config
 public class Recognition extends OpenCvPipeline {
 
-    public static int LEFT_REGION_X = 10, MIDDLE_REGION_X = 120, RIGHT_REGION_X = 270, LEFT_REGION_Y = 155,RIGHT_REGION_Y = 155, MIDDLE_REGION_Y = 130;
+    public static int LEFT_REGION_X = 10, MIDDLE_REGION_X = 120, RIGHT_REGION_X = 270, LEFT_REGION_Y = 155, RIGHT_REGION_Y = 155, MIDDLE_REGION_Y = 130;
     public static int THRESH_CB = 150, THRESH_CR = 120, MAXVAL_CB = 255, MAXVAL_CR = 255;
     public static int ALLIANCE_COLOR = 0; //  0 - red alliance
-                                    //  1 - blue alliance
+    //  1 - blue alliance
     public static int OUTPUT = 1;
     private static final int VALUE_FOR_RECOGNITION = 200; // В Cb - синий, в Cr - красный
     public Position position = Position.LEFT;
@@ -71,11 +73,16 @@ public class Recognition extends OpenCvPipeline {
 
     // используемые переменные в Mat
 
-    private Mat  regionMiddle, regionRight;
+    private Mat regionMiddle, regionRight;
     private Mat cb = new Mat();
     private Mat bin = new Mat();
     private Mat cr = new Mat();
     private int avgMiddle, avgRight;
+    private final Telemetry telemetry;
+
+    public Recognition(LinearOpMode opMode) {
+        telemetry = opMode.telemetry;
+    }
 
     void inputToCb(Mat input) {
         Imgproc.cvtColor(input, cb, Imgproc.COLOR_RGB2YCrCb);
@@ -89,7 +96,7 @@ public class Recognition extends OpenCvPipeline {
         Imgproc.threshold(bin, bin, THRESH_CR, MAXVAL_CR, Imgproc.THRESH_BINARY_INV);
     }
 
-    void setAllianceColor(int alliance){
+    void setAllianceColor(int alliance) {
         ALLIANCE_COLOR = alliance;
     }
 
@@ -177,21 +184,55 @@ public class Recognition extends OpenCvPipeline {
                 regionRight_pointB, // вторая точка, которая распознает прямоугольник
                 BLUE, // Цвет, которым нарисован прямоугольник
                 2); // Толщина линий прямоугольника
-            if (avgRight < VALUE_FOR_RECOGNITION && avgMiddle > VALUE_FOR_RECOGNITION) {
-                position = Position.MIDDLE;
-            } else {
-                if (avgRight > VALUE_FOR_RECOGNITION && avgMiddle < VALUE_FOR_RECOGNITION) {
-                    position = Position.RIGHT;
-                }
-                else
-                    position = Position.LEFT;
-            }
+        if (avgRight < VALUE_FOR_RECOGNITION && avgMiddle > VALUE_FOR_RECOGNITION) {
+            position = Position.MIDDLE;
+        } else {
+            if (avgRight > VALUE_FOR_RECOGNITION && avgMiddle < VALUE_FOR_RECOGNITION) {
+                position = Position.RIGHT;
+            } else
+                position = Position.LEFT;
+        }
         depictingRegions(position, input);
         if (OUTPUT == 0)
             return bin;
         else
             return input;
     }
+
+    public void editRec(Gamepad gamepad1) {
+        if (gamepad1.a) {
+            MAXVAL_CB += 1;
+            MAXVAL_CR += 1;
+        }
+        if (gamepad1.b) {
+            MAXVAL_CB -= 1;
+            MAXVAL_CR -= 1;
+        }
+        if (gamepad1.x) {
+            THRESH_CR += 1;
+            THRESH_CB += 1;
+        }
+        if (gamepad1.y) {
+            THRESH_CR -= 1;
+            THRESH_CB -= 1;
+        }
+        if (gamepad1.dpad_left) {
+            OUTPUT = 1;
+        }
+        if (gamepad1.dpad_right) {
+            OUTPUT = 0;
+        }
+        telemetry.addData("position is ", getAnalysis());
+        telemetry.addData("avgMiddle is", getAvgMiddle());
+        telemetry.addData("avgRight is", getAvgRight());
+        telemetry.addData("threshCb", THRESH_CB);
+        telemetry.addData("threshCr", THRESH_CR);
+        telemetry.addData("maxvalCb", MAXVAL_CB);
+        telemetry.addData("maxvalCr", MAXVAL_CR);
+        telemetry.update();
+
+    }
+
     public Position getAnalysis() {
         return position;
     }

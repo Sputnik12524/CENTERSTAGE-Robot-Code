@@ -1,6 +1,12 @@
 package org.firstinspires.ftc.teamcode.modules;
 
 
+import static java.lang.Math.PI;
+import static java.lang.Math.acos;
+import static java.lang.Math.sin;
+import static java.lang.Math.cos;
+import static java.lang.Math.sqrt;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
 public class Drivetrain {
+    public static final double GYRO_COURSE_TOLERANCE = 2;
     private double sumErr;
     private double prevErr = 0;
     private final LinearOpMode opMode;
@@ -34,11 +41,14 @@ public class Drivetrain {
     public static double slow = 0.9; /*отвечает за замедление скорости езды робота. Если хотим ускорить робота, повышаем её.*/
     public static double D_TOLERANCE = 8;
     public static double COURSEPID_MAX_TIME = 5;
-    public static double kP = 0.03;
-    public static double kD = 0;
-    public static double kI = 0;
+
+    public static double kP = 0.0225;
+    public static double kD = 0.012;
+    public static double kI = 0.017;
+
     private final static double ROTATE_ACCURACY = 1;
     private ElapsedTime calcTime = new ElapsedTime();
+
 
     /**
      * Конструктор: инициализирует моторы робота и OpMode:
@@ -125,6 +135,30 @@ public class Drivetrain {
      */
     public void driveRawPower(double x, double y, double r) {
         setPower(calculatePower(x, y, r));
+    }
+
+
+    public void driveCoeffPower(double x, double y, double r) {
+        setPower(calculatePower(x * kX, y * kY, r * kR));
+    }
+
+    /**
+     * Состояние работы мотора
+     *
+     * @return Истина если моторы заняты и подается достаточная минимальная сила
+     */
+    public boolean isBusy() {
+        boolean busy = leftFrontDrive.isBusy() &&
+                rightFrontDrive.isBusy() &&
+                leftBackDrive.isBusy() &&
+                rightBackDrive.isBusy();
+
+        boolean pows = (Math.abs(leftFrontDrive.getPower()) +
+                Math.abs(rightFrontDrive.getPower()) +
+                Math.abs(leftBackDrive.getPower()) +
+                Math.abs(rightBackDrive.getPower())) > 0.05;
+
+        return busy && pows;
     }
 
     /**
@@ -236,4 +270,33 @@ public class Drivetrain {
         }
         stop();
     }
+
+    public void driveFlawless(double x, double y, double r) {
+        double angle = imu.getRadians();
+        double _x= x * cos(angle) - y * sin(angle);
+        double _y =x * sin(angle) + y * cos(angle);
+        setPower(calculatePower(_x, _y, r));
+    }
+    public void checkMotors(boolean lf, boolean rf, boolean lb, boolean rb) {
+        if (lf) {
+            leftFrontDrive.setPower(slow);
+        }
+        if (rf) {
+            rightFrontDrive.setPower(slow);
+        }
+        if (lb) {
+            leftBackDrive.setPower(slow);
+        }
+        if (rb) {
+            rightBackDrive.setPower(slow);
+        } else {
+            stop();
+        }
+
+    }
+    public void resetDirection(){
+        imu.resetYaw();
+    }
+
+
 }

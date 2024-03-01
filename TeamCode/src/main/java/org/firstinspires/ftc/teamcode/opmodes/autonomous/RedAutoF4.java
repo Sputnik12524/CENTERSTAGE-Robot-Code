@@ -38,7 +38,7 @@ public class RedAutoF4 extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam,0);
-        Recognition pipeline = new Recognition();
+        Recognition pipeline = new Recognition(this);
         webcam.setPipeline(pipeline);
         webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
 
