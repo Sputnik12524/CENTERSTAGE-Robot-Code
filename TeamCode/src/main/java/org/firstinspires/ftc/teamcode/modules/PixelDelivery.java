@@ -13,12 +13,16 @@ public class PixelDelivery {
     public static double DOOR_CLOSED_POSITION = 0.475;
     public static double DOOR_FULL_OPEN_POSITION = 0.85;
     public static double DOOR_HALF_OPENED_POSITION = 0.7;
-    public static double BOX_ROTATION_DROP_POSITION = 0.36;
-    public static double BOX_ROTATION_DROP_POSITION__FIRST_LINE = 0.545;
-    public static double BOX_ROTATION_TAKE_POSITION = 0.575;
-    public static double FLIP_DROP_POSITION = 0.85;
-    public static double FLIP_DROP_POSITION_FIRST_LINE = 0.915;
-    public static double FLIP_TAKE_POSITION = 0.145;
+    public static double BOX_ROTATION_DROP_POSITION = 0.625;
+    public static double BOX_ROTATION_DROP_POSITION__FIRST_LINE = 0.935;
+    public static double BOX_ROTATION_TAKE_POSITION = 0.2;
+    public static double BOX_ROTATION_TAKE_POSITION1 = 0.35;
+
+    public static double FLIP_DROP_POSITION = 0.87;
+    public static double FLIP_DROP_POSITION_FIRST_LINE = 1;
+    public static double FLIP_TAKE_POSITION = 0.16;
+
+
 
     public static double FLIP_TIME = 100;
 
@@ -66,6 +70,10 @@ public class PixelDelivery {
         boxRotationRight.setPosition(BOX_ROTATION_TAKE_POSITION);
     }
 
+    public void boxTakePixel1() {
+        boxRotationLeft.setPosition(BOX_ROTATION_TAKE_POSITION1);
+        boxRotationRight.setPosition(BOX_ROTATION_TAKE_POSITION1);
+    }
     public void boxDropPixel() {
         boxRotationLeft.setPosition(BOX_ROTATION_DROP_POSITION);
         boxRotationRight.setPosition(BOX_ROTATION_DROP_POSITION);
@@ -92,6 +100,7 @@ public class PixelDelivery {
         servoFlipLeft.setPosition(FLIP_DROP_POSITION);
         servoFlipRight.setPosition(FLIP_DROP_POSITION);
     }
+
 
 
     public void flipDropPixelfirstline() {

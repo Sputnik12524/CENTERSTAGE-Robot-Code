@@ -31,7 +31,7 @@ public class Drivetrain {
     public static double rotatePower = 0.6;// Мощность вращения метода rotate
 
     public static final double GYRO_COURSE_TOLERANCE = 2;
-    public static double slow = 0.65; /*отвечает за замедление скорости езды робота. Если хотим ускорить робота, повышаем её.*/
+    public static double slow = 0.9; /*отвечает за замедление скорости езды робота. Если хотим ускорить робота, повышаем её.*/
     public static double D_TOLERANCE = 8;
     public static double COURSEPID_MAX_TIME = 5;
     public static double kP = 0.03;
@@ -89,24 +89,6 @@ public class Drivetrain {
         leftBackDrive.setMode(leftBackMode);
         rightBackDrive.setMode(rightBackMode);
     }
-
-    /**
-     * Метод установления напряжения на моторы
-     *
-     * @param power - коэффициент мощности мотора [0..1]
-     */
-    private void setPower(double power) {
-        leftFrontDrive.setPower(power);
-        rightFrontDrive.setPower(power);
-        leftBackDrive.setPower(power);
-        leftFrontDrive.setPower(power);
-    }
-
-    /**
-     * Метод установления мощности на все моторы через массив (для выссчитанной мощности)
-     *
-     * @param powers - мощности моторов
-     */
     private void setPower(double[] powers) {
         leftFrontDrive.setPower(powers[0]);
         rightFrontDrive.setPower(powers[1]);
@@ -129,8 +111,8 @@ public class Drivetrain {
      */
     private double[] calculatePower(double x, double y, double r) {
         return new double[]{
-                (-y - x + r), (y + x + r),
-                (-y + x + r), (y - x + r)};
+                (-y*slow - x*slow + r*slow), (y*slow + x*slow + r*slow),
+                (-y*slow + x*slow + r*slow), (y*slow - x*slow + r*slow)};
     }
 
     /**

@@ -55,18 +55,21 @@ public class MainTeleOp extends LinearOpMode {
                 /**
                  * Управление захватом
                   */
-                if (gamepad2.x) {
+                if (gamepad2.right_stick_button) {
                     it.intake();
-                } else if (gamepad2.a) {
+                } else if (gamepad2.left_stick_button) {
                     it.outtake();
                 } else {
                     it.stop();
                 }
                 if (gamepad2.dpad_up){
-                    susp.Up();
+                    susp.up();
                 }
                 else if(gamepad2.dpad_down){
-                    susp.Down();
+                    susp.down();
+                } else{
+                    susp.setPower(0);
+
                 }
                 if (gamepad1.right_bumper)
                     slow = 0.4;
@@ -100,28 +103,37 @@ public class MainTeleOp extends LinearOpMode {
                  *  Управление переворотом и выбросом вместе
                  */
 
+
                 if (gamepad2.a) {
                     doorMode = 0;
                     pd.boxTakePixel();
-                    sleep(500);
+                    sleep(200);
                     pd.flipTakePixel();
                     flipState = false;
                 }
+                if( gamepad2.b){
+                    pd.boxTakePixel1();
+                }
                 if (gamepad2.y){
                     pd.flipDropPixel();
-                    sleep(200);
+                    sleep(500);
                     pd.boxDropPixel();
                     flipState = true;
                 }
 
             if (gamepad2.x){
-                pd.flipDropPixelfirstline();
+                //pd.flipDropPixelfirstline();
+                pd.boxTakePixel();
                 sleep(200);
-                pd.boxDropPixelfirstline();
+                //pd.boxDropPixelfirstline();
                 flipState = true;
             }
-
-
+            /**
+             * Управление самолетом
+             */
+            if(gamepad2.left_bumper&& gamepad1.left_bumper){
+                dl.launch();
+            }
 
                 /**
                  * Отображение телеметрии
