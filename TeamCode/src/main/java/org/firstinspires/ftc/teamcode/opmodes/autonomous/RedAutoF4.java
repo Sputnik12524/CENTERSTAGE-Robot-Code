@@ -28,7 +28,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 public class RedAutoF4 extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
-
+    public static int distToE3 = 700;
+    public static int distToSpike = 300;
     @Override
     public void runOpMode() {
         // единожды выполняемые действия до инициализации
@@ -39,6 +40,7 @@ public class RedAutoF4 extends LinearOpMode {
         OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam,0);
         Recognition pipeline = new Recognition(this);
+        pipeline.setAllianceColor(0);
         webcam.setPipeline(pipeline);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -57,7 +59,8 @@ public class RedAutoF4 extends LinearOpMode {
 
 
         while (opModeInInit()) {
-
+            sleep(150);
+            pipeline.editRec(gamepad1);
             telemetry.addData("Pos: ", pipeline.getAnalysis());
             telemetry.update();
         }
@@ -68,25 +71,25 @@ public class RedAutoF4 extends LinearOpMode {
 
         // единожды выполняемые действия после запуска сценария
 
-        if (pipeline.getAnalysis() == RIGHT) { //элемент справа
-            dt.driveEncoder(850,-0.3);
-            dt.driveEncoderSide(600,0.3);
-            pd.setForPurple(0);
+        if (pipeline.getAnalysis() == MIDDLE){
+            pd.setForPurple(0);// освобождение пикселя
             sleep(1000);
-            dt.driveEncoderSide(600, -0.3);
-            dt.driveEncoder(750,0.3);
-        } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
-            dt.driveEncoder(1075,-0.3);
-            sleep(100);
-            pd.setForPurple(0);
-            sleep(1000);
-            dt.driveEncoder(1075, 0.3);
+            dt.driveEncoder(200,0.4);
         }
-        else if(pipeline.getAnalysis() == LEFT){ //Элемент слева
+        else if(pipeline.getAnalysis() == RIGHT){
+            dt.driveEncoderSide(distToSpike,0.4);
+            pd.setForPurple(0); // освобождение пикселя
+            sleep(1000);
+            dt.driveEncoderSide(distToSpike,-0.4);
 
+        } else {
+            dt.driveEncoderSide(distToSpike,-0.4);
+            pd.setForPurple(0); // освобождение пикселя
+            sleep(1000);
+            dt.driveEncoderSide(distToSpike,0.4);
         }
-//        dt.driveEncoder(100,-0.3);
-//        dt.driveEncoderSide(1800,0.5);
+        dt.driveEncoder(920, 0.3); //выравниваемся у борта
+        dt.driveEncoderSide(2500, 0.4);
     }
 
 }

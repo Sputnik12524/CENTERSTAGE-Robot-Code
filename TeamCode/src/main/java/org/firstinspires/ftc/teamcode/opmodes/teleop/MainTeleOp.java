@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.DroneLauncher;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
+import org.firstinspires.ftc.teamcode.modules.Recognition;
 import org.firstinspires.ftc.teamcode.modules.Suspension;
 
 @TeleOp(name = "teleop", group = "teleop")
@@ -37,6 +38,7 @@ public class MainTeleOp extends LinearOpMode {
         PixelDelivery pd = new PixelDelivery(this);
         Suspension susp = new Suspension(this);
         DroneLauncher dl = new DroneLauncher(this);
+        Recognition rec = new Recognition(this);
         while (opModeInInit()) {
             // единожды выполняемые действия во время инициализации
 
@@ -47,10 +49,12 @@ public class MainTeleOp extends LinearOpMode {
         // единожды выполняемые действия после запуска сценария
 
         while (opModeIsActive()) {
+                telemetry.addData("Distance", rec.getDistance());
                 // единожды выполняемые действия после запуска сценария
                 //  Управление колёсной базой
+
                 dt.driveRawPower(gamepad1.right_stick_x*slow, -gamepad1.left_stick_y*slow,
-                        (gamepad1.left_trigger - gamepad1.right_trigger)*slow);
+                        (gamepad1.left_trigger - gamepad1.right_trigger)*slow*1.75);
 
                 /**
                  * Управление захватом
@@ -122,10 +126,10 @@ public class MainTeleOp extends LinearOpMode {
                 }
 
             if (gamepad2.x){
-                //pd.flipDropPixelfirstline();
-                pd.boxTakePixel();
+                pd.flipDropPixelfirstline();
+                //pd.boxTakePixel();
                 sleep(200);
-                //pd.boxDropPixelfirstline();
+                pd.boxDropPixelfirstline();
                 flipState = true;
             }
             /**

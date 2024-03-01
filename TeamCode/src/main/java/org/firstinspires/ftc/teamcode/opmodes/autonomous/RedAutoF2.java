@@ -7,11 +7,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 
@@ -27,6 +24,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 public class RedAutoF2 extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
+    public static int distToE3 = 700;
+    public static int distToSpike = 500;
 
     @Override
     public void runOpMode() {
@@ -38,6 +37,7 @@ public class RedAutoF2 extends LinearOpMode {
         OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam,0);
         Recognition pipeline = new Recognition(this);
+        pipeline.setAllianceColor(0);
         webcam.setPipeline(pipeline);
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -53,11 +53,11 @@ public class RedAutoF2 extends LinearOpMode {
                  */
             }
         });
-        int path = 1; //1 - центр, 2 - дальняя зона
 
 
         while (opModeInInit()) {
-
+            sleep(150);
+            pipeline.editRec(gamepad1);
             telemetry.addData("Pos: ", pipeline.getAnalysis());
             telemetry.update();
         }
@@ -68,31 +68,30 @@ public class RedAutoF2 extends LinearOpMode {
 
         // единожды выполняемые действия после запуска сценария
         dt.driveEncoder(200, -0.4);
+        dt.driveEncoder(distToE3,-0.4);
+
         if (pipeline.getAnalysis() == MIDDLE){
-            dt.driveEncoder(830,-0.4);
-            pd.setForPurple(0);
+            dt.driveEncoder(distToSpike,-0.4);
+            pd.setForPurple(0);// освобождение пикселя
             sleep(1000);
-            dt.driveEncoder(200,0.4);
+            dt.driveEncoder(distToSpike,0.4);
         }
         else if(pipeline.getAnalysis() == RIGHT){
-            dt.driveEncoder(600,-0.4);
-            dt.driveEncoderSide(300,0.4);
-            pd.setForPurple(0);
-            dt.driveEncoder(100,0.4);
-            dt.driveEncoderSide(200, -0.4);
+            dt.driveEncoderSide(distToSpike,-0.4);
+            pd.setForPurple(0); // освобождение пикселя
+            sleep(1000);
+            dt.driveEncoderSide(distToSpike,0.4);
+
+        } else {
+            dt.driveEncoderSide(distToSpike,0.4);
+            pd.setForPurple(0); // освобождение пикселя
+            sleep(1000);
+            dt.driveEncoderSide(distToSpike,-0.4);
         }
-        if (path == 1) {
-            dt.driveEncoder(800, 0.3); //выравниваемся у борта
-            dt.driveEncoder(100, -0.4);
-            dt.driveEncoderSide(4600, 0.4);
-        }
-        else {
-            dt.driveEncoder(920, 0.3); //выравниваемся у борта
-            dt.driveEncoder(200, -0.4);
-            dt.driveEncoderSide(2500, 0.4);
-            dt.driveEncoder(900, -0.3);
-            dt.driveEncoderSide(1900, 0.4);
-        }
+        dt.driveEncoder(920, 0.3); //выравниваемся у борта
+        dt.driveEncoderSide(500, 0.4);
+        dt.driveEncoderSide(2500, 0.4);
+
     }
 
 }

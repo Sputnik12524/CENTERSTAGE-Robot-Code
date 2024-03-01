@@ -7,11 +7,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 
@@ -24,7 +21,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Config
 @Autonomous(group = "Auto", name = "BlueAutoF4")
-public class BlueAutoF4 extends LinearOpMode {
+public class BlueAutoA4 extends LinearOpMode {
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
 
@@ -38,15 +35,28 @@ public class BlueAutoF4 extends LinearOpMode {
         OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam,0);
         Recognition pipeline = new Recognition(this);
+        pipeline.setAllianceColor(1);
         webcam.setPipeline(pipeline);
-        webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                FtcDashboard.getInstance().startCameraStream(webcam,60);
+            }
 
+            @Override
+            public void onError(int errorCode) {
+                /*
+                 * This will be called if the camera could not be opened
+                 */
+            }
+        });
         int path = 1; //1 - центр, 2 - дальняя зона
 
 
         while (opModeInInit()) {
-            webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-
+            sleep(150);
+            pipeline.editRec(gamepad1);
             telemetry.addData("Pos: ", pipeline.getAnalysis());
             telemetry.update();
         }

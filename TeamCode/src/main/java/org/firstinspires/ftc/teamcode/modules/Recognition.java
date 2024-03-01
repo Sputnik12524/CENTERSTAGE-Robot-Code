@@ -24,4 +24,7 @@ public class Recognition {
         boolean isrecognized = ds.getDistance(DistanceUnit.CM) < RANGE_TO_ELEMENT && ds.getDistance(DistanceUnit.CM) > 33;
         return isrecognized;
     }
+    public double getDistance(){
+        return ds.getDistance(DistanceUnit.CM);
+    }
 }

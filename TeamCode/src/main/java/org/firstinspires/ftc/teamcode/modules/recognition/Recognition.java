@@ -26,12 +26,12 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @Config
 public class Recognition extends OpenCvPipeline {
 
-    public static int LEFT_REGION_X = 10, MIDDLE_REGION_X = 120, RIGHT_REGION_X = 270, LEFT_REGION_Y = 155, RIGHT_REGION_Y = 155, MIDDLE_REGION_Y = 130;
-    public static int THRESH_CB = 150, THRESH_CR = 120, MAXVAL_CB = 255, MAXVAL_CR = 255;
+    public static int LEFT_REGION_X = 10, MIDDLE_REGION_X = 120, RIGHT_REGION_X = 280, LEFT_REGION_Y = 155, RIGHT_REGION_Y = 120, MIDDLE_REGION_Y = 130;
+    public static int THRESH_CB = 150, THRESH_CR = 134, MAXVAL_CB = 255, MAXVAL_CR = 255;
     public static int ALLIANCE_COLOR = 0; //  0 - red alliance
     //  1 - blue alliance
     public static int OUTPUT = 1;
-    private static final int VALUE_FOR_RECOGNITION = 80; // В Cb - синий, в Cr - красный
+    private static int VALUE_FOR_RECOGNITION = 80; // В Cb - синий, в Cr - красный
     public Position position = Position.LEFT;
     private Point regionMiddleTopLeftAnchorPoint = new Point(MIDDLE_REGION_X, MIDDLE_REGION_Y);
     private Point regionRightTopLeftAnchorPoint = new Point(RIGHT_REGION_X, RIGHT_REGION_Y);
@@ -96,7 +96,7 @@ public class Recognition extends OpenCvPipeline {
         Imgproc.threshold(bin, bin, THRESH_CR, MAXVAL_CR, Imgproc.THRESH_BINARY_INV);
     }
 
-    void setAllianceColor(int alliance) {
+    public void setAllianceColor(int alliance) {
         ALLIANCE_COLOR = alliance;
     }
 
