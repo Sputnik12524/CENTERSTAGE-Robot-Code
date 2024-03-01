@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Suspension {
     private final LinearOpMode opMode;
     private final DcMotor suspensionDrive;
-    public static final double SUSPENSION_POWER = -1;
-    public static final double SUSPENSION_POWER1 = 1;
+    public static final double SUSPENSION_POWER = 1;
+
 
 
     public Suspension(LinearOpMode opMode) {
@@ -31,7 +31,7 @@ public class Suspension {
      * Метод включения выброса
      */
     public void down() {
-        suspensionDrive.setPower(SUSPENSION_POWER1);
+        suspensionDrive.setPower(-SUSPENSION_POWER);
     }
 
     /**
