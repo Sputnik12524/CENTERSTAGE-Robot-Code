@@ -11,12 +11,18 @@ public class PixelDelivery {
 //Уменьшить переменную-привести к закрытому положению
 //Увеличение переменной-привести к открытому положению
     public static double DOOR_CLOSED_POSITION = 0.475;
-    public static double DOOR_FULL_OPEN_POSITION = 1;
+    public static double DOOR_FULL_OPEN_POSITION = 0.85;
     public static double DOOR_HALF_OPENED_POSITION = 0.7;
-    public static double BOX_ROTATION_DROP_POSITION = 0.84;
-    public static double BOX_ROTATION_TAKE_POSITION = 0.335;
-    public static double FLIP_DROP_POSITION = 0.98;
+    public static double BOX_ROTATION_DROP_POSITION = 0.625;
+    public static double BOX_ROTATION_DROP_POSITION__FIRST_LINE = 0.935;
+    public static double BOX_ROTATION_TAKE_POSITION = 0.2;
+    public static double BOX_ROTATION_TAKE_POSITION1 = 0.35;
+
+    public static double FLIP_DROP_POSITION = 0.87;
+    public static double FLIP_DROP_POSITION_FIRST_LINE = 1;
     public static double FLIP_TAKE_POSITION = 0.16;
+
+
 
     public static double FLIP_TIME = 100;
 
@@ -64,9 +70,18 @@ public class PixelDelivery {
         boxRotationRight.setPosition(BOX_ROTATION_TAKE_POSITION);
     }
 
+    public void boxTakePixel1() {
+        boxRotationLeft.setPosition(BOX_ROTATION_TAKE_POSITION1);
+        boxRotationRight.setPosition(BOX_ROTATION_TAKE_POSITION1);
+    }
     public void boxDropPixel() {
         boxRotationLeft.setPosition(BOX_ROTATION_DROP_POSITION);
         boxRotationRight.setPosition(BOX_ROTATION_DROP_POSITION);
+    }
+
+    public void boxDropPixelfirstline() {
+        boxRotationLeft.setPosition(BOX_ROTATION_DROP_POSITION__FIRST_LINE);
+        boxRotationRight.setPosition(BOX_ROTATION_DROP_POSITION__FIRST_LINE);
     }
 
     public void workTake() {
@@ -84,6 +99,13 @@ public class PixelDelivery {
     public void flipDropPixel() {
         servoFlipLeft.setPosition(FLIP_DROP_POSITION);
         servoFlipRight.setPosition(FLIP_DROP_POSITION);
+    }
+
+
+
+    public void flipDropPixelfirstline() {
+        servoFlipLeft.setPosition(FLIP_DROP_POSITION_FIRST_LINE);
+        servoFlipRight.setPosition(FLIP_DROP_POSITION_FIRST_LINE);
     }
 
     public double flipGetPosition() {
