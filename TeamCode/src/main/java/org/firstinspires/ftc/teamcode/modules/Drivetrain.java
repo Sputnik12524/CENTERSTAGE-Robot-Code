@@ -177,6 +177,14 @@ public class Drivetrain {
         opMode.telemetry.update();
     }
 
+    public void strafeRight() {
+        driveRawPower(-0.33, 0, 0.05);
+    }
+
+    public void strafeLeft() {
+        driveRawPower(0.33, 0, -0.05);
+    }
+
     public void driveEncoderSide(double tick1, double powerX) {
         driveEncoder(tick1, powerX, 0);
     }

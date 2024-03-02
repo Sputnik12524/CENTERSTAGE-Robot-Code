@@ -53,7 +53,7 @@ public class MainTeleOp extends LinearOpMode {
                 // единожды выполняемые действия после запуска сценария
                 //  Управление колёсной базой
 
-                dt.driveRawPower(gamepad1.right_stick_x*slow, -gamepad1.left_stick_y*slow,
+                dt.driveRawPower(-gamepad1.right_stick_x*slow, -gamepad1.left_stick_y*slow,
                         (gamepad1.left_trigger - gamepad1.right_trigger)*slow*1.75);
 
                 /**
@@ -82,6 +82,14 @@ public class MainTeleOp extends LinearOpMode {
                 if (gamepad2.left_trigger == 1)
                     dl.launch();
 
+                if (gamepad1.dpad_left) dt.strafeLeft();
+                if (gamepad1.dpad_right) dt.strafeRight();
+                if (gamepad1.dpad_up) {
+                    dt.driveRawPower(0, 0.3, 0);
+                }
+                if (gamepad1.dpad_down) {
+                    dt.driveRawPower(0, -0.3, 0);
+                }
                 /**
                  * Управление дверью
                  */
