@@ -17,7 +17,7 @@ public class PixelDelivery {
     public static double BOX_ROTATION_DROP_POSITION__FIRST_LINE = 0.935;
     public static double BOX_ROTATION_TAKE_POSITION = 0.2;
 
-    public static double BOX_ROTATION_TAKE_POSITION1 = 0.25;
+    public static double BOX_ROTATION_TAKE_POSITION1 = 0.23;
 
     public static double FLIP_DROP_POSITION = 0.87;
     public static double FLIP_DROP_POSITION_FIRST_LINE = 1;

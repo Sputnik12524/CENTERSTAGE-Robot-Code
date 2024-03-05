@@ -49,91 +49,91 @@ public class MainTeleOp extends LinearOpMode {
         // единожды выполняемые действия после запуска сценария
 
         while (opModeIsActive()) {
-                telemetry.addData("Distance", rec.getDistance());
-                // единожды выполняемые действия после запуска сценария
-                //  Управление колёсной базой
+            telemetry.addData("Distance", rec.getDistance());
+            // единожды выполняемые действия после запуска сценария
+            //  Управление колёсной базой
 
-                dt.driveRawPower(-gamepad1.right_stick_x*slow, -gamepad1.left_stick_y*slow,
-                        (gamepad1.left_trigger - gamepad1.right_trigger)*slow*1.75);
+            dt.driveRawPower(-gamepad1.right_stick_x * slow, -gamepad1.left_stick_y * slow,
+                    (gamepad1.left_trigger - gamepad1.right_trigger) * slow * 1.75);
 
-                /**
-                 * Управление захватом
-                  */
-                if (gamepad2.right_stick_button) {
-                    it.intake();
-                } else if (gamepad2.left_stick_button) {
-                    it.outtake();
-                } else {
-                    it.stop();
-                }
-                if (gamepad2.dpad_up){
-                    susp.up();
-                }
-                else if(gamepad2.dpad_down){
-                    susp.down();
-                } else{
-                    susp.setPower(0);
+            /**
+             * Управление захватом
+             */
+            if (gamepad2.right_stick_button) {
+                it.intake();
+            } else if (gamepad2.left_stick_button) {
+                it.outtake();
+            } else {
+                it.stop();
+            }
+            if (gamepad2.dpad_up) {
+                susp.up();
+            } else if (gamepad2.dpad_down) {
+                susp.down();
+            } else {
+                susp.setPower(0);
 
-                }
-                if (gamepad1.right_bumper)
-                    slow = 0.4;
-                if (gamepad1.left_bumper)
-                    slow = 1;
-                if (gamepad2.left_trigger == 1)
-                    dl.launch();
+            }
+            if (gamepad1.right_bumper)
+                slow = 0.4;
+            if (gamepad1.left_bumper)
+                slow = 1;
+            if (gamepad2.left_trigger == 1)
+                dl.launch();
 
-                if (gamepad1.dpad_left) dt.strafeLeft();
-                if (gamepad1.dpad_right) dt.strafeRight();
-                if (gamepad1.dpad_up) {
-                    dt.driveRawPower(0, 0.3, 0);
-                }
-                if (gamepad1.dpad_down) {
-                    dt.driveRawPower(0, -0.3, 0);
-                }
-                /**
-                 * Управление дверью
-                 */
+            if (gamepad1.dpad_left) dt.strafeLeft();
+            if (gamepad1.dpad_right) dt.strafeRight();
+            if (gamepad1.dpad_up) {
+                dt.driveRawPower(0, 0.3, 0);
+            }
+            if (gamepad1.dpad_down) {
+                dt.driveRawPower(0, -0.3, 0);
+            }
+            /**
+             * Управление дверью
+             */
 
-                if (gamepad2.right_bumper && !rbState && flipState){
-                    doorMode = (doorMode + 1) % 3;
-                }
-                rbState = gamepad2.right_bumper;
-                switch(doorMode){
-                    case(0):
-                        pd.closeDoor();
-                        break;
-                    case(1):
-                        pd.halfOpenDoor();
-                        break;
-                    case(2):
-                        pd.fullOpenDoor();
-                        break;
-                }
-
-
-                /**
-                 *  Управление переворотом и выбросом вместе
-                 */
+            if (gamepad2.right_bumper && !rbState && flipState) {
+                doorMode = (doorMode + 1) % 3;
+            }
+            rbState = gamepad2.right_bumper;
+            switch (doorMode) {
+                case (0):
+                    pd.closeDoor();
+                    break;
+                case (1):
+                    pd.halfOpenDoor();
+                    break;
+                case (2):
+                    pd.fullOpenDoor();
+                    break;
+            }
 
 
-                if (gamepad2.a) {
-                    doorMode = 0;
-                    pd.boxTakePixel();
-                    sleep(200);
-                    pd.flipTakePixel();
-                    flipState = false;
-                }
-                if( gamepad2.b){
-                    pd.boxTakePixel1();
-                }
-                if (gamepad2.y){
-                    pd.flipDropPixel();
-                    sleep(500);
-                    pd.boxDropPixel();
-                    flipState = true;
-                }
+            /**
+             *  Управление переворотом и выбросом вместе
+             */
 
-            if (gamepad2.x){
+
+            if (gamepad2.a) {
+                doorMode = 0;
+                pd.closeDoor();
+                pd.boxTakePixel();
+                sleep(200);
+                pd.flipTakePixel();
+                flipState = false;
+            }
+            if (gamepad2.b) {
+                pd.boxTakePixel1();
+            }
+            if (gamepad2.y) {
+                pd.flipDropPixel();
+                sleep(200);
+                pd.boxDropPixel();
+                flipState = true;
+            }
+
+            if (gamepad2.x) {
                 pd.flipDropPixelfirstline();
                 //pd.boxTakePixel();
                 sleep(200);
@@ -143,23 +143,23 @@ public class MainTeleOp extends LinearOpMode {
             /**
              * Управление самолетом
              */
-            if(gamepad2.left_bumper&& gamepad1.left_bumper){
+            if (gamepad2.left_bumper && gamepad1.left_bumper) {
                 dl.launch();
             }
 
-                /**
-                 * Отображение телеметрии
-                  */
-                telemetry.addLine("КБ - 1й геймпад");
-                telemetry.addLine("КБ: влево-вправо - левый стик влево-вправо");
-                telemetry.addLine("КБ: вперёд-назад - правый стик вверх-вниз");
-                telemetry.addLine("КБ: Вправо-влево - правый/левый триггеры");
-                telemetry.addLine();
-                telemetry.addLine("PD - 2й геймпад");
-                telemetry.addLine("X - захват, A - обр. захват");
-                telemetry.addLine("Дверь: левый бампер");
-                telemetry.addLine("Переворот и вращение принятие - Y");
-                telemetry.addLine("Переворот и вращение сброс - B");
+            /**
+             * Отображение телеметрии
+             */
+            telemetry.addLine("КБ - 1й геймпад");
+            telemetry.addLine("КБ: влево-вправо - левый стик влево-вправо");
+            telemetry.addLine("КБ: вперёд-назад - правый стик вверх-вниз");
+            telemetry.addLine("КБ: Вправо-влево - правый/левый триггеры");
+            telemetry.addLine();
+            telemetry.addLine("PD - 2й геймпад");
+            telemetry.addLine("X - захват, A - обр. захват");
+            telemetry.addLine("Дверь: левый бампер");
+            telemetry.addLine("Переворот и вращение принятие - Y");
+            telemetry.addLine("Переворот и вращение сброс - B");
 
 
                /* telemetry.addLine("Переворот: крестовина вверх-вниз");
@@ -169,7 +169,7 @@ public class MainTeleOp extends LinearOpMode {
 
                 */
 
-                telemetry.update();
+            telemetry.update();
         }
 
     }

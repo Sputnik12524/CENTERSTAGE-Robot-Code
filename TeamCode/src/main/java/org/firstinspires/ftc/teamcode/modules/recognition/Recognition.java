@@ -27,8 +27,8 @@ import org.openftc.easyopencv.OpenCvPipeline;
 public class Recognition extends OpenCvPipeline {
 
     public static int MIDDLE_REGION_X = 120, RIGHT_REGION_X = 280, RIGHT_REGION_Y = 120, MIDDLE_REGION_Y = 130;
-    public static int THRESH_CB_HIGHER = 150, THRESH_CR_HIGHER = 134, MAXVAL_CB = 255, MAXVAL_CR = 255;
-    public static int THRESH_CB_LOWER = 100, THRESH_CR_LOWER = 100;
+    public static int THRESH_CB_HIGHER = 255, THRESH_CR_HIGHER = 255, MAXVAL_CB = 255, MAXVAL_CR = 255;
+    public static int THRESH_CB_LOWER = 160, THRESH_CR_LOWER = 180;
     public static int ALLIANCE_COLOR = 0; //  0 - red alliance
     //  1 - blue alliance
     public static int OUTPUT = 1;
