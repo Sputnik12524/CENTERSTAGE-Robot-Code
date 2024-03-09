@@ -37,7 +37,6 @@ public class Drivetrain {
     public static double kR = 1;// Мощность по оси вращения
     public static double rotatePower = 0.6;// Мощность вращения метода rotate
 
-    public static final double GYRO_COURSE_TOLERANCE = 2;
     public static double slow = 0.9; /*отвечает за замедление скорости езды робота. Если хотим ускорить робота, повышаем её.*/
     public static double D_TOLERANCE = 8;
     public static double COURSEPID_MAX_TIME = 5;
