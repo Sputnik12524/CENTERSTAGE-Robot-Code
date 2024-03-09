@@ -26,12 +26,13 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @Config
 public class Recognition extends OpenCvPipeline {
 
-    public static int LEFT_REGION_X = 10, MIDDLE_REGION_X = 120, RIGHT_REGION_X = 270, LEFT_REGION_Y = 155, RIGHT_REGION_Y = 155, MIDDLE_REGION_Y = 130;
-    public static int THRESH_CB = 150, THRESH_CR = 120, MAXVAL_CB = 255, MAXVAL_CR = 255;
+    public static int MIDDLE_REGION_X = 120, RIGHT_REGION_X = 280, RIGHT_REGION_Y = 120, MIDDLE_REGION_Y = 130;
+    public static int THRESH_CB_HIGHER = 255, THRESH_CR_HIGHER = 255, MAXVAL_CB = 255, MAXVAL_CR = 255;
+    public static int THRESH_CB_LOWER = 160, THRESH_CR_LOWER = 180;
     public static int ALLIANCE_COLOR = 0; //  0 - red alliance
     //  1 - blue alliance
     public static int OUTPUT = 1;
-    private static final int VALUE_FOR_RECOGNITION = 80; // В Cb - синий, в Cr - красный
+    private static int VALUE_FOR_RECOGNITION = 80; // В Cb - синий, в Cr - красный
     public Position position = Position.LEFT;
     private Point regionMiddleTopLeftAnchorPoint = new Point(MIDDLE_REGION_X, MIDDLE_REGION_Y);
     private Point regionRightTopLeftAnchorPoint = new Point(RIGHT_REGION_X, RIGHT_REGION_Y);
@@ -84,19 +85,19 @@ public class Recognition extends OpenCvPipeline {
         telemetry = opMode.telemetry;
     }
 
-    void inputToCb(Mat input) {
+    void blueFilter(Mat input) {
         Imgproc.cvtColor(input, cb, Imgproc.COLOR_RGB2YCrCb);
         Core.extractChannel(cb, bin, 2);
-        Imgproc.threshold(bin, bin, THRESH_CB, MAXVAL_CB, Imgproc.THRESH_BINARY);
+        Core.inRange(bin, new Scalar(THRESH_CB_LOWER), new Scalar(THRESH_CB_HIGHER), bin);
     }
 
-    void inputToCr(Mat input) {
+    void redFilter(Mat input) {
         Imgproc.cvtColor(input, cr, Imgproc.COLOR_RGB2YCrCb);
-        Core.extractChannel(cr, bin, 2);
-        Imgproc.threshold(bin, bin, THRESH_CR, MAXVAL_CR, Imgproc.THRESH_BINARY_INV);
+        Core.extractChannel(cr, bin, 1);
+        Core.inRange(bin, new Scalar(THRESH_CR_LOWER), new Scalar(THRESH_CR_HIGHER), bin);
     }
 
-    void setAllianceColor(int alliance) {
+    public void setAllianceColor(int alliance) {
         ALLIANCE_COLOR = alliance;
     }
 
@@ -125,8 +126,8 @@ public class Recognition extends OpenCvPipeline {
     @Override
     public void init(Mat firstFrame) {
         if (ALLIANCE_COLOR == 1)
-            inputToCb(firstFrame);
-        else inputToCr(firstFrame);
+            blueFilter(firstFrame);
+        else redFilter(firstFrame);
         /*
          * ПодМаты  - это постоянная ссылка на область родительского (главного)
          * буфера. Любые изменения в младшем элементе влияют на родителя и наоборот
@@ -144,7 +145,7 @@ public class Recognition extends OpenCvPipeline {
          * который регистрирует отличие от синего. Потому что цветность и яркость
          * не относится к YCrCb, код видения, написанный для поиска определенных значений
          * в каналах Cr / Cb не сильно пострадают от различных
-         * интенсивностей света, поскольку эта разница, скорее всего, будет
+         * интенсивностей света, по     скольку эта разница, скорее всего, будет
          * отражено в канале Y.
          * После преобразования в YCrCb мы извлекаем только второй канал,
          * Канал Cb. Мы делаем это потому, что утки ярко-желтые и контрастные.
@@ -156,8 +157,8 @@ public class Recognition extends OpenCvPipeline {
          *Получить канал Cb входного кадра после преобразования в YCrCb
          */
         if (ALLIANCE_COLOR == 1)
-            inputToCb(input);
-        else inputToCr(input);        /*
+            blueFilter(input);
+        else redFilter(input);        /*
          * Вычислите среднее значение пикселя для каждой области ПодМата.
          * берем  среднее значение для одноканального буфера, поэтому значение
          * нам нужен индекс 0. Мы также могли взять среднее
@@ -209,12 +210,20 @@ public class Recognition extends OpenCvPipeline {
             MAXVAL_CR -= 1;
         }
         if (gamepad1.x) {
-            THRESH_CR += 1;
-            THRESH_CB += 1;
+            THRESH_CR_HIGHER += 1;
+            THRESH_CB_HIGHER += 1;
         }
         if (gamepad1.y) {
-            THRESH_CR -= 1;
-            THRESH_CB -= 1;
+            THRESH_CR_HIGHER -= 1;
+            THRESH_CB_HIGHER -= 1;
+        }
+        if (gamepad1.dpad_up) {
+            THRESH_CR_LOWER += 1;
+            THRESH_CB_LOWER += 1;
+        }
+        if (gamepad1.dpad_down) {
+            THRESH_CR_LOWER -= 1;
+            THRESH_CB_LOWER -= 1;
         }
         if (gamepad1.dpad_left) {
             OUTPUT = 1;
@@ -225,8 +234,10 @@ public class Recognition extends OpenCvPipeline {
         telemetry.addData("position is ", getAnalysis());
         telemetry.addData("avgMiddle is", getAvgMiddle());
         telemetry.addData("avgRight is", getAvgRight());
-        telemetry.addData("threshCb", THRESH_CB);
-        telemetry.addData("threshCr", THRESH_CR);
+        telemetry.addData("threshCb LOWER", THRESH_CB_LOWER);
+        telemetry.addData("threshCb HIGHER", THRESH_CB_HIGHER);
+        telemetry.addData("threshCR LOWER", THRESH_CR_LOWER);
+        telemetry.addData("threshCR HIGHER", THRESH_CR_HIGHER);
         telemetry.addData("maxvalCb", MAXVAL_CB);
         telemetry.addData("maxvalCr", MAXVAL_CR);
         telemetry.update();
