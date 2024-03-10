@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 
 @Autonomous (group = "Autonomous", name = "StupidAutoBlueF2")
-public class StupidAutoBlueF2 extends LinearOpMode {
+public class   StupidAutoBlueF2 extends LinearOpMode {
     @Override
     public void runOpMode(){
         Drivetrain dt = new Drivetrain(this);

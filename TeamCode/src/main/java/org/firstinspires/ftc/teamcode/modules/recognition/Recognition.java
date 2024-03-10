@@ -26,9 +26,9 @@ import org.openftc.easyopencv.OpenCvPipeline;
 @Config
 public class Recognition extends OpenCvPipeline {
 
-    public static int MIDDLE_REGION_X = 120, RIGHT_REGION_X = 280, RIGHT_REGION_Y = 120, MIDDLE_REGION_Y = 130;
+    public static int MIDDLE_REGION_X = 90, RIGHT_REGION_X = 280, RIGHT_REGION_Y = 120, MIDDLE_REGION_Y = 120;
     public static int THRESH_CB_HIGHER = 255, THRESH_CR_HIGHER = 255, MAXVAL_CB = 255, MAXVAL_CR = 255;
-    public static int THRESH_CB_LOWER = 160, THRESH_CR_LOWER = 180;
+    public static int THRESH_CB_LOWER = 145, THRESH_CR_LOWER = 145;
     public static int ALLIANCE_COLOR = 0; //  0 - red alliance
     //  1 - blue alliance
     public static int OUTPUT = 1;
@@ -185,10 +185,10 @@ public class Recognition extends OpenCvPipeline {
                 regionRight_pointB, // вторая точка, которая распознает прямоугольник
                 BLUE, // Цвет, которым нарисован прямоугольник
                 2); // Толщина линий прямоугольника
-        if (avgRight < VALUE_FOR_RECOGNITION && avgMiddle > VALUE_FOR_RECOGNITION) {
+        if (avgRight < avgMiddle && avgMiddle > VALUE_FOR_RECOGNITION) {
             position = Position.MIDDLE;
         } else {
-            if (avgRight > VALUE_FOR_RECOGNITION && avgMiddle < VALUE_FOR_RECOGNITION) {
+            if (avgRight > avgMiddle && avgRight > VALUE_FOR_RECOGNITION) {
                 position = Position.RIGHT;
             } else
                 position = Position.LEFT;

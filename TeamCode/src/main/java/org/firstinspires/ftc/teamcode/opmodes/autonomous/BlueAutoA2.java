@@ -23,11 +23,13 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Config
 @Autonomous(group = "Auto", name = "BlueAutoF2")
 public class BlueAutoA2 extends LinearOpMode {
+    public static int sec = 1300;
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
 
     @Override
     public void runOpMode() {
+
         // единожды выполняемые действия до инициализации
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
@@ -69,33 +71,61 @@ public class BlueAutoA2 extends LinearOpMode {
         // единожды выполняемые действия после запуска сценария
 
         if (pipeline.getAnalysis() == RIGHT) { //элемент справа
-            dt.driveEncoder(200, -0.3);
-            sleep(100);
-            dt.driveEncoderSide(100, 0.3);
+            dt.driveEncoder(800, -0.3);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(200,-0.3);
             sleep (100);
             pd.setForPurple(0);
             sleep (1000);
-            dt.driveEncoder(500, -0.3);
-            sleep(10000);
+            dt.driveEncoder(200,0.4);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(780, 0.4);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoderSide(200,-0.7);
+            sleep(1000);
+            dt.driveEncoderSide(110,0.3);
         } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
-            dt.driveEncoder(1075,-0.3);
+            dt.driveEncoder(1150,-0.3);
             sleep(100);
             pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoder(1075, 0.3);
+            dt.driveEncoder(1100, 0.3);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoderSide(200,-0.7);
+            sleep(1000);
+            dt.driveEncoderSide(110,0.3);
             }
         else if(pipeline.getAnalysis() == LEFT){ //Элемент слева
-            dt.driveEncoder(750,-0.3);
-            dt.driveEncoderSide(600,-0.3);
+            dt.driveEncoder(940,-0.3);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(200,-0.3);
+            sleep (100);
             pd.setForPurple(0);
+            sleep (1000);
+            dt.driveEncoder(200,0.4);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(880,0.3);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoderSide(200,-0.7);
             sleep(1000);
-            dt.driveEncoderSide(600, 0.3);
-            dt.driveEncoder(750,0.3);
-//            it.outtakeAuto();
-//            sleep(10000);
+            dt.driveEncoderSide(110,0.3);
         }
-//        dt.driveEncoder(100,-0.3);
-//        dt.driveEncoderSide(1800,-0.5);
+        dt.driveEncoder(4000,-0.3);
+        //dt.driveEncoderSide(3900,-0.5);
     }
 
 }

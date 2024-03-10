@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
+import static org.firstinspires.ftc.teamcode.modules.recognition.Position.LEFT;
 import static org.firstinspires.ftc.teamcode.modules.recognition.Position.MIDDLE;
 import static org.firstinspires.ftc.teamcode.modules.recognition.Position.RIGHT;
 
@@ -22,13 +23,13 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Config
 @Autonomous(group = "Auto", name = "RedAutoF2")
 public class RedAutoF2 extends LinearOpMode {
+    public static int sec = 1300;
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
-    public static int distToE3 = 700;
-    public static int distToSpike = 500;
 
     @Override
     public void runOpMode() {
+
         // единожды выполняемые действия до инициализации
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
@@ -53,6 +54,7 @@ public class RedAutoF2 extends LinearOpMode {
                  */
             }
         });
+        int path = 1; //1 - центр, 2 - дальняя зона
 
 
         while (opModeInInit()) {
@@ -67,31 +69,63 @@ public class RedAutoF2 extends LinearOpMode {
         // единожды выполняемые действия после запуска сценария
 
         // единожды выполняемые действия после запуска сценария
-        dt.driveEncoder(200, -0.4);
-        dt.driveEncoder(distToE3,-0.4);
 
-        if (pipeline.getAnalysis() == MIDDLE){
-            dt.driveEncoder(distToSpike,-0.4);
-            pd.setForPurple(0);// освобождение пикселя
+        if (pipeline.getAnalysis() == RIGHT) { //элемент справа
+            dt.driveEncoder(800, -0.3);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1100);
+            dt.stop();
+            dt.driveEncoder(200,-0.3);
+            sleep(400);
+            pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoder(distToSpike,0.4);
+            dt.driveEncoder(200,0.3);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1100);
+            dt.stop();
+            dt.driveEncoder(780, 0.4);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoderSide(350,0.8);
+            sleep(1000);
+            dt.driveEncoderSide(200,-0.3);
+        } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
+            dt.driveEncoder(1220,-0.3);
+            sleep(100);
+            pd.setForPurple(0);
+            sleep(1000);
+            dt.driveEncoder(1100, 0.3);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoderSide(350,0.8);
+            sleep(1000);
+            dt.driveEncoderSide(200,-0.3);
         }
-        else if(pipeline.getAnalysis() == RIGHT){
-            dt.driveEncoderSide(distToSpike,-0.4);
-            pd.setForPurple(0); // освобождение пикселя
+        else if(pipeline.getAnalysis() == LEFT){ //Элемент слева
+            dt.driveEncoder(800,-0.3);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1100);
+            dt.stop();
+            dt.driveEncoder(200,-0.3);
+            sleep(400);
+            pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoderSide(distToSpike,0.4);
-
-        } else {
-            dt.driveEncoderSide(distToSpike,0.4);
-            pd.setForPurple(0); // освобождение пикселя
+            dt.driveEncoder(100,0.3);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1100);
+            dt.stop();
+            dt.driveEncoder(700,0.3);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoderSide(350,0.8);
             sleep(1000);
-            dt.driveEncoderSide(distToSpike,-0.4);
+            dt.driveEncoderSide(200,-0.3);
         }
-        dt.driveEncoder(920, 0.3); //выравниваемся у борта
-        dt.driveEncoderSide(500, 0.4);
-        dt.driveEncoderSide(2500, 0.4);
-
+        dt.driveEncoder(4000,-0.3);
+        //dt.driveEncoderSide(3900,-0.5);
     }
 
 }

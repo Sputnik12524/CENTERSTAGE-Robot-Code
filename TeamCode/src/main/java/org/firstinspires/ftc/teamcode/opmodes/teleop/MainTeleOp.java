@@ -72,14 +72,20 @@ public class MainTeleOp extends LinearOpMode {
                 susp.down();
             } else {
                 susp.setPower(0);
-
             }
-            if (gamepad1.right_bumper)
+            if (gamepad1.right_bumper) {
                 slow = 0.4;
-            if (gamepad1.left_bumper)
+            }
+            if (gamepad1.left_bumper) {
                 slow = 1;
-            if (gamepad2.left_trigger == 1)
-                dl.launch();
+            }
+            if (gamepad2.b){
+                susp.dropServo();
+            }
+            if (gamepad2.x){
+                susp.dropServo1();
+            }
+
 
             if (gamepad1.dpad_left) dt.strafeLeft();
             if (gamepad1.dpad_right) dt.strafeRight();
@@ -123,9 +129,9 @@ public class MainTeleOp extends LinearOpMode {
                 pd.flipTakePixel();
                 flipState = false;
             }
-            if (gamepad2.b) {
+            /*if (gamepad2.b) {
                 pd.boxTakePixel1();
-            }
+            }*/
             if (gamepad2.y) {
                 pd.flipDropPixel();
                 sleep(200);
@@ -133,13 +139,13 @@ public class MainTeleOp extends LinearOpMode {
                 flipState = true;
             }
 
-            if (gamepad2.x) {
+            /*if (gamepad2.x) {
                 pd.flipDropPixelfirstline();
                 //pd.boxTakePixel();
                 sleep(200);
                 pd.boxDropPixelfirstline();
                 flipState = true;
-            }
+            }*/
             /**
              * Управление самолетом
              */

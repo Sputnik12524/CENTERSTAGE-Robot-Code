@@ -8,11 +8,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 
@@ -26,12 +23,13 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Config
 @Autonomous(group = "Auto", name = "RedAutoF4")
 public class RedAutoF4 extends LinearOpMode {
+    public static int sec = 1300;
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
-    public static int distToE3 = 700;
-    public static int distToSpike = 300;
+
     @Override
     public void runOpMode() {
+
         // единожды выполняемые действия до инициализации
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
@@ -46,6 +44,7 @@ public class RedAutoF4 extends LinearOpMode {
             @Override
             public void onOpened() {
                 webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                FtcDashboard.getInstance().startCameraStream(webcam,60);
             }
 
             @Override
@@ -71,25 +70,62 @@ public class RedAutoF4 extends LinearOpMode {
 
         // единожды выполняемые действия после запуска сценария
 
-        if (pipeline.getAnalysis() == MIDDLE){
-            pd.setForPurple(0);// освобождение пикселя
+        if (pipeline.getAnalysis() == RIGHT) { //элемент справа
+            dt.driveEncoder(800, -0.3);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(200,-0.3);
+            sleep(400);
+            pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoder(200,0.4);
+            dt.driveEncoder(200,0.3);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(780, 0.4);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoderSide(200,-0.7);
+            sleep(1000);
+            dt.driveEncoderSide(110,0.3);
+        } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
+            dt.driveEncoder(1150,-0.3);
+            sleep(100);
+            pd.setForPurple(0);
+            sleep(1000);
+            dt.driveEncoder(1100, 0.3);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoderSide(200,-0.7);
+            sleep(1000);
+            dt.driveEncoderSide(110,0.3);
         }
-        else if(pipeline.getAnalysis() == RIGHT){
-            dt.driveEncoderSide(distToSpike,0.4);
-            pd.setForPurple(0); // освобождение пикселя
+        else if(pipeline.getAnalysis() == LEFT){ //Элемент слева
+            dt.driveEncoder(800,-0.3);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(200,-0.3);
+            sleep(400);
+            pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoderSide(distToSpike,-0.4);
-
-        } else {
-            dt.driveEncoderSide(distToSpike,-0.4);
-            pd.setForPurple(0); // освобождение пикселя
+            dt.driveEncoder(200,0.3);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(700,0.3);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoderSide(200,-0.7);
             sleep(1000);
-            dt.driveEncoderSide(distToSpike,0.4);
+            dt.driveEncoderSide(110,0.3);
         }
-        dt.driveEncoder(920, 0.3); //выравниваемся у борта
-        dt.driveEncoderSide(2500, 0.4);
+        dt.driveEncoder(4000,-0.3);
+        //dt.driveEncoderSide(3900,-0.5);
     }
 
 }

@@ -67,34 +67,44 @@ public class BlueAutoA4 extends LinearOpMode {
 
         // единожды выполняемые действия после запуска сценария
         if (pipeline.getAnalysis() == RIGHT) { //элемент справа
-            dt.driveEncoder(200, -0.3);
-            sleep(100);
-            dt.driveEncoderSide(50, 0.3);
+            dt.driveEncoder(850, -0.3);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(200,-0.3);
             sleep (100);
             pd.setForPurple(0);
             sleep (1000);
-            dt.driveEncoder(500, -0.3);
-            sleep(10000);
+            dt.driveEncoder(200,0.4);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoderSide(600,-0.55);
+            dt.driveEncoder(850, 0.4);
         } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
-            dt.driveEncoder(600,-0.3);
+            dt.driveEncoder(1075,-0.4);
             sleep(100);
             pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoderSide(650, 0.3);
-            it.outtakeAuto();
-            sleep(10000);
+            dt.driveEncoder(1075,0.4);
         }
         else { //Элемент слева
-            dt.driveEncoder(450,-0.3);
-            dt.driveEncoderSide(200,-0.3);
-            dt.driveEncoder(45, 0.2);
-            sleep(100);
+            dt.driveEncoder(800,-0.3);
+            dt.driveRawPower(0,0,0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(200,-0.3);
+            sleep (100);
             pd.setForPurple(0);
-            sleep(1000);
-            dt.driveEncoderSide(800, 0.3);
-            it.outtakeAuto();
-            sleep(10000);
+            sleep (1000);
+            dt.driveEncoder(200,0.4);
+            dt.driveRawPower(0,0,-0.5);
+            sleep(1300);
+            dt.stop();
+            dt.driveEncoder(650,0.4);
         }
+        sleep(3000);
+        dt.driveEncoderSide(2000,-0.3);
     }
 
 }
