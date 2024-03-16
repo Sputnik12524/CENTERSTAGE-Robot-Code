@@ -14,7 +14,6 @@ public class Suspension {
     public static final double SUSPENSION_POWER = 1;
 
 
-
     public Suspension(LinearOpMode opMode) {
         this.opMode = opMode;
         HardwareMap hw = opMode.hardwareMap;
@@ -43,10 +42,12 @@ public class Suspension {
     public void stop() {
         suspensionDrive.setPower(0);
     }
-    public void dropServo(){
+
+    public void dropServo() {
         suspensionServo.setPosition(0.36);
         opMode.sleep(300);
     }
+
     public void dropServo1() {
         suspensionServo.setPosition(0);
         opMode.sleep(300);
@@ -55,6 +56,7 @@ public class Suspension {
 
     /**
      * Метод установки мощности вращения подвес
+     *
      * @param power - мощность
      */
     public void setPower(double power) {

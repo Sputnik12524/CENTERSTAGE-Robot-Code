@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.modules.ImuSensor;
 @TeleOp(name = "ImuExample")
 public class IMUExample extends LinearOpMode {
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
         ImuSensor imu;
         imu = new ImuSensor(this);
         while (!isStarted() && !isStopRequested()) {

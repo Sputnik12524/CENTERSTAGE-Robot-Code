@@ -72,7 +72,6 @@ public class PixelDeliveryExample extends LinearOpMode {
             }
 
 
-
             telemetry.addData("box", boxPosition);
             telemetry.addData("flip", servoFlip);
             telemetry.addLine("Управление Gamepad1");

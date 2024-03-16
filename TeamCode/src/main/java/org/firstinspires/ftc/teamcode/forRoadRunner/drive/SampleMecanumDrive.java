@@ -79,7 +79,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private final List<Integer> lastEncPositions = new ArrayList<>();
     private final List<Integer> lastEncVels = new ArrayList<>();
 
-    public SampleMecanumDrive(LinearOpMode _opMode){
+    public SampleMecanumDrive(LinearOpMode _opMode) {
         this(_opMode.hardwareMap);
     }
 

@@ -106,6 +106,7 @@ public class Drivetrain {
         leftBackDrive.setMode(leftBackMode);
         rightBackDrive.setMode(rightBackMode);
     }
+
     private void setPower(double[] powers) {
         leftFrontDrive.setPower(powers[0]);
         rightFrontDrive.setPower(powers[1]);
@@ -128,8 +129,8 @@ public class Drivetrain {
      */
     private double[] calculatePower(double x, double y, double r) {
         return new double[]{
-                (-y*slow - x*slow + r*slow), (y*slow + x*slow + r*slow),
-                (-y*slow + x*slow + r*slow), (y*slow - x*slow + r*slow)};
+                (-y * slow - x * slow + r * slow), (y * slow + x * slow + r * slow),
+                (-y * slow + x * slow + r * slow), (y * slow - x * slow + r * slow)};
     }
 
     /**
@@ -288,10 +289,11 @@ public class Drivetrain {
 
     public void driveFlawless(double x, double y, double r) {
         double angle = imuu.getRadians();
-        double _x= x * cos(angle) - y * sin(angle);
-        double _y =x * sin(angle) + y * cos(angle);
+        double _x = x * cos(angle) - y * sin(angle);
+        double _y = x * sin(angle) + y * cos(angle);
         setPower(calculatePower(_x, _y, r));
     }
+
     public void checkMotors(boolean lf, boolean rf, boolean lb, boolean rb) {
         if (lf) {
             leftFrontDrive.setPower(slow);
@@ -309,23 +311,26 @@ public class Drivetrain {
         }
 
     }
-    public double getHeading(){
+
+    public double getHeading() {
         YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
         return orientation.getYaw(AngleUnit.DEGREES);
     }
-    public void turnDrive(double angle, double power){
+
+    public void turnDrive(double angle, double power) {
         rightFrontDrive.setPower(power);
         leftFrontDrive.setPower(-power);
         rightBackDrive.setPower(power);
         leftBackDrive.setPower(-power);
         imu.resetYaw();
-        if(opMode.opModeIsActive() && Math.abs(getHeading()) >= angle){
+        if (opMode.opModeIsActive() && Math.abs(getHeading()) >= angle) {
             stop();
             opMode.sleep(100);
         }
 
     }
-    public double getAngles(){
+
+    public double getAngles() {
         return imuu.getAngles();
 
     }

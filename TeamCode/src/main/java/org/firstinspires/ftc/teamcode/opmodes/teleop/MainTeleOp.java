@@ -79,10 +79,10 @@ public class MainTeleOp extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 slow = 1;
             }
-            if (gamepad2.b){
+            if (gamepad2.b) {
                 susp.dropServo();
             }
-            if (gamepad2.x){
+            if (gamepad2.x) {
                 susp.dropServo1();
             }
 

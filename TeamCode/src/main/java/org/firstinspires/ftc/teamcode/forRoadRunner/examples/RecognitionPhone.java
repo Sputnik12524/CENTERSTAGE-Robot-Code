@@ -11,12 +11,14 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
-@TeleOp (name = "RecognitionPhone" )
+
+@TeleOp(name = "RecognitionPhone")
 @Disabled
 public class RecognitionPhone extends LinearOpMode {
     OpenCvInternalCamera phoneCam;
     Recognition pipeline;
-    public void runOpMode(){
+
+    public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
@@ -27,7 +29,7 @@ public class RecognitionPhone extends LinearOpMode {
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                phoneCam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
@@ -36,7 +38,7 @@ public class RecognitionPhone extends LinearOpMode {
             }
         });
 
-        while(!isStopRequested()){
+        while (!isStopRequested()) {
             sleep(50);
             telemetry.addData("position is ", pipeline.getAnalysis());
             telemetry.addData("avgMiddle is", pipeline.getAvgMiddle());

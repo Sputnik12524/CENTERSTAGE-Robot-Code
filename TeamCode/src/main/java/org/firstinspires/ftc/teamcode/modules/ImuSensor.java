@@ -17,6 +17,7 @@ public class ImuSensor {
     private final IMU imu;
     private Orientation angles;
     private IMU.Parameters parameters;
+
     /**
      * Параметры сенсора
      * Bandwidth - частота обновления датчика
@@ -28,7 +29,7 @@ public class ImuSensor {
     public ImuSensor(LinearOpMode _opMode) {
         imu = _opMode.hardwareMap.get(IMU.class, "imu");
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.UP;
-        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+        RevHubOrientationOnRobot.UsbFacingDirection usbDirection = RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
 
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
         parameters = new IMU.Parameters(orientationOnRobot);
@@ -51,7 +52,8 @@ public class ImuSensor {
         angles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
         return (AngleUnit.RADIANS.normalize(angles.firstAngle));
     }
-    public void resetYaw(){
+
+    public void resetYaw() {
         imu.resetYaw();
     }
 

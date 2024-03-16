@@ -24,7 +24,7 @@ public class DrivetrainExample extends LinearOpMode {
 
         }
         // единожды выполняемые действия после инициализации, но до запуска сценария
-        telemetry.addLine("Запущен пример колёсной базы: управление с 1-ого геймпада."+
+        telemetry.addLine("Запущен пример колёсной базы: управление с 1-ого геймпада." +
                 "4 режима управления: независимое вращение, с коэффициентами осей, без коэффициентов осей, настройка моторов.");
         telemetry.update();
 
@@ -37,8 +37,8 @@ public class DrivetrainExample extends LinearOpMode {
             switch (mode) {
                 case (0):
                     telemetry.addLine("Вы управляете базой с независимым направлением.");
-                    dt.driveFlawless(-gamepad1.right_stick_x,-gamepad1.left_stick_y, gamepad1.left_trigger - gamepad1.right_trigger);
-                    if (gamepad1.right_bumper){
+                    dt.driveFlawless(-gamepad1.right_stick_x, -gamepad1.left_stick_y, gamepad1.left_trigger - gamepad1.right_trigger);
+                    if (gamepad1.right_bumper) {
                         //dt.resetDirection();
                     }
                     break;
@@ -64,7 +64,8 @@ public class DrivetrainExample extends LinearOpMode {
                     break;
             }
             if (gamepad1.left_bumper && !lbState) {
-                mode = (mode + 1)% 4;}
+                mode = (mode + 1) % 4;
+            }
             lbState = gamepad1.left_bumper;
             telemetry.update();
         }

@@ -38,7 +38,7 @@ public class BlueAutoA4 extends LinearOpMode {
         Suspension sus = new Suspension(this);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
-        FtcDashboard.getInstance().startCameraStream(webcam,0);
+        FtcDashboard.getInstance().startCameraStream(webcam, 0);
         Recognition pipeline = new Recognition(this);
         pipeline.setAllianceColor(1);
         webcam.setPipeline(pipeline);
@@ -46,7 +46,7 @@ public class BlueAutoA4 extends LinearOpMode {
             @Override
             public void onOpened() {
                 webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-                FtcDashboard.getInstance().startCameraStream(webcam,60);
+                FtcDashboard.getInstance().startCameraStream(webcam, 60);
             }
 
             @Override
@@ -86,27 +86,26 @@ public class BlueAutoA4 extends LinearOpMode {
 //            sleep(1000);
 //            dt.driveEncoderSide(200,-0.3);
             dt.driveEncoder(880, -0.3);
-            dt.driveEncoderSide(450,0.5);
+            dt.driveEncoderSide(450, 0.5);
             sleep(400);
             pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoder(30,0.3);
-            dt.driveEncoderSide(600,-0.6);
+            dt.driveEncoder(30, 0.3);
+            dt.driveEncoderSide(600, -0.6);
             dt.driveEncoder(780, 0.4);
 //            dt.driveRawPower(0,0,-0.5);
 //            sleep(1000);
 //            dt.driveEncoderSide(220,1);
 //            dt.driveEncoder(70,-0.3);
-        } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
-            dt.driveEncoder(1180,-0.3);
+        } else if (pipeline.getAnalysis() == MIDDLE) { //Элемент посередине
+            dt.driveEncoder(1180, -0.3);
             sleep(100);
             pd.setForPurple(0);
             sleep(1000);
             dt.driveEncoder(1100, 0.3);
-            dt.driveEncoder(100,-0.5);
-            dt.driveEncoderSide(1500,-0.5);
-        }
-        else if(pipeline.getAnalysis() == LEFT){ //Элемент слева
+            dt.driveEncoder(100, -0.5);
+            dt.driveEncoderSide(1500, -0.5);
+        } else if (pipeline.getAnalysis() == LEFT) { //Элемент слева
 //            dt.driveEncoder(1180,-0.3);
 //            sleep(100);
 //            pd.setForPurple(0);
@@ -118,12 +117,12 @@ public class BlueAutoA4 extends LinearOpMode {
 //            dt.driveEncoderSide(225,0.8);
 //            sleep(1000);
 //            dt.driveEncoderSide(200,-0.3);
-            dt.driveEncoder(965,-0.3);
-            dt.driveEncoderSide(657,-0.6);
+            dt.driveEncoder(965, -0.3);
+            dt.driveEncoderSide(657, -0.6);
             sleep(400);
             pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoder(90,0.3);
+            dt.driveEncoder(90, 0.3);
 //            dt.driveEncoderSide(650,0.6);
 //            dt.driveEncoder(770,0.5);
 //            dt.driveEncoder(100,-0.5);

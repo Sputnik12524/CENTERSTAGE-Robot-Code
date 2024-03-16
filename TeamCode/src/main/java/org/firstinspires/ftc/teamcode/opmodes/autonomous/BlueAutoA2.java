@@ -36,7 +36,7 @@ public class BlueAutoA2 extends LinearOpMode {
         PixelDelivery pd = new PixelDelivery(this);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
-        FtcDashboard.getInstance().startCameraStream(webcam,0);
+        FtcDashboard.getInstance().startCameraStream(webcam, 0);
         Recognition pipeline = new Recognition(this);
         pipeline.setAllianceColor(1);
         webcam.setPipeline(pipeline);
@@ -44,7 +44,7 @@ public class BlueAutoA2 extends LinearOpMode {
             @Override
             public void onOpened() {
                 webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
-                FtcDashboard.getInstance().startCameraStream(webcam,60);
+                FtcDashboard.getInstance().startCameraStream(webcam, 60);
             }
 
             @Override
@@ -72,50 +72,49 @@ public class BlueAutoA2 extends LinearOpMode {
 
         if (pipeline.getAnalysis() == RIGHT) { //элемент справа
             dt.driveEncoder(800, -0.3);
-            dt.turnDrive(90,-0.5);
-            dt.driveEncoder(200,-0.3);
-            sleep (100);
+            dt.turnDrive(90, -0.5);
+            dt.driveEncoder(200, -0.3);
+            sleep(100);
             pd.setForPurple(0);
-            sleep (1000);
-            dt.driveEncoder(200,0.4);
-            dt.turnDrive(90,0.5);
+            sleep(1000);
+            dt.driveEncoder(200, 0.4);
+            dt.turnDrive(90, 0.5);
             dt.driveEncoder(780, 0.4);
             sleep(1300);
             dt.stop();
-            dt.driveEncoderSide(200,-0.7);
+            dt.driveEncoderSide(200, -0.7);
             sleep(1000);
-            dt.driveEncoderSide(110,0.3);
-        } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
-            dt.driveEncoder(1150,-0.3);
+            dt.driveEncoderSide(110, 0.3);
+        } else if (pipeline.getAnalysis() == MIDDLE) { //Элемент посередине
+            dt.driveEncoder(1150, -0.3);
             sleep(100);
             pd.setForPurple(0);
             sleep(1000);
             dt.driveEncoder(1100, 0.3);
-            dt.driveRawPower(0,0,0.5);
+            dt.driveRawPower(0, 0, 0.5);
             sleep(1300);
             dt.stop();
-            dt.driveEncoderSide(200,-0.7);
+            dt.driveEncoderSide(200, -0.7);
             sleep(1000);
-            dt.driveEncoderSide(110,0.3);
-            }
-        else if(pipeline.getAnalysis() == LEFT){ //Элемент слева
-            dt.driveEncoder(940,-0.3);
-            dt.turnDrive(90,-0.5);
-            dt.driveEncoder(200,-0.3);
-            sleep (100);
+            dt.driveEncoderSide(110, 0.3);
+        } else if (pipeline.getAnalysis() == LEFT) { //Элемент слева
+            dt.driveEncoder(940, -0.3);
+            dt.turnDrive(90, -0.5);
+            dt.driveEncoder(200, -0.3);
+            sleep(100);
             pd.setForPurple(0);
-            sleep (1000);
-            dt.driveEncoder(200,0.4);
-            dt.turnDrive(90,0.5);
-            dt.driveEncoder(880,0.3);
-            dt.driveRawPower(0,0,-0.5);
+            sleep(1000);
+            dt.driveEncoder(200, 0.4);
+            dt.turnDrive(90, 0.5);
+            dt.driveEncoder(880, 0.3);
+            dt.driveRawPower(0, 0, -0.5);
             sleep(1300);
             dt.stop();
-            dt.driveEncoderSide(200,-0.7);
+            dt.driveEncoderSide(200, -0.7);
             sleep(1000);
-            dt.driveEncoderSide(110,0.3);
+            dt.driveEncoderSide(110, 0.3);
         }
-        dt.driveEncoder(4000,-0.3);
+        dt.driveEncoder(4000, -0.3);
         //dt.driveEncoderSide(3900,-0.5);
     }
 

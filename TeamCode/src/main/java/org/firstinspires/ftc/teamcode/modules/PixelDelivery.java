@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
 public class PixelDelivery {
-//Уменьшить переменную-привести к закрытому положению
+    //Уменьшить переменную-привести к закрытому положению
 //Увеличение переменной-привести к открытому положению
     public static double DOOR_CLOSED_POSITION = 0.475;
     public static double DOOR_FULL_OPEN_POSITION = 0.85;
@@ -22,7 +22,6 @@ public class PixelDelivery {
     public static double FLIP_DROP_POSITION = 0.87;
     public static double FLIP_DROP_POSITION_FIRST_LINE = 1;
     public static double FLIP_TAKE_POSITION = 0.16;
-
 
 
     public static double FLIP_TIME = 100;
@@ -75,6 +74,7 @@ public class PixelDelivery {
         boxRotationLeft.setPosition(BOX_ROTATION_TAKE_POSITION1);
         boxRotationRight.setPosition(BOX_ROTATION_TAKE_POSITION1);
     }
+
     public void boxDropPixel() {
         boxRotationLeft.setPosition(BOX_ROTATION_DROP_POSITION);
         boxRotationRight.setPosition(BOX_ROTATION_DROP_POSITION);
@@ -88,7 +88,8 @@ public class PixelDelivery {
     public void workTake() {
         takeDropHelper.needWorkTake = true;
     }
-    public void workDrop(){
+
+    public void workDrop() {
         takeDropHelper.needWorkDrop = true;
     }
 
@@ -103,7 +104,6 @@ public class PixelDelivery {
     }
 
 
-
     public void flipDropPixelfirstline() {
         servoFlipLeft.setPosition(FLIP_DROP_POSITION_FIRST_LINE);
         servoFlipRight.setPosition(FLIP_DROP_POSITION_FIRST_LINE);
@@ -112,6 +112,7 @@ public class PixelDelivery {
     public double flipGetPosition() {
         return servoFlipLeft.getPosition();
     }
+
     public double boxGetPosition() {
         return boxRotationLeft.getPosition();
     }
@@ -126,7 +127,8 @@ public class PixelDelivery {
         servoFlipLeft.setPosition(positionFlip);
         servoFlipRight.setPosition(positionFlip);
     }
-    public void setForPurple(double position){
+
+    public void setForPurple(double position) {
         forPurple.setPosition(position);
     }
 
@@ -135,21 +137,22 @@ public class PixelDelivery {
         boolean needWorkDrop = false;
 
         private ElapsedTime timer = new ElapsedTime();
-        public void run () {
+
+        public void run() {
             while (!isInterrupted()) {
-               if (needWorkTake) {
-                   flipTakePixel();
-                   timer.reset();
-                   while (timer.milliseconds() < FLIP_TIME );
-                   boxTakePixel();
-                   needWorkTake = false;
-               } else if (needWorkDrop) {
-                   flipDropPixel();
-                   timer.reset();
-                   while (timer.milliseconds() < FLIP_TIME );
-                   boxDropPixel();
-                   needWorkDrop = false;
-               }
+                if (needWorkTake) {
+                    flipTakePixel();
+                    timer.reset();
+                    while (timer.milliseconds() < FLIP_TIME) ;
+                    boxTakePixel();
+                    needWorkTake = false;
+                } else if (needWorkDrop) {
+                    flipDropPixel();
+                    timer.reset();
+                    while (timer.milliseconds() < FLIP_TIME) ;
+                    boxDropPixel();
+                    needWorkDrop = false;
+                }
             }
         }
 

@@ -6,15 +6,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.modules.Drivetrain;
 import org.firstinspires.ftc.teamcode.modules.Intake;
 
-@Autonomous (group = "Autonomous", name = "StupidAutoRed")
+@Autonomous(group = "Autonomous", name = "StupidAutoRed")
 public class StupidAutoRedF4 extends LinearOpMode {
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
-          waitForStart();
-        dt.driveEncoder(100,0.3);
-        dt.driveEncoderSide(2100,0.3);
+        waitForStart();
+        dt.driveEncoder(100, 0.3);
+        dt.driveEncoderSide(2100, 0.3);
         it.outtakeAuto();
         sleep(10000);
     }

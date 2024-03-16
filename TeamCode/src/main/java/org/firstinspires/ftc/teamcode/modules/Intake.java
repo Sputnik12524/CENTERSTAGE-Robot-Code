@@ -33,8 +33,9 @@ public class Intake {
     public void outtake() {
         intakeDrive.setPower(-OUTTAKE_POWER);
     }
+
     public void outtakeAuto() {
-        intakeDrive.setPower(-OUTTAKE_POWER*1.3);
+        intakeDrive.setPower(-OUTTAKE_POWER * 1.3);
     }
 
     /**
@@ -46,6 +47,7 @@ public class Intake {
 
     /**
      * Метод установки мощности вращения захвата
+     *
      * @param power - мощность
      */
     public void setPower(double power) {

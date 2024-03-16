@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.modules;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
+
 @Config
 public class DroneLauncher {
     private final LinearOpMode opMode;
@@ -13,9 +14,9 @@ public class DroneLauncher {
         this.droneServo = opMode.hardwareMap.servo.get("droneservo");
 
 
-
     }
-    public void launch(){
+
+    public void launch() {
         droneServo.setPosition(0);
         opMode.sleep(300);
         droneServo.setPosition(1);

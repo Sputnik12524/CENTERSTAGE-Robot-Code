@@ -8,17 +8,17 @@ import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
 @TeleOp(group = "TeleOp", name = "PurpleServoExample")
 public class PurpleServoExample extends LinearOpMode {
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
         PixelDelivery pd = new PixelDelivery(this);
-        while (opModeInInit()){
+        while (opModeInInit()) {
 
             waitForStart();
 
-            while(opModeIsActive()){
-                if(gamepad1.x){
+            while (opModeIsActive()) {
+                if (gamepad1.x) {
                     pd.setForPurple(0);
                 }
-                if(gamepad1.b){
+                if (gamepad1.b) {
                     pd.setForPurple(1);
                 }
             }
