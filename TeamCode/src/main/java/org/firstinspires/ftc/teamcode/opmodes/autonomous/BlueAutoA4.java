@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
+import static org.firstinspires.ftc.teamcode.modules.recognition.Position.LEFT;
 import static org.firstinspires.ftc.teamcode.modules.recognition.Position.MIDDLE;
 import static org.firstinspires.ftc.teamcode.modules.recognition.Position.RIGHT;
 
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.modules.Intake;
 
 import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
 
+import org.firstinspires.ftc.teamcode.modules.Suspension;
 import org.firstinspires.ftc.teamcode.modules.recognition.Recognition;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -22,15 +24,18 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Config
 @Autonomous(group = "Auto", name = "BlueAutoF4")
 public class BlueAutoA4 extends LinearOpMode {
+    public static int sec = 1300;
     // единожды выполняемые действия до запуска программы
     // здесь следует создавать переменные и константы для сценария
 
     @Override
     public void runOpMode() {
+
         // единожды выполняемые действия до инициализации
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
         PixelDelivery pd = new PixelDelivery(this);
+        Suspension sus = new Suspension(this);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam,0);
@@ -57,6 +62,7 @@ public class BlueAutoA4 extends LinearOpMode {
         while (opModeInInit()) {
             sleep(150);
             pipeline.editRec(gamepad1);
+            sus.dropServo();
             telemetry.addData("Pos: ", pipeline.getAnalysis());
             telemetry.update();
         }
@@ -66,45 +72,66 @@ public class BlueAutoA4 extends LinearOpMode {
         // единожды выполняемые действия после запуска сценария
 
         // единожды выполняемые действия после запуска сценария
+
         if (pipeline.getAnalysis() == RIGHT) { //элемент справа
-            dt.driveEncoder(850, -0.3);
-            dt.driveRawPower(0,0,-0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoder(200,-0.3);
-            sleep (100);
+//            dt.driveEncoder(1180,-0.3);
+//            sleep(100);
+//            pd.setForPurple(0);
+//            sleep(1000);
+//            dt.driveEncoder(1100, 0.3);
+//            dt.driveRawPower(0,0,-0.5);
+//            sleep(1000);
+//            dt.stop();
+//            dt.driveEncoderSide(250,1);
+//            sleep(1000);
+//            dt.driveEncoderSide(200,-0.3);
+            dt.driveEncoder(880, -0.3);
+            dt.driveEncoderSide(450,0.5);
+            sleep(400);
             pd.setForPurple(0);
-            sleep (1000);
-            dt.driveEncoder(200,0.4);
-            dt.driveRawPower(0,0,0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoderSide(600,-0.55);
-            dt.driveEncoder(850, 0.4);
+            sleep(1000);
+            dt.driveEncoder(30,0.3);
+            dt.driveEncoderSide(600,-0.6);
+            dt.driveEncoder(780, 0.4);
+//            dt.driveRawPower(0,0,-0.5);
+//            sleep(1000);
+//            dt.driveEncoderSide(220,1);
+//            dt.driveEncoder(70,-0.3);
         } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
-            dt.driveEncoder(1075,-0.4);
+            dt.driveEncoder(1180,-0.3);
             sleep(100);
             pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoder(1075,0.4);
+            dt.driveEncoder(1100, 0.3);
+            dt.driveEncoder(100,-0.5);
+            dt.driveEncoderSide(1500,-0.5);
         }
-        else { //Элемент слева
-            dt.driveEncoder(800,-0.3);
-            dt.driveRawPower(0,0,0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoder(200,-0.3);
-            sleep (100);
+        else if(pipeline.getAnalysis() == LEFT){ //Элемент слева
+//            dt.driveEncoder(1180,-0.3);
+//            sleep(100);
+//            pd.setForPurple(0);
+//            sleep(1000);
+//            dt.driveEncoder(1100, 0.3);
+//            dt.driveRawPower(0,0,-0.5);
+//            sleep(1000);
+//            dt.stop();
+//            dt.driveEncoderSide(225,0.8);
+//            sleep(1000);
+//            dt.driveEncoderSide(200,-0.3);
+            dt.driveEncoder(965,-0.3);
+            dt.driveEncoderSide(657,-0.6);
+            sleep(400);
             pd.setForPurple(0);
-            sleep (1000);
-            dt.driveEncoder(200,0.4);
-            dt.driveRawPower(0,0,-0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoder(650,0.4);
+            sleep(1000);
+            dt.driveEncoder(90,0.3);
+//            dt.driveEncoderSide(650,0.6);
+//            dt.driveEncoder(770,0.5);
+//            dt.driveEncoder(100,-0.5);
+//            dt.driveEncoderSide(1500,-0.5);
+
         }
-        sleep(3000);
-        dt.driveEncoderSide(2000,-0.3);
+        //dt.driveEncoder(4500,-0.3);
+        //dt.driveEncoderSide(3900,-0.5);
     }
 
 }

@@ -44,10 +44,10 @@ public class Suspension {
         suspensionDrive.setPower(0);
     }
     public void dropServo(){
-        suspensionServo.setPosition(0.4);
+        suspensionServo.setPosition(0.36);
         opMode.sleep(300);
     }
-    public void dropServo1(){
+    public void dropServo1() {
         suspensionServo.setPosition(0);
         opMode.sleep(300);
     }

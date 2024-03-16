@@ -32,7 +32,7 @@ public class Recognition extends OpenCvPipeline {
     public static int ALLIANCE_COLOR = 0; //  0 - red alliance
     //  1 - blue alliance
     public static int OUTPUT = 1;
-    private static int VALUE_FOR_RECOGNITION = 80; // В Cb - синий, в Cr - красный
+    private static int VALUE_FOR_RECOGNITION = 65; // В Cb - синий, в Cr - красный
     public Position position = Position.LEFT;
     private Point regionMiddleTopLeftAnchorPoint = new Point(MIDDLE_REGION_X, MIDDLE_REGION_Y);
     private Point regionRightTopLeftAnchorPoint = new Point(RIGHT_REGION_X, RIGHT_REGION_Y);

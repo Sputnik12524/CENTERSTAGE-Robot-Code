@@ -71,60 +71,69 @@ public class RedAutoF2 extends LinearOpMode {
         // единожды выполняемые действия после запуска сценария
 
         if (pipeline.getAnalysis() == RIGHT) { //элемент справа
-            dt.driveEncoder(800, -0.3);
-            dt.driveRawPower(0,0,-0.5);
-            sleep(1100);
-            dt.stop();
-            dt.driveEncoder(200,-0.3);
+//            dt.driveEncoder(1180,-0.3);
+//            sleep(100);
+//            pd.setForPurple(0);
+//            sleep(1000);
+//            dt.driveEncoder(1100, 0.3);
+//            dt.driveRawPower(0,0,-0.5);
+//            sleep(1000);
+//            dt.stop();
+//            dt.driveEncoderSide(250,1);
+//            sleep(1000);
+//            dt.driveEncoderSide(200,-0.3);
+            dt.driveEncoder(915, -0.3);
+            dt.driveEncoderSide(450,0.5);
             sleep(400);
             pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoder(200,0.3);
-            dt.driveRawPower(0,0,0.5);
-            sleep(1100);
-            dt.stop();
+            dt.driveEncoder(30,0.3);
+            dt.driveEncoderSide(550,-0.6);
             dt.driveEncoder(780, 0.4);
-            dt.driveRawPower(0,0,-0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoderSide(350,0.8);
+            dt.driveRawPower(0,0,0.5);
             sleep(1000);
-            dt.driveEncoderSide(200,-0.3);
+            dt.driveEncoderSide(220,1);
+            dt.driveEncoder(70,-0.3);
         } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
-            dt.driveEncoder(1220,-0.3);
+            dt.driveEncoder(1180,-0.3);
             sleep(100);
             pd.setForPurple(0);
             sleep(1000);
             dt.driveEncoder(1100, 0.3);
             dt.driveRawPower(0,0,-0.5);
-            sleep(1300);
+            sleep(1000);
             dt.stop();
-            dt.driveEncoderSide(350,0.8);
+            dt.driveEncoderSide(225,1);
             sleep(1000);
             dt.driveEncoderSide(200,-0.3);
         }
         else if(pipeline.getAnalysis() == LEFT){ //Элемент слева
+//            dt.driveEncoder(1180,-0.3);
+//            sleep(100);
+//            pd.setForPurple(0);
+//            sleep(1000);
+//            dt.driveEncoder(1100, 0.3);
+//            dt.driveRawPower(0,0,-0.5);
+//            sleep(1000);
+//            dt.stop();
+//            dt.driveEncoderSide(225,0.8);
+//            sleep(1000);
+//            dt.driveEncoderSide(200,-0.3);
             dt.driveEncoder(800,-0.3);
-            dt.driveRawPower(0,0,0.5);
-            sleep(1100);
-            dt.stop();
-            dt.driveEncoder(200,-0.3);
+            dt.driveEncoderSide(710,-0.6);
             sleep(400);
             pd.setForPurple(0);
             sleep(1000);
             dt.driveEncoder(100,0.3);
-            dt.driveRawPower(0,0,-0.5);
-            sleep(1100);
-            dt.stop();
-            dt.driveEncoder(700,0.3);
-            dt.driveRawPower(0,0,-0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoderSide(350,0.8);
+            dt.driveEncoderSide(600,0.6);
+            dt.driveEncoder(770,0.5);
+            dt.driveRawPower(0,0,0.5);
             sleep(1000);
-            dt.driveEncoderSide(200,-0.3);
+            dt.driveEncoderSide(220,1);
+            dt.driveEncoder(70,-0.3);
+
         }
-        dt.driveEncoder(4000,-0.3);
+        dt.driveEncoder(4500,-0.3);
         //dt.driveEncoderSide(3900,-0.5);
     }
 

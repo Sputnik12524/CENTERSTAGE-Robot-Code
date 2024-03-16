@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.modules;
 
 
-import static java.lang.Math.PI;
-import static java.lang.Math.acos;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
-import static java.lang.Math.sqrt;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -18,6 +15,8 @@ import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @Config
 public class Drivetrain {
@@ -49,6 +48,7 @@ public class Drivetrain {
     public static double kD = 0;
     public static double kI = 0;
 
+
     private final static double ROTATE_ACCURACY = 1;
     private ElapsedTime calcTime = new ElapsedTime();
 
@@ -69,13 +69,14 @@ public class Drivetrain {
         leftBackDrive = hm.get(DcMotor.class, "lb");
         rightFrontDrive = hm.get(DcMotor.class, "rb");
         rightBackDrive = hm.get(DcMotor.class, "rf");
+        imu = hm.get(IMU.class, "imu");
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
         RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
         RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection = RevHubOrientationOnRobot.UsbFacingDirection.UP;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoFacingDirection, usbFacingDirection);
         imuu = new ImuSensor(opMode);
+        imu.resetYaw();
         tm = opMode.telemetry;
-
     }
 
     /**
@@ -308,8 +309,25 @@ public class Drivetrain {
         }
 
     }
-    public void getHeading(){
+    public double getHeading(){
+        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+        return orientation.getYaw(AngleUnit.DEGREES);
+    }
+    public void turnDrive(double angle, double power){
+        rightFrontDrive.setPower(power);
+        leftFrontDrive.setPower(-power);
+        rightBackDrive.setPower(power);
+        leftBackDrive.setPower(-power);
         imu.resetYaw();
+        if(opMode.opModeIsActive() && Math.abs(getHeading()) >= angle){
+            stop();
+            opMode.sleep(100);
+        }
+
+    }
+    public double getAngles(){
+        return imuu.getAngles();
+
     }
 
 }

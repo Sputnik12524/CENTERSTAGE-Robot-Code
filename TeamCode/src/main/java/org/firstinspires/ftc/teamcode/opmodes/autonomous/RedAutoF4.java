@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.modules.Intake;
 
 import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
 
+import org.firstinspires.ftc.teamcode.modules.Suspension;
 import org.firstinspires.ftc.teamcode.modules.recognition.Recognition;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -34,6 +35,7 @@ public class RedAutoF4 extends LinearOpMode {
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
         PixelDelivery pd = new PixelDelivery(this);
+        Suspension sus = new Suspension(this);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvCamera webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "webcam"), cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(webcam,0);
@@ -60,6 +62,7 @@ public class RedAutoF4 extends LinearOpMode {
         while (opModeInInit()) {
             sleep(150);
             pipeline.editRec(gamepad1);
+            sus.dropServo();
             telemetry.addData("Pos: ", pipeline.getAnalysis());
             telemetry.update();
         }
@@ -71,60 +74,61 @@ public class RedAutoF4 extends LinearOpMode {
         // единожды выполняемые действия после запуска сценария
 
         if (pipeline.getAnalysis() == RIGHT) { //элемент справа
-            dt.driveEncoder(800, -0.3);
-            dt.driveRawPower(0,0,-0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoder(200,-0.3);
+//            dt.driveEncoder(1180,-0.3);
+//            sleep(100);
+//            pd.setForPurple(0);
+//            sleep(1000);
+//            dt.driveEncoder(1100, 0.3);
+//            dt.driveRawPower(0,0,-0.5);
+//            sleep(1000);
+//            dt.stop();
+//            dt.driveEncoderSide(250,1);
+//            sleep(1000);
+//            dt.driveEncoderSide(200,-0.3);
+            dt.driveEncoder(870, -0.4);
+            dt.driveEncoderSide(535,0.6);
             sleep(400);
             pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoder(200,0.3);
-            dt.driveRawPower(0,0,0.5);
-            sleep(1300);
-            dt.stop();
+            dt.driveEncoder(30,0.4);
+            dt.driveEncoderSide(555,-0.6);
             dt.driveEncoder(780, 0.4);
-            dt.driveRawPower(0,0,-0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoderSide(200,-0.7);
-            sleep(1000);
-            dt.driveEncoderSide(110,0.3);
         } else if (pipeline.getAnalysis() == MIDDLE){ //Элемент посередине
-            dt.driveEncoder(1150,-0.3);
+            dt.driveEncoder(1180,-0.3);
             sleep(100);
             pd.setForPurple(0);
             sleep(1000);
             dt.driveEncoder(1100, 0.3);
             dt.driveRawPower(0,0,-0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoderSide(200,-0.7);
             sleep(1000);
-            dt.driveEncoderSide(110,0.3);
+            dt.stop();
+            dt.driveEncoderSide(225,1);
+            sleep(1000);
+            dt.driveEncoderSide(200,-0.3);
         }
         else if(pipeline.getAnalysis() == LEFT){ //Элемент слева
-            dt.driveEncoder(800,-0.3);
-            dt.driveRawPower(0,0,-0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoder(200,-0.3);
+//            dt.driveEncoder(1180,-0.3);
+//            sleep(100);
+//            pd.setForPurple(0);
+//            sleep(1000);
+//            dt.driveEncoder(1100, 0.3);
+//            dt.driveRawPower(0,0,-0.5);
+//            sleep(1000);
+//            dt.stop();
+//            dt.driveEncoderSide(225,0.8);
+//            sleep(1000);
+//            dt.driveEncoderSide(200,-0.3);
+            dt.driveEncoder(890,-0.3);
+            dt.driveEncoderSide(650,-0.6);
             sleep(400);
             pd.setForPurple(0);
             sleep(1000);
-            dt.driveEncoder(200,0.3);
-            dt.driveRawPower(0,0,0.5);
-            sleep(1300);
-            dt.stop();
+            dt.driveEncoder(50,0.4);
+            dt.driveEncoderSide(600,0.6);
             dt.driveEncoder(700,0.3);
-            dt.driveRawPower(0,0,-0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoderSide(200,-0.7);
-            sleep(1000);
-            dt.driveEncoderSide(110,0.3);
+
         }
-        dt.driveEncoder(4000,-0.3);
+        //dt.driveEncoder(4500,-0.3);
         //dt.driveEncoderSide(3900,-0.5);
     }
 
