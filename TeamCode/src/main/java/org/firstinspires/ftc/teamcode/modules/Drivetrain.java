@@ -23,7 +23,6 @@ public class Drivetrain {
     public static final double GYRO_COURSE_TOLERANCE = 2;
     private double sumErr;
 
-    private IMU imu = null;
     private double prevErr = 0;
     private final LinearOpMode opMode;
 
@@ -32,7 +31,7 @@ public class Drivetrain {
     private final DcMotor leftBackDrive;
     private final DcMotor rightBackDrive;
 
-    private final ImuSensor imuu;// Гироскоп
+    private final ImuSensor imu;// Гироскоп
     private final Telemetry tm;
 
     public static double kX = 1;// Мощность по оси вперёд-назад
@@ -47,6 +46,8 @@ public class Drivetrain {
     public static double kP = 0.0225;
     public static double kD = 0;
     public static double kI = 0;
+
+    public static final double TICK_PER_CM = 560 / (2 * Math.PI * 2 * 2.54);
 
 
     private final static double ROTATE_ACCURACY = 1;
@@ -69,12 +70,11 @@ public class Drivetrain {
         leftBackDrive = hm.get(DcMotor.class, "lb");
         rightFrontDrive = hm.get(DcMotor.class, "rb");
         rightBackDrive = hm.get(DcMotor.class, "rf");
-        imu = hm.get(IMU.class, "imu");
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
         RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
         RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection = RevHubOrientationOnRobot.UsbFacingDirection.UP;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoFacingDirection, usbFacingDirection);
-        imuu = new ImuSensor(opMode);
+        imu = new ImuSensor(opMode);
         imu.resetYaw();
         tm = opMode.telemetry;
     }
@@ -199,8 +199,18 @@ public class Drivetrain {
         driveEncoder(tick1, powerX, 0);
     }
 
+    public void driveEncoderSideCM(double cm, double powerX){
+        double tick = cm * TICK_PER_CM;
+        driveEncoderSide(tick, powerX);
+    }
+
+
     public void driveEncoder(double tick1, double powerY) {
         driveEncoder(tick1, 0, powerY);
+    }
+    public void driveEncoderCM(double cm, double powerY){
+        double tick = cm * TICK_PER_CM;
+        driveEncoder(tick, powerY);
     }
 
     public void driveEncoder(double tick1, double powerX, double powerY) {
@@ -209,7 +219,7 @@ public class Drivetrain {
         int position3 = leftBackDrive.getCurrentPosition();
         int position4 = rightBackDrive.getCurrentPosition();
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
-        double angle = imuu.getAngles();
+        double angle = imu.getDegrees();
         driveRawPower(powerX, powerY, 0);
         while (!(leftFrontDrive.getPower() == 0 &&
                 rightFrontDrive.getPower() == 0 &&
@@ -261,10 +271,10 @@ public class Drivetrain {
     private double calculatePIDPower(double d) {
         double power;
         double err = 0;
-        if (Math.abs(d - imuu.getAngles()) <= 180)
-            err = d - imuu.getAngles();
+        if (Math.abs(d - imu.getDegrees()) <= 180)
+            err = d - imu.getDegrees();
         else
-            err = d - imuu.getAngles() - Math.signum(d - imuu.getAngles()) * 360;
+            err = d - imu.getDegrees() - Math.signum(d - imu.getDegrees()) * 360;
         sumErr = sumErr + calcTime.milliseconds() * err;
         power = kP * err + sumErr * kI + kD * (err - prevErr) / calcTime.seconds();
         calcTime.reset();
@@ -277,18 +287,16 @@ public class Drivetrain {
      *
      * @param d - градус
      */
-    public void rotate(double d) {
-        while (Math.abs(angleDiff(imuu.getAngles(), d)) < ROTATE_ACCURACY && opMode.opModeIsActive()) {
-            driveRawPower(0, 0, calculatePIDPower(d));
-            opMode.telemetry.addData("Angle:", imuu.getAngles());
-            opMode.telemetry.addData("d:", d);
-            opMode.telemetry.update();
+    public void rotate(double d, double power) {
+        while (Math.abs(angleDiff(d, imu.getDegrees()) ) > 1) {
+            driveRawPower(0, 0, power);
         }
-        stop();
+        driveRawPower(0, 0, 0);
+
     }
 
     public void driveFlawless(double x, double y, double r) {
-        double angle = imuu.getRadians();
+        double angle = imu.getRadians();
         double _x = x * cos(angle) - y * sin(angle);
         double _y = x * sin(angle) + y * cos(angle);
         setPower(calculatePower(_x, _y, r));
@@ -312,27 +320,5 @@ public class Drivetrain {
 
     }
 
-    public double getHeading() {
-        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
-        return orientation.getYaw(AngleUnit.DEGREES);
-    }
-
-    public void turnDrive(double angle, double power) {
-        rightFrontDrive.setPower(power);
-        leftFrontDrive.setPower(-power);
-        rightBackDrive.setPower(power);
-        leftBackDrive.setPower(-power);
-        imu.resetYaw();
-        if (opMode.opModeIsActive() && Math.abs(getHeading()) >= angle) {
-            stop();
-            opMode.sleep(100);
-        }
-
-    }
-
-    public double getAngles() {
-        return imuu.getAngles();
-
-    }
 
 }

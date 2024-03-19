@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.examples;
+package org.firstinspires.ftc.teamcode.opmodes.examples;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,7 +12,7 @@ public class IMUExample extends LinearOpMode {
         ImuSensor imu;
         imu = new ImuSensor(this);
         while (!isStarted() && !isStopRequested()) {
-            telemetry.addData("gyro ", imu.getAngles());
+            telemetry.addData("gyro ", imu.getDegrees());
             telemetry.update();
         }
     }

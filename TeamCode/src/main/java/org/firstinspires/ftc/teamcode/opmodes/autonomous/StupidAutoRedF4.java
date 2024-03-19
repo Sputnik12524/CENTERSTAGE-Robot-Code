@@ -13,8 +13,12 @@ public class StupidAutoRedF4 extends LinearOpMode {
         Drivetrain dt = new Drivetrain(this);
         Intake it = new Intake(this);
         waitForStart();
-        dt.driveEncoder(100, 0.3);
-        dt.driveEncoderSide(2100, 0.3);
+        sleep (1000);
+        dt.driveEncoderCM(10, 0.25);
+        sleep (2000);
+        dt.rotate(-90, -0.4);
+        sleep(2000);
+        dt.driveEncoderCM(90, 0.25);
         it.outtakeAuto();
         sleep(10000);
     }

@@ -42,7 +42,7 @@ public class ImuSensor {
      *
      * @return кол-во градусов
      */
-    public double getAngles() {
+    public double getDegrees() {
 
         angles = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         return (AngleUnit.DEGREES.normalize(angles.firstAngle));

@@ -72,13 +72,13 @@ public class BlueAutoA2 extends LinearOpMode {
 
         if (pipeline.getAnalysis() == RIGHT) { //элемент справа
             dt.driveEncoder(800, -0.3);
-            dt.turnDrive(90, -0.5);
+            dt.rotate(90, -0.5);
             dt.driveEncoder(200, -0.3);
             sleep(100);
             pd.setForPurple(0);
             sleep(1000);
             dt.driveEncoder(200, 0.4);
-            dt.turnDrive(90, 0.5);
+            dt.rotate(90, 0.5);
             dt.driveEncoder(780, 0.4);
             sleep(1300);
             dt.stop();
@@ -99,13 +99,13 @@ public class BlueAutoA2 extends LinearOpMode {
             dt.driveEncoderSide(110, 0.3);
         } else if (pipeline.getAnalysis() == LEFT) { //Элемент слева
             dt.driveEncoder(940, -0.3);
-            dt.turnDrive(90, -0.5);
+            dt.rotate(90, -0.5);
             dt.driveEncoder(200, -0.3);
             sleep(100);
             pd.setForPurple(0);
             sleep(1000);
             dt.driveEncoder(200, 0.4);
-            dt.turnDrive(90, 0.5);
+            dt.rotate(90, 0.5);
             dt.driveEncoder(880, 0.3);
             dt.driveRawPower(0, 0, -0.5);
             sleep(1300);
