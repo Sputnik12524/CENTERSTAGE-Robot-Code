@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.modules.Intake;
 
 import org.firstinspires.ftc.teamcode.modules.PixelDelivery;
 
+import org.firstinspires.ftc.teamcode.modules.recognition.Position;
 import org.firstinspires.ftc.teamcode.modules.recognition.Recognition;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -68,54 +69,40 @@ public class BlueAutoA2 extends LinearOpMode {
         waitForStart();
         // единожды выполняемые действия после запуска сценария
 
-        // единожды выполняемые действия после запуска сценария
+        Position position = pipeline.getAnalysis();
 
-        if (pipeline.getAnalysis() == RIGHT) { //элемент справа
-            dt.driveEncoder(800, -0.3);
-            dt.rotate(90, -0.5);
-            dt.driveEncoder(200, -0.3);
-            sleep(100);
-            pd.setForPurple(0);
-            sleep(1000);
-            dt.driveEncoder(200, 0.4);
-            dt.rotate(90, 0.5);
-            dt.driveEncoder(780, 0.4);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoderSide(200, -0.7);
-            sleep(1000);
-            dt.driveEncoderSide(110, 0.3);
-        } else if (pipeline.getAnalysis() == MIDDLE) { //Элемент посередине
-            dt.driveEncoder(1150, -0.3);
-            sleep(100);
-            pd.setForPurple(0);
-            sleep(1000);
-            dt.driveEncoder(1100, 0.3);
-            dt.driveRawPower(0, 0, 0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoderSide(200, -0.7);
-            sleep(1000);
-            dt.driveEncoderSide(110, 0.3);
-        } else if (pipeline.getAnalysis() == LEFT) { //Элемент слева
-            dt.driveEncoder(940, -0.3);
-            dt.rotate(90, -0.5);
-            dt.driveEncoder(200, -0.3);
-            sleep(100);
-            pd.setForPurple(0);
-            sleep(1000);
-            dt.driveEncoder(200, 0.4);
-            dt.rotate(90, 0.5);
-            dt.driveEncoder(880, 0.3);
-            dt.driveRawPower(0, 0, -0.5);
-            sleep(1300);
-            dt.stop();
-            dt.driveEncoderSide(200, -0.7);
-            sleep(1000);
-            dt.driveEncoderSide(110, 0.3);
+        // проезд вперёд
+        dt.driveEncoderCM(55, -0.25);
+        sleep(1000);
+
+        if (position == RIGHT) { //элемент справа
+            dt.rotate(-70, -0.4);
+        } else if (position == LEFT) { //Элемент слева
+            dt.rotate(81, 0.4);
+            dt.driveEncoderCM(4, -0.25);
         }
-        dt.driveEncoder(4000, -0.3);
-        //dt.driveEncoderSide(3900,-0.5);
+        sleep(2000);
+
+        dt.driveEncoderCM(9,-0.25);
+        pd.setForPurple(0);
+        sleep(1000);
+
+        dt.driveEncoderCM(9, 0.25);
+
+        if (position == RIGHT) {
+            dt.rotate(0, 0.4);
+        } else if (position == LEFT) {
+            dt.driveEncoderCM(4, 0.25);
+            dt.rotate(0, -0.4);
+        }
+
+        dt.driveEncoderCM(50, 0.25);
+        sleep(1000);
+        dt.driveEncoderSideCM(5,-0.27);
+        sleep(1000);
+        dt.rotate(87, 0.4);
+        sleep(1000);
+        dt.driveEncoderCM(250, -0.25);
     }
 
 }

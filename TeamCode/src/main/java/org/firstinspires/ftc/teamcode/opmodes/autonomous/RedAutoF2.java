@@ -77,6 +77,7 @@ public class RedAutoF2 extends LinearOpMode {
 
         if (position == RIGHT) { //элемент справа
             dt.rotate(-90, -0.4);
+            dt.driveEncoderCM(4,-0.25);
         } else if (position == LEFT) { //Элемент слева
             dt.rotate(80, 0.4);
             dt.driveEncoderCM(2, -0.25);
@@ -92,6 +93,7 @@ public class RedAutoF2 extends LinearOpMode {
 
         if (position == RIGHT) {
             dt.rotate(0, 0.4);
+            dt.driveEncoderCM(4, 0.25);
         } else if (position == LEFT) {
             dt.driveEncoderCM(2, 0.25);
             dt.rotate(0, -0.4);
@@ -99,8 +101,9 @@ public class RedAutoF2 extends LinearOpMode {
         dt.driveEncoderCM(59, 0.25);
         sleep(1000);
         dt.rotate(-90, -0.4);
+        dt.driveEncoderSideCM(5, 0.25);
         sleep(1000);
-        dt.driveEncoderCM(270, -0.25);
+        dt.driveEncoderCM(265, -0.25);
     }
 
 }
