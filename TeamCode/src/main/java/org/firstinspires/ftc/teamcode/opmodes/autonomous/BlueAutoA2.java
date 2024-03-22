@@ -76,33 +76,34 @@ public class BlueAutoA2 extends LinearOpMode {
         sleep(1000);
 
         if (position == RIGHT) { //элемент справа
-            dt.rotate(-70, -0.4);
+            dt.rotate(-50, -0.4);
         } else if (position == LEFT) { //Элемент слева
             dt.rotate(81, 0.4);
-            dt.driveEncoderCM(4, -0.25);
+            dt.driveEncoderCM(2, -0.25);
         }
         sleep(2000);
 
         dt.driveEncoderCM(9,-0.25);
-        pd.setForPurple(0);
+        pd.setForPurple(1);
         sleep(1000);
 
         dt.driveEncoderCM(9, 0.25);
 
         if (position == RIGHT) {
-            dt.rotate(0, 0.4);
+            dt.rotate(0, 0.5);
         } else if (position == LEFT) {
-            dt.driveEncoderCM(4, 0.25);
+            dt.driveEncoderCM(2, 0.25);
             dt.rotate(0, -0.4);
         }
 
         dt.driveEncoderCM(50, 0.25);
-        sleep(1000);
         dt.driveEncoderSideCM(5,-0.27);
-        sleep(1000);
-        dt.rotate(87, 0.4);
-        sleep(1000);
-        dt.driveEncoderCM(250, -0.25);
+        sleep(500);
+        dt.rotate(85, 0.4);
+        sleep(500);
+        dt.driveEncoderCM(90, -0.5);
+        dt.driveEncoderSideCM(5, -0.3);
+        dt.driveEncoderCM(80,-0.4);
     }
 
 }

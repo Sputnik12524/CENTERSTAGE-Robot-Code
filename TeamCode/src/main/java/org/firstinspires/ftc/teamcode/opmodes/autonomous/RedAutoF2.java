@@ -86,7 +86,7 @@ public class RedAutoF2 extends LinearOpMode {
         sleep(2000);
 
         dt.driveEncoderCM(6,-0.25);
-        pd.setForPurple(0);
+        pd.setForPurple(1);
         sleep(1000);
 
         dt.driveEncoderCM(6, 0.25);

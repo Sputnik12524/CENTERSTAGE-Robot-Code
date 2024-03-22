@@ -75,7 +75,7 @@ public class RedAutoF4 extends LinearOpMode {
 
         // проезд вперёд
         dt.driveEncoderCM(60, -0.25);
-        sleep(1000);
+        sleep(500);
 
         if (position == RIGHT) { //элемент справа
             dt.rotate(-80, -0.4);
@@ -83,10 +83,10 @@ public class RedAutoF4 extends LinearOpMode {
             dt.rotate(90, 0.4);
 
         }
-        sleep(2000);
+        sleep(500);
 
         dt.driveEncoderCM(6,-0.25);
-        pd.setForPurple(0);
+        pd.setForPurple(1);
         sleep(1000);
 
         dt.driveEncoderCM(6, 0.25);
@@ -97,10 +97,10 @@ public class RedAutoF4 extends LinearOpMode {
             dt.rotate(0, -0.4);
         }
         dt.driveEncoderCM(42, 0.25);
-        sleep(1000);
+        sleep(500);
         dt.rotate(-90, -0.4);
         sleep(1000);
-        dt.driveEncoderCM(90, -0.25);
+        dt.driveEncoderCM(85, -0.5);
     }
 
 }
