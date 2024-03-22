@@ -78,10 +78,9 @@ public class RedAutoF4 extends LinearOpMode {
         sleep(1000);
 
         if (position == RIGHT) { //элемент справа
-            dt.rotate(80, 0.4);
-            dt.driveEncoderCM(8, -0.25);
+            dt.rotate(-80, -0.4);
         } else if (position == LEFT) { //Элемент слева
-            dt.rotate(-90, -0.4);
+            dt.rotate(90, 0.4);
 
         }
         sleep(2000);
@@ -93,10 +92,9 @@ public class RedAutoF4 extends LinearOpMode {
         dt.driveEncoderCM(6, 0.25);
 
         if (position == RIGHT) {
-            dt.driveEncoderCM(8, 0.25);
-            dt.rotate(0, -0.4);
-        } else if (position == LEFT) {
             dt.rotate(0, 0.4);
+        } else if (position == LEFT) {
+            dt.rotate(0, -0.4);
         }
         dt.driveEncoderCM(42, 0.25);
         sleep(1000);

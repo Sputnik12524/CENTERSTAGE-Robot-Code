@@ -76,38 +76,36 @@ public class BlueAutoA4 extends LinearOpMode {
 
         // проезд вперёд
         dt.driveEncoderCM(55, -0.25);
-        sleep(1000);
+        sleep(500);
 
         if (position == RIGHT) { //элемент справа
-            dt.rotate(-91, -0.4);
-            dt.driveEncoderCM(4, -0.25);
+            dt.rotate(-92, -0.4);
+            dt.driveEncoderCM(2, -0.25);
         } else if (position == LEFT) { //Элемент слева
             dt.rotate(75, 0.4);
             dt.driveEncoderCM(4, -0.25);
         }
-        sleep(2000);
+        sleep(500);
 
-        dt.driveEncoderCM(7,-0.25);
-        pd.setForPurple(0);
+        dt.driveEncoderCM(8,-0.25);
+        pd.setForPurple(1);
         sleep(1000);
 
-        dt.driveEncoderCM(7, 0.25);
+        dt.driveEncoderCM(8, 0.3);
 
         if (position == RIGHT) {
-            dt.driveEncoderCM(4, 0.25);
+            dt.driveEncoderCM(5, 0.25);
             dt.rotate(0, 0.4);
         } else if (position == LEFT) {
             dt.driveEncoderCM(4, 0.25);
             dt.rotate(0, -0.4);
         }
 
-        dt.driveEncoderCM(50, 0.25);
-        sleep(1000);
+        dt.driveEncoderCM(50, 0.3);
         dt.driveEncoderSideCM(5,-0.27);
-        sleep(100);
         dt.rotate(90, 0.4);
-        sleep(1000);
-        dt.driveEncoderCM(90, -0.25);
+        sleep(500);
+        dt.driveEncoderCM(85, -0.45);
     }
 
 }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.modules;
 
 
+import static java.lang.Math.max;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
 
@@ -10,8 +11,11 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -26,10 +30,10 @@ public class Drivetrain {
     private double prevErr = 0;
     private final LinearOpMode opMode;
 
-    private final DcMotor leftFrontDrive;
-    private final DcMotor rightFrontDrive;
-    private final DcMotor leftBackDrive;
-    private final DcMotor rightBackDrive;
+    private final DcMotorEx leftFrontDrive;
+    private final DcMotorEx rightFrontDrive;
+    private final DcMotorEx leftBackDrive;
+    private final DcMotorEx rightBackDrive;
 
     private final ImuSensor imu;// Гироскоп
     private final Telemetry tm;
@@ -47,7 +51,10 @@ public class Drivetrain {
     public static double kD = 0;
     public static double kI = 0;
 
+    public static double NORMAL_VOLTAGE = 12.5;
     public static final double TICK_PER_CM = 560 / (2 * Math.PI * 2 * 2.54);
+
+    private double voltageCoefficient;
 
 
     private final static double ROTATE_ACCURACY = 1;
@@ -66,17 +73,21 @@ public class Drivetrain {
     public Drivetrain(LinearOpMode opMode) {
         this.opMode = opMode;
         HardwareMap hm = opMode.hardwareMap;
-        leftFrontDrive = hm.get(DcMotor.class, "lf");
-        leftBackDrive = hm.get(DcMotor.class, "lb");
-        rightFrontDrive = hm.get(DcMotor.class, "rb");
-        rightBackDrive = hm.get(DcMotor.class, "rf");
+        leftFrontDrive = hm.get(DcMotorEx.class, "lf");
+        leftBackDrive = hm.get(DcMotorEx.class, "lb");
+        rightFrontDrive = hm.get(DcMotorEx.class, "rb");
+        rightBackDrive = hm.get(DcMotorEx.class, "rf");
         rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive.setPIDFCoefficients(RunMode.RUN_TO_POSITION, new PIDFCoefficients());
         RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
         RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection = RevHubOrientationOnRobot.UsbFacingDirection.UP;
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoFacingDirection, usbFacingDirection);
         imu = new ImuSensor(opMode);
         imu.resetYaw();
+        VoltageSensor voltageSensor = opMode.hardwareMap.voltageSensor.get("Control Hub");
+        double voltage = voltageSensor.getVoltage();
         tm = opMode.telemetry;
+        voltageCoefficient = NORMAL_VOLTAGE / voltage;
     }
 
     /**
@@ -128,6 +139,7 @@ public class Drivetrain {
      * @return массив мощностей для моторов
      */
     private double[] calculatePower(double x, double y, double r) {
+
         return new double[]{
                 (-y * slow - x * slow + r * slow), (y * slow + x * slow + r * slow),
                 (-y * slow + x * slow + r * slow), (y * slow - x * slow + r * slow)};
@@ -143,6 +155,16 @@ public class Drivetrain {
      */
     public void driveRawPower(double x, double y, double r) {
         setPower(calculatePower(x, y, r));
+    }
+
+    public void driveVoltagePower(double x, double y, double r) {
+        double[] volttageSave = calculatePower(x,y,r);
+        volttageSave[0] = volttageSave[0]*voltageCoefficient;
+        volttageSave[1] = volttageSave[1]*voltageCoefficient;
+        volttageSave[2] = volttageSave[2]*voltageCoefficient;
+        volttageSave[3] = volttageSave[3]*voltageCoefficient;
+        setPower(volttageSave);
+
     }
 
 
@@ -220,7 +242,7 @@ public class Drivetrain {
         int position4 = rightBackDrive.getCurrentPosition();
         Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
         double angle = imu.getDegrees();
-        driveRawPower(powerX, powerY, 0);
+        driveVoltagePower(powerX, powerY, 0);
         while (!(leftFrontDrive.getPower() == 0 &&
                 rightFrontDrive.getPower() == 0 &&
                 leftBackDrive.getPower() == 0 &&
@@ -230,7 +252,7 @@ public class Drivetrain {
             int rightFrontDifference = Math.abs(position2 - rightFrontDrive.getCurrentPosition());
             int leftBackDifference = Math.abs(position3 - leftBackDrive.getCurrentPosition());
             int rightBackDifference = Math.abs(position4 - rightBackDrive.getCurrentPosition());
-            driveRawPower(powerX, powerY, calculatePIDPower(angle));
+            driveVoltagePower(powerX, powerY, calculatePIDPower(angle));
             if (leftFrontDifference >= tick1) {
                 leftFrontDrive.setPower(0);
             }
@@ -289,7 +311,7 @@ public class Drivetrain {
      */
     public void rotate(double d, double power) {
         while (Math.abs(angleDiff(d, imu.getDegrees()) ) > 1) {
-            driveRawPower(0, 0, power);
+            driveVoltagePower(0, 0, power);
         }
         driveRawPower(0, 0, 0);
 

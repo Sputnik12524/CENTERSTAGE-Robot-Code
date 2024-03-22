@@ -14,7 +14,7 @@ public class StupidAutoRedF4 extends LinearOpMode {
         Intake it = new Intake(this);
         waitForStart();
         sleep (1000);
-        dt.driveEncoderCM(10, 0.25);
+        dt.driveEncoderCM(10, 0.35);
         sleep (2000);
         dt.rotate(-90, -0.4);
         sleep(2000);
