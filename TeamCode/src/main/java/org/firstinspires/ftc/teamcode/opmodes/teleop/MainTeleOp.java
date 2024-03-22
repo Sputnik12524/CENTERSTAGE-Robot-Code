@@ -44,7 +44,7 @@ public class MainTeleOp extends LinearOpMode {
 
         }
         // единожды выполняемые действия после инициализации, но до запуска сценария
-
+        susp.dropServo();
         waitForStart();
         // единожды выполняемые действия после запуска сценария
 

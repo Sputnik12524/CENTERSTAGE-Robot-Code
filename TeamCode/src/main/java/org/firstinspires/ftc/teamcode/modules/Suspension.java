@@ -11,6 +11,7 @@ public class Suspension {
     private final LinearOpMode opMode;
     private final DcMotor suspensionDrive;
     private final Servo suspensionServo;
+    private final Servo suspensionServoSecond;
     public static final double SUSPENSION_POWER = 1;
 
 
@@ -18,6 +19,7 @@ public class Suspension {
         this.opMode = opMode;
         HardwareMap hw = opMode.hardwareMap;
         this.suspensionServo = opMode.hardwareMap.servo.get("suspensionServo");
+        this.suspensionServoSecond = opMode.hardwareMap.servo.get("suspensionServoSecond");
         suspensionDrive = hw.get(DcMotor.class, "SuspensionDrive");
         suspensionDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
@@ -44,12 +46,14 @@ public class Suspension {
     }
 
     public void dropServo() {
-        suspensionServo.setPosition(0.36);
+        suspensionServo.setPosition(0.4);
+        suspensionServoSecond.setPosition(0.3);
         opMode.sleep(300);
     }
 
     public void dropServo1() {
-        suspensionServo.setPosition(0);
+        suspensionServo.setPosition(0.3);
+        suspensionServoSecond.setPosition(0.6);
         opMode.sleep(300);
     }
 

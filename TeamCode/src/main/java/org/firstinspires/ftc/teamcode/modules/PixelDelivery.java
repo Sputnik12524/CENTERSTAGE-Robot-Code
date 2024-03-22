@@ -12,16 +12,16 @@ public class PixelDelivery {
 //Увеличение переменной-привести к открытому положению
     public static double DOOR_CLOSED_POSITION = 0.44;
     public static double DOOR_FULL_OPEN_POSITION = 0.8;
-    public static double DOOR_HALF_OPENED_POSITION = 0.62;
-    public static double BOX_ROTATION_DROP_POSITION = 0.625;
+    public static double DOOR_HALF_OPENED_POSITION = 0.65;
+    public static double BOX_ROTATION_DROP_POSITION = 0.825;
     public static double BOX_ROTATION_DROP_POSITION__FIRST_LINE = 0.935;
-    public static double BOX_ROTATION_TAKE_POSITION = 0.2;
+    public static double BOX_ROTATION_TAKE_POSITION = 0.28;
 
     public static double BOX_ROTATION_TAKE_POSITION1 = 0.23;
 
-    public static double FLIP_DROP_POSITION = 0.87;
+    public static double FLIP_DROP_POSITION = 0.78;
     public static double FLIP_DROP_POSITION_FIRST_LINE = 1;
-    public static double FLIP_TAKE_POSITION = 0.16;
+    public static double FLIP_TAKE_POSITION = 0.12;
 
 
     public static double FLIP_TIME = 100;
